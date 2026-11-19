@@ -1,0 +1,2049 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>浅岸星滩 · 敏感者的潮间带</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-touch-callout: none;
+            user-select: none;
+        }
+
+
+        img {
+            -webkit-user-drag: none;
+            user-select: none;
+        }
+        .preview-img,
+        .char-avatar img,
+        .logo-wrapper img {
+            pointer-events: none;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: 'Segoe UI', 'Roboto', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            overflow-x: hidden;
+            color: #2c4a3b;
+            position: relative;
+        }
+
+        .sky-sand {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: linear-gradient(165deg, #b3e0f5 0%, #d9f0fa 40%, #fef7e0 70%, #f5e6c4 100%);
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60%;
+            z-index: -1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .star {
+            position: absolute;
+            background-color: #fff9e0;
+            border-radius: 50%;
+            box-shadow: 0 0 4px 1px rgba(255,255,200,0.8);
+            opacity: 0;
+            animation: twinkle 3s infinite alternate;
+        }
+        @keyframes twinkle {
+            0% { opacity: 0; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1.2); }
+        }
+
+        /* ========= 主页底部海浪：蓝色同款三层泡沫水波 ========= */
+        .wave-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 150px;
+            z-index: 1;
+            pointer-events: none;
+            overflow: hidden;
+            filter: drop-shadow(0 -8px 18px rgba(66, 166, 208, .16));
+        }
+        .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 150px;
+            background-repeat: repeat-x;
+            background-size: 2400px 150px;
+            background-position-y: bottom;
+            mix-blend-mode: soft-light;
+            will-change: background-position;
+        }
+        .wave1 {
+            bottom: -8px;
+            opacity: .96;
+            background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%202400%20150%22%20preserveAspectRatio%3D%22none%22%3E%0A%3Cdefs%3E%0A%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%0A%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23f7fdff%22%20stop-opacity%3D%220.82%22/%3E%0A%3Cstop%20offset%3D%2255%25%22%20stop-color%3D%22%238fd8f2%22%20stop-opacity%3D%220.48%22/%3E%0A%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%232f9cc7%22%20stop-opacity%3D%220.10%22/%3E%0A%3C/linearGradient%3E%0A%3Cfilter%20id%3D%22softGlow%22%20x%3D%22-10%25%22%20y%3D%22-30%25%22%20width%3D%22120%25%22%20height%3D%22160%25%22%3E%0A%3CfeGaussianBlur%20stdDeviation%3D%222.2%22%20result%3D%22blur%22/%3E%0A%3CfeMerge%3E%3CfeMergeNode%20in%3D%22blur%22/%3E%3CfeMergeNode%20in%3D%22SourceGraphic%22/%3E%3C/feMerge%3E%0A%3C/filter%3E%0A%3C/defs%3E%0A%3Cpath%20fill%3D%22url%28%23g%29%22%20d%3D%22M0%2C64%20C150%2C18%20450%2C18%20600%2C64%20C750%2C110%201050%2C110%201200%2C64%20C1350%2C18%201650%2C18%201800%2C64%20C1950%2C110%202250%2C110%202400%2C64%20L2400%2C150%20L0%2C150%20Z%22/%3E%0A%3Cpath%20d%3D%22M0%2C64%20C150%2C18%20450%2C18%20600%2C64%20C750%2C110%201050%2C110%201200%2C64%20C1350%2C18%201650%2C18%201800%2C64%20C1950%2C110%202250%2C110%202400%2C64%22%20fill%3D%22none%22%20stroke%3D%22%23ffffff%22%20stroke-opacity%3D%220.88%22%20stroke-width%3D%228%22%20stroke-linecap%3D%22round%22%20filter%3D%22url%28%23softGlow%29%22/%3E%0A%3Cpath%20d%3D%22M0%2C64%20C150%2C18%20450%2C18%20600%2C64%20C750%2C110%201050%2C110%201200%2C64%20C1350%2C18%201650%2C18%201800%2C64%20C1950%2C110%202250%2C110%202400%2C64%22%20fill%3D%22none%22%20stroke%3D%22%23bcefff%22%20stroke-opacity%3D%220.45%22%20stroke-width%3D%224%22%20stroke-linecap%3D%22round%22/%3E%0A%3C/svg%3E");
+            animation: waveMove 22s linear infinite;
+        }
+        .wave2 {
+            bottom: -18px;
+            opacity: .82;
+            background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%202400%20150%22%20preserveAspectRatio%3D%22none%22%3E%0A%3Cdefs%3E%0A%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%0A%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23c9f1ff%22%20stop-opacity%3D%220.56%22/%3E%0A%3Cstop%20offset%3D%2255%25%22%20stop-color%3D%22%235fbde2%22%20stop-opacity%3D%220.30%22/%3E%0A%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23147ea8%22%20stop-opacity%3D%220.06%22/%3E%0A%3C/linearGradient%3E%0A%3Cfilter%20id%3D%22softGlow%22%20x%3D%22-10%25%22%20y%3D%22-30%25%22%20width%3D%22120%25%22%20height%3D%22160%25%22%3E%0A%3CfeGaussianBlur%20stdDeviation%3D%222.2%22%20result%3D%22blur%22/%3E%0A%3CfeMerge%3E%3CfeMergeNode%20in%3D%22blur%22/%3E%3CfeMergeNode%20in%3D%22SourceGraphic%22/%3E%3C/feMerge%3E%0A%3C/filter%3E%0A%3C/defs%3E%0A%3Cpath%20fill%3D%22url%28%23g%29%22%20d%3D%22M0%2C82%20C150%2C38%20450%2C38%20600%2C82%20C750%2C126%201050%2C126%201200%2C82%20C1350%2C38%201650%2C38%201800%2C82%20C1950%2C126%202250%2C126%202400%2C82%20L2400%2C150%20L0%2C150%20Z%22/%3E%0A%3Cpath%20d%3D%22M0%2C82%20C150%2C38%20450%2C38%20600%2C82%20C750%2C126%201050%2C126%201200%2C82%20C1350%2C38%201650%2C38%201800%2C82%20C1950%2C126%202250%2C126%202400%2C82%22%20fill%3D%22none%22%20stroke%3D%22%23f2fdff%22%20stroke-opacity%3D%220.42%22%20stroke-width%3D%225%22%20stroke-linecap%3D%22round%22%20filter%3D%22url%28%23softGlow%29%22/%3E%0A%3Cpath%20d%3D%22M0%2C82%20C150%2C38%20450%2C38%20600%2C82%20C750%2C126%201050%2C126%201200%2C82%20C1350%2C38%201650%2C38%201800%2C82%20C1950%2C126%202250%2C126%202400%2C82%22%20fill%3D%22none%22%20stroke%3D%22%238bdcf5%22%20stroke-opacity%3D%220.22%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22/%3E%0A%3C/svg%3E");
+            animation: waveMove 30s linear infinite reverse;
+        }
+        .wave3 {
+            bottom: -26px;
+            opacity: .72;
+            background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%202400%20150%22%20preserveAspectRatio%3D%22none%22%3E%0A%3Cdefs%3E%0A%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%0A%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%237fd2ee%22%20stop-opacity%3D%220.42%22/%3E%0A%3Cstop%20offset%3D%2255%25%22%20stop-color%3D%22%232f9bc9%22%20stop-opacity%3D%220.24%22/%3E%0A%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23075f86%22%20stop-opacity%3D%220.05%22/%3E%0A%3C/linearGradient%3E%0A%3Cfilter%20id%3D%22softGlow%22%20x%3D%22-10%25%22%20y%3D%22-30%25%22%20width%3D%22120%25%22%20height%3D%22160%25%22%3E%0A%3CfeGaussianBlur%20stdDeviation%3D%222.2%22%20result%3D%22blur%22/%3E%0A%3CfeMerge%3E%3CfeMergeNode%20in%3D%22blur%22/%3E%3CfeMergeNode%20in%3D%22SourceGraphic%22/%3E%3C/feMerge%3E%0A%3C/filter%3E%0A%3C/defs%3E%0A%3Cpath%20fill%3D%22url%28%23g%29%22%20d%3D%22M0%2C96%20C150%2C56%20450%2C56%20600%2C96%20C750%2C136%201050%2C136%201200%2C96%20C1350%2C56%201650%2C56%201800%2C96%20C1950%2C136%202250%2C136%202400%2C96%20L2400%2C150%20L0%2C150%20Z%22/%3E%0A%3Cpath%20d%3D%22M0%2C96%20C150%2C56%20450%2C56%20600%2C96%20C750%2C136%201050%2C136%201200%2C96%20C1350%2C56%201650%2C56%201800%2C96%20C1950%2C136%202250%2C136%202400%2C96%22%20fill%3D%22none%22%20stroke%3D%22%23e8fbff%22%20stroke-opacity%3D%220.26%22%20stroke-width%3D%224%22%20stroke-linecap%3D%22round%22%20filter%3D%22url%28%23softGlow%29%22/%3E%0A%3Cpath%20d%3D%22M0%2C96%20C150%2C56%20450%2C56%20600%2C96%20C750%2C136%201050%2C136%201200%2C96%20C1350%2C56%201650%2C56%201800%2C96%20C1950%2C136%202250%2C136%202400%2C96%22%20fill%3D%22none%22%20stroke%3D%22%236ed0ee%22%20stroke-opacity%3D%220.13%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22/%3E%0A%3C/svg%3E");
+            animation: waveMove 40s linear infinite;
+        }
+        @keyframes waveMove {
+            0% { background-position-x: 0; }
+            100% { background-position-x: 2400px; }
+        }
+
+        
+
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 1.5rem 2rem 3rem;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            background: rgba(255, 248, 225, 0.55);
+            backdrop-filter: blur(8px);
+            border-radius: 60px;
+            padding: 0.5rem 2rem;
+            border: 1px solid rgba(255, 245, 200, 0.8);
+        }
+        .logo-area span {
+            font-weight: 500;
+            color: #2b5a3b;
+        }
+        .nav-links {
+            display: flex;
+            gap: 1.2rem;
+            flex-wrap: wrap;
+        }
+        .nav-links a {
+            text-decoration: none;
+            font-weight: 500;
+            color: #2a6b4a;
+            padding: 0.4rem 1.2rem;
+            border-radius: 40px;
+            background: rgba(255, 250, 220, 0.7);
+            transition: 0.2s;
+            backdrop-filter: blur(2px);
+        }
+        .nav-links a:hover {
+            background: #fff1cc;
+            transform: translateY(-2px);
+        }
+        .hero-logo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 2rem auto 1rem;
+            position: relative;
+        }
+        .logo-wrapper {
+            position: relative;
+            width: 70%;
+            max-width: 700px;
+            min-width: 260px;
+            border-radius: 48px;
+            background: rgba(255, 250, 235, 0.3);
+            backdrop-filter: blur(4px);
+            padding: 0.8rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+        }
+        .logo-wrapper img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 40px;
+        }
+        .glow-ring {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            border-radius: 48px;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 0 0 rgba(200, 225, 245, 0.6);
+            animation: pulseGlow 2.4s ease-out infinite;
+        }
+        @keyframes pulseGlow {
+            0% {
+                box-shadow: 0 0 0 0 rgba(150, 200, 230, 0.5);
+                width: 100%;
+                height: 100%;
+                opacity: 0.7;
+            }
+            70% {
+                box-shadow: 0 0 0 25px rgba(150, 200, 230, 0);
+                width: 105%;
+                height: 108%;
+                opacity: 0;
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(150, 200, 230, 0);
+                width: 100%;
+                height: 100%;
+                opacity: 0;
+            }
+        }
+        .quote {
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 400;
+            color: #3a6b4a;
+            background: rgba(255, 248, 215, 0.7);
+            backdrop-filter: blur(4px);
+            display: inline-block;
+            width: auto;
+            margin: 1rem auto 2rem;
+            padding: 0.5rem 1.8rem;
+            border-radius: 60px;
+            letter-spacing: 1px;
+        }
+        .characters-title {
+            text-align: center;
+            font-size: 1.8rem;
+            margin: 2rem 0 1rem;
+            color: #3b6e4a;
+            font-weight: 400;
+        }
+        .characters-grid {
+            overflow: visible;
+            z-index: 20;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+            position: relative;
+        }
+        /* 每个卡片容器相对定位，用于悬浮预览定位 */
+        .character-card {
+            position: relative;
+            width: 130px;
+            text-align: center;
+            transition: transform 0.2s ease;
+            cursor: pointer;
+        }
+        .character-card:hover {
+            transform: scale(1.02);
+            z-index: 99998;
+        }
+        .char-avatar {
+            width: 110px;
+            height: 110px;
+            margin: 0 auto;
+            border-radius: 50%;
+            background: rgba(250, 235, 200, 0.6);
+            backdrop-filter: blur(3px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border: 2px solid #fff0c0;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+        }
+        .character-card:hover .char-avatar {
+            border-color: #ffdca8;
+            box-shadow: 0 12px 20px rgba(60, 80, 45, 0.2);
+        }
+        .char-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .char-avatar img[data-fallbacks] {
+            object-fit: contain;
+            padding: 6px;
+        }
+      /* 角色卡片链接：取消浏览器默认蓝紫色和下划线 */
+.character-card,
+.character-card:link,
+.character-card:visited,
+.character-card:hover,
+.character-card:active {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* 角色名字统一样式 */
+.char-name {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 58px;
+    margin-top: 0.65rem;
+    padding: 0.18rem 0.72rem;
+
+    font-size: 1.08rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    line-height: 1.35;
+
+    color: #3f725d;
+    background: linear-gradient(
+        135deg,
+        rgba(255, 250, 225, 0.82),
+        rgba(226, 246, 235, 0.62)
+    );
+
+    border: 1px solid rgba(255, 244, 191, 0.88);
+    border-radius: 999px;
+
+    box-shadow:
+        0 4px 10px rgba(76, 112, 91, 0.10),
+        inset 0 1px 0 rgba(255, 255, 255, 0.75);
+
+    text-decoration: none;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.65);
+    transition: all 0.22s ease;
+}
+
+/* 悬浮时：轻轻浮起来，不要下划线 */
+.character-card:hover .char-name {
+    color: #2f6652;
+    background: linear-gradient(
+        135deg,
+        rgba(255, 248, 216, 0.95),
+        rgba(217, 244, 232, 0.82)
+    );
+
+    transform: translateY(-3px);
+    box-shadow:
+        0 7px 16px rgba(76, 112, 91, 0.16),
+        inset 0 1px 0 rgba(255, 255, 255, 0.85);
+
+    text-decoration: none;
+}
+        .char-emotion {
+            font-size: 0.7rem;
+            color: #4f775a;
+            background: rgba(255,245,210,0.8);
+            display: inline-block;
+            padding: 0.2rem 0.7rem;
+            border-radius: 20px;
+            transition: transform 0.2s;
+            margin-top: 4px;
+        }
+        .character-card:hover .char-emotion {
+            transform: translateY(-2px);
+            background: rgba(255, 240, 180, 1);
+        }
+
+        /* 左侧悬浮预览框 - 相对于每个卡片定位 */
+        .preview-on-hover {
+            position: absolute;
+            right: 100%;          /* 贴在卡片左侧 */
+            top: 50%;
+            transform: translateY(-50%);
+            margin-right: 20px;   /* 与卡片间距 */
+            width: 220px;
+            background: rgba(250, 245, 225, 0.92);
+            backdrop-filter: blur(16px);
+            border-radius: 28px;
+            padding: 14px 12px;
+            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 245, 200, 0.6);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.25s ease, visibility 0.25s, transform 0.25s ease;
+            pointer-events: none;
+            z-index: 99999;
+            text-align: center;
+            white-space: nowrap;
+        }
+        /* 悬浮时显示 */
+        .character-card:hover .preview-on-hover {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(-50%) translateX(0);
+        }
+        /* 小屏幕时预览框缩小或调整位置避免溢出 */
+        @media (max-width: 1000px) {
+            .preview-on-hover {
+                width: 180px;
+                padding: 10px 8px;
+                margin-right: 12px;
+            }
+        }
+        @media (max-width: 800px) {
+            .preview-on-hover {
+                width: 160px;
+                margin-right: 8px;
+            }
+        }
+        @media (max-width: 720px) {
+            /* 手机端预览框暂隐藏，避免遮挡 */
+            .preview-on-hover {
+                display: none;
+            }
+        }
+        .preview-img {
+            width: 100%;
+            border-radius: 20px;
+            display: block;
+            background: rgba(210, 190, 150, 0.2);
+            margin-bottom: 8px;
+            filter: drop-shadow(0 6px 12px rgba(0,0,0,0.1));
+        }
+        .preview-name {
+            font-size: 0.9rem;
+            font-weight: 500;
+            background: rgba(255, 250, 210, 0.6);
+            display: inline-block;
+            padding: 0.2rem 0.8rem;
+            border-radius: 40px;
+            letter-spacing: 0.5px;
+        }
+     /* 角色代表色定义 */
+/* 角色代表色定义 */
+.preview-name.kala {
+    color: #e8872f;
+    border-left: 3px solid #e8872f;
+    background: rgba(232, 135, 47, 0.14);
+}
+
+.preview-name.cituan {
+    color: #8b5fc7;
+    border-left: 3px solid #8b5fc7;
+    background: rgba(139, 95, 199, 0.14);
+}
+
+.preview-name.ruanruan {
+    color: #e8a2b0;
+    border-left: 3px solid #e8a2b0;
+    background: rgba(232, 162, 176, 0.1);
+}
+
+.preview-name.meimei {
+    color: #e8646a;
+    border-left: 3px solid #e8646a;
+    background: rgba(232, 100, 106, 0.1);
+}
+
+.preview-name.amo {
+    color: #7f8790;
+    border-left: 3px solid #7f8790;
+    background: rgba(127, 135, 144, 0.14);
+}
+
+.preview-name.ayin {
+    color: #4fc3f7;
+    border-left: 3px solid #4fc3f7;
+    background: rgba(79, 195, 247, 0.1);
+}
+
+
+
+        /* 首页角色滑轮 UX/UI：电脑端六角色选择入口 */
+        .role-wheel-stage {
+            --role-main: #62c8ff;
+            --role-soft: #dff6ff;
+            --role-deep: #2b789c;
+            --role-glow: rgba(98, 200, 255, 0.42);
+            position: relative;
+            z-index: 8;
+            max-width: 1180px;
+            min-height: 720px;
+            margin: 3.2rem auto 3rem;
+            padding: 1.25rem;
+            border-radius: 46px;
+            overflow: hidden;
+            overscroll-behavior: contain;
+            touch-action: none;
+            cursor: grab;
+            background:
+                radial-gradient(circle at 50% 48%, var(--role-glow), transparent 26%),
+                radial-gradient(circle at 18% 22%, rgba(255, 230, 241, 0.78), transparent 24%),
+                radial-gradient(circle at 82% 20%, rgba(197, 239, 255, 0.78), transparent 27%),
+                linear-gradient(135deg, rgba(255, 252, 230, 0.78), rgba(221, 246, 255, 0.68) 44%, rgba(255, 239, 247, 0.62));
+            border: 1px solid rgba(255, 255, 255, 0.74);
+            box-shadow:
+                0 28px 70px rgba(77, 115, 133, 0.18),
+                inset 0 1px 0 rgba(255, 255, 255, 0.86),
+                inset 0 0 0 1px rgba(255, 249, 225, 0.56);
+            transition: background 0.55s ease, box-shadow 0.55s ease;
+            isolation: isolate;
+        }
+        .role-wheel-stage.is-dragging { cursor: grabbing; }
+        .role-wheel-stage::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(115deg, transparent 0 29%, rgba(255,255,255,.26) 37%, transparent 47% 100%),
+                repeating-linear-gradient(90deg, transparent 0 48px, rgba(255,255,255,.12) 49px 50px, transparent 51px 96px);
+            opacity: .68;
+            pointer-events: none;
+            mix-blend-mode: screen;
+        }
+        .role-wheel-stage::after {
+            content: "";
+            position: absolute;
+            inset: 1.1rem;
+            border-radius: 36px;
+            border: 1px solid rgba(255,255,255,.48);
+            box-shadow: inset 0 0 28px rgba(255,255,255,.28);
+            pointer-events: none;
+        }
+        .wheel-topline,
+        .wheel-layout,
+        .role-node-row {
+            position: relative;
+            z-index: 2;
+        }
+        .wheel-topline {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            padding: .35rem .55rem 1rem;
+            color: rgba(47, 105, 91, 0.74);
+            font-size: .82rem;
+            letter-spacing: .1em;
+        }
+        .wheel-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: .45rem;
+            padding: .34rem .82rem;
+            border-radius: 999px;
+            color: var(--role-deep);
+            background: rgba(255, 255, 245, .58);
+            border: 1px solid rgba(255, 255, 255, .72);
+            box-shadow: 0 8px 20px rgba(59, 111, 119, .08);
+            font-weight: 700;
+        }
+        .wheel-tip { opacity: .8; }
+        .wheel-layout {
+            display: grid;
+            grid-template-columns: 300px minmax(420px, 1fr) 270px;
+            gap: 1.25rem;
+            align-items: center;
+            min-height: 590px;
+        }
+        .wheel-copy,
+        .role-data-card {
+            position: relative;
+            border-radius: 34px;
+            padding: 1.3rem;
+            background: rgba(255, 255, 244, 0.72);
+            border: 1px solid rgba(255,255,255,.76);
+            box-shadow:
+                0 16px 34px rgba(68, 118, 134, .12),
+                inset 0 1px 0 rgba(255,255,255,.82);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+        }
+        .wheel-copy { z-index: 28; }
+        .role-data-card { z-index: 26; }
+        .wheel-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: .45rem;
+            margin-bottom: .7rem;
+            padding: .26rem .78rem;
+            border-radius: 999px;
+            background: color-mix(in srgb, var(--role-main) 16%, white 84%);
+            color: var(--role-deep);
+            border: 1px solid rgba(255,255,255,.62);
+            font-size: .78rem;
+            font-weight: 700;
+            letter-spacing: .08em;
+        }
+        .wheel-copy h2 {
+            margin: 0;
+            color: #2f6d58;
+            font-size: clamp(1.38rem, 1.75vw, 1.68rem);
+            line-height: 1.08;
+            letter-spacing: .04em;
+            font-weight: 800;
+            text-shadow: 0 2px 0 rgba(255,255,255,.68);
+            white-space: normal;
+            display: flex;
+            align-items: flex-start;
+            flex-direction: column;
+            gap: .36rem;
+            max-width: 100%;
+        }
+        .wheel-copy .en-title {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: fit-content;
+            max-width: 100%;
+            margin-top: 0;
+            margin-left: 0;
+            padding: .2rem .58rem;
+            border-radius: 999px;
+            color: var(--role-deep);
+            background: color-mix(in srgb, var(--role-main) 16%, white 84%);
+            border: 1px solid rgba(255,255,255,.68);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,.62), 0 6px 14px rgba(62, 110, 128, .08);
+            font-size: .58rem;
+            line-height: 1.05;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            opacity: .82;
+            vertical-align: middle;
+            white-space: nowrap;
+        }
+        .wheel-copy p {
+            margin: 1.05rem 0 1.1rem;
+            color: rgba(48, 82, 68, .78);
+            line-height: 1.78;
+            font-size: .94rem;
+        }
+        .role-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .5rem;
+            margin-bottom: 1.05rem;
+        }
+        .role-tags span {
+            padding: .32rem .7rem;
+            border-radius: 999px;
+            background: rgba(255,255,255,.54);
+            color: var(--role-deep);
+            font-size: .76rem;
+            font-weight: 700;
+            border: 1px solid rgba(255,255,255,.62);
+        }
+        .portal-enter-btn {
+            position: relative;
+            z-index: 35;
+            width: 100%;
+            border: none;
+            border-radius: 999px;
+            padding: .82rem 1.1rem;
+            color: #fffdf2;
+            font-weight: 800;
+            letter-spacing: .08em;
+            background: linear-gradient(135deg, var(--role-deep), var(--role-main));
+            box-shadow: 0 13px 28px var(--role-glow);
+            cursor: pointer;
+            transition: transform .22s ease, box-shadow .22s ease, filter .22s ease;
+        }
+        .portal-enter-btn:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.04);
+            box-shadow: 0 18px 34px var(--role-glow);
+        }
+        .wheel-viewport {
+            position: relative;
+            min-height: 560px;
+            perspective: 1100px;
+            overflow: visible;
+        }
+        .orbit-field {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: min(520px, 92%);
+            aspect-ratio: 1;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            background:
+                radial-gradient(circle at 50% 50%, rgba(255,255,255,.45), transparent 45%),
+                radial-gradient(circle at 50% 50%, var(--role-glow), transparent 64%);
+            filter: drop-shadow(0 0 26px var(--role-glow));
+            pointer-events: none;
+        }
+        .orbit-ring {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            border: 1px solid rgba(255,255,255,.68);
+        }
+        .orbit-ring.r1 {
+            inset: 5%;
+            border-style: dashed;
+            border-color: color-mix(in srgb, var(--role-main) 52%, white 48%);
+            animation: orbitSpin 28s linear infinite;
+        }
+        .orbit-ring.r2 {
+            inset: 13%;
+            border-color: rgba(255,255,255,.5);
+            box-shadow: inset 0 0 24px rgba(255,255,255,.28);
+            animation: orbitSpinReverse 18s linear infinite;
+        }
+        .orbit-ring.r3 {
+            inset: 27%;
+            border-style: dotted;
+            border-color: color-mix(in srgb, var(--role-main) 42%, white 58%);
+            animation: orbitPulse 2.8s ease-in-out infinite alternate;
+        }
+        .orbit-node {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #fffdf2;
+            box-shadow: 0 0 14px 4px var(--role-glow);
+        }
+        .orbit-node.n1 { left: 15%; top: 19%; }
+        .orbit-node.n2 { right: 13%; top: 42%; width: 7px; height: 7px; }
+        .orbit-node.n3 { left: 22%; bottom: 18%; width: 8px; height: 8px; }
+        @keyframes orbitSpin { to { transform: rotate(360deg); } }
+        @keyframes orbitSpinReverse { to { transform: rotate(-360deg); } }
+        @keyframes orbitPulse { from { opacity:.55; transform: scale(.96); } to { opacity:1; transform: scale(1.02); } }
+        .role-slide {
+            position: absolute;
+            left: 50%;
+            top: 52%;
+            width: 360px;
+            height: 520px;
+            transform: translate(-50%, -50%);
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            transition: transform .58s cubic-bezier(.2,.82,.18,1), opacity .48s ease, filter .48s ease;
+            will-change: transform, opacity, filter;
+            pointer-events: none;
+            --slide-main: var(--role-main);
+            --slide-soft: var(--role-soft);
+            --slide-deep: var(--role-deep);
+            --slide-glow: var(--role-glow);
+        }
+        .role-slide.active {
+            pointer-events: auto;
+        }
+        .role-slide::before {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 33.5%;
+            width: 198px;
+            height: 198px;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            background:
+                radial-gradient(circle, color-mix(in srgb, var(--slide-main) 22%, white 78%) 0 34%, color-mix(in srgb, var(--slide-soft) 70%, transparent 30%) 35%, rgba(255,255,255,.20) 58%, transparent 76%),
+                radial-gradient(circle, color-mix(in srgb, var(--slide-main) 30%, transparent 70%) 0 58%, transparent 78%);
+            border: 1px solid color-mix(in srgb, var(--slide-main) 28%, white 72%);
+            box-shadow: 0 16px 32px rgba(71, 108, 125, .12), 0 0 22px var(--slide-glow), inset 0 0 20px rgba(255,255,255,.30);
+            z-index: 1;
+        }
+        .role-slide.active::before {
+            animation: activePortalBreath 2.2s ease-in-out infinite alternate;
+        }
+        @keyframes activePortalBreath {
+            from { transform: translate(-50%, -50%) scale(.98); filter: brightness(.98); }
+            to { transform: translate(-50%, -50%) scale(1.04); filter: brightness(1.08); }
+        }
+        .role-slide img {
+            position: relative;
+            z-index: 2;
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            pointer-events: none;
+            user-select: none;
+            -webkit-user-drag: none;
+            filter: drop-shadow(0 22px 26px rgba(45, 73, 88, .22));
+        }
+        .role-slide.active img {
+            filter: drop-shadow(0 25px 30px rgba(45, 73, 88, .22)) drop-shadow(0 0 18px var(--slide-glow));
+        }
+        .role-slide.enter-bounce {
+            animation: portalPress .48s cubic-bezier(.25, .95, .28, 1.35) both;
+        }
+        @keyframes portalPress {
+            0% { transform: translate(-50%, -50%) scale(1); }
+            38% { transform: translate(-50%, -50%) scale(.88); }
+            100% { transform: translate(-50%, -50%) scale(1.12); }
+        }
+        .wheel-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            border: 1px solid rgba(255,255,255,.75);
+            color: var(--role-deep);
+            background: rgba(255,255,245,.56);
+            box-shadow: 0 10px 24px rgba(70, 114, 126, .12);
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+            font-size: 1.3rem;
+            font-weight: 900;
+            z-index: 10;
+            transition: transform .22s ease, background .22s ease;
+        }
+        .wheel-arrow:hover {
+            transform: translateY(-50%) scale(1.08);
+            background: rgba(255,255,255,.76);
+        }
+        .wheel-arrow.prev { left: 4px; }
+        .wheel-arrow.next { right: 4px; }
+        .role-data-card { min-height: 390px; }
+        .role-count {
+            display: inline-flex;
+            align-items: center;
+            gap: .35rem;
+            padding: .3rem .72rem;
+            border-radius: 999px;
+            color: var(--role-deep);
+            background: rgba(255,255,255,.48);
+            border: 1px solid rgba(255,255,255,.66);
+            font-size: .78rem;
+            font-weight: 800;
+            letter-spacing: .08em;
+        }
+        .role-data-card h3 {
+            margin: .8rem 0 .2rem;
+            font-size: 2.4rem;
+            color: var(--role-deep);
+            line-height: 1;
+            letter-spacing: .12em;
+            text-shadow: 0 2px 0 rgba(255,255,255,.64);
+        }
+        .role-data-card .role-en {
+            color: rgba(62, 85, 82, .55);
+            font-size: .86rem;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            font-weight: 800;
+        }
+        .role-emotion-line {
+            margin: 1rem 0 .8rem;
+            display: inline-flex;
+            padding: .42rem .78rem;
+            border-radius: 999px;
+            color: #fffdf2;
+            background: linear-gradient(135deg, var(--role-deep), var(--role-main));
+            font-size: .84rem;
+            font-weight: 800;
+            letter-spacing: .08em;
+        }
+        .role-quote {
+            margin: .9rem 0 1.1rem;
+            color: rgba(43, 73, 65, .78);
+            line-height: 1.72;
+            font-size: .95rem;
+        }
+        .role-detail-chip {
+            position: relative;
+            margin-top: .72rem;
+            padding: .72rem .78rem .72rem 3.2rem;
+            border-radius: 22px;
+            color: rgba(45, 76, 69, .76);
+            background: rgba(255,255,255,.44);
+            border: 1px solid rgba(255,255,255,.56);
+            font-size: .8rem;
+            line-height: 1.45;
+        }
+        .role-detail-chip img {
+            position: absolute;
+            left: .72rem;
+            top: 50%;
+            width: 34px;
+            height: 34px;
+            transform: translateY(-50%);
+            border-radius: 50%;
+            object-fit: cover;
+            background: rgba(255,255,255,.55);
+            border: 1px solid rgba(255,255,255,.7);
+        }
+        .role-node-row {
+            display: flex;
+            justify-content: center;
+            gap: .7rem;
+            margin-top: -1.35rem;
+            padding-bottom: .4rem;
+        }
+        .role-node {
+            display: inline-flex;
+            align-items: center;
+            gap: .45rem;
+            border: 1px solid rgba(255,255,255,.62);
+            border-radius: 999px;
+            background: rgba(255,255,245,.48);
+            padding: .38rem .72rem .38rem .38rem;
+            cursor: pointer;
+            color: rgba(55, 92, 80, .72);
+            font-size: .78rem;
+            font-weight: 800;
+            letter-spacing: .04em;
+            transition: transform .22s ease, background .22s ease, color .22s ease, box-shadow .22s ease;
+        }
+        .role-node img {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            object-fit: cover;
+            pointer-events: none;
+        }
+        .role-node.active {
+            color: var(--role-deep);
+            background: rgba(255,255,255,.74);
+            box-shadow: 0 10px 24px var(--role-glow);
+            transform: translateY(-4px);
+        }
+        .role-progress {
+            position: absolute;
+            left: 50%;
+            bottom: 18px;
+            width: min(520px, 52vw);
+            height: 4px;
+            transform: translateX(-50%);
+            border-radius: 999px;
+            background: rgba(255,255,255,.46);
+            overflow: hidden;
+            z-index: 2;
+        }
+        .role-progress span {
+            display: block;
+            height: 100%;
+            width: calc((var(--active-index, 0) + 1) / 6 * 100%);
+            background: linear-gradient(90deg, var(--role-deep), var(--role-main));
+            border-radius: inherit;
+            box-shadow: 0 0 18px var(--role-glow);
+            transition: width .42s ease;
+        }
+        .portal-transition {
+            position: fixed;
+            inset: 0;
+            z-index: 999999;
+            pointer-events: none;
+            --portal-x: 50%;
+            --portal-y: 50%;
+            --portal-main: #62c8ff;
+            clip-path: circle(0 at var(--portal-x) var(--portal-y));
+            background:
+                radial-gradient(circle at var(--portal-x) var(--portal-y), rgba(255,255,255,.96) 0 6%, var(--portal-main) 24%, rgba(255,255,255,.92) 44%, rgba(225, 248, 255, .98) 72%, rgba(255, 246, 232, 1) 100%);
+            transition: clip-path .86s cubic-bezier(.18,.82,.2,1);
+        }
+        .portal-transition.active {
+            clip-path: circle(150vmax at var(--portal-x) var(--portal-y));
+        }
+        .portal-transition::before,
+        .portal-transition::after {
+            content: "";
+            position: absolute;
+            left: var(--portal-x);
+            top: var(--portal-y);
+            width: 44vmin;
+            height: 44vmin;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            border: 1px solid rgba(255,255,255,.8);
+            box-shadow: 0 0 45px rgba(255,255,255,.75), inset 0 0 38px rgba(255,255,255,.5);
+            animation: portalRingExpand .9s ease-out both;
+        }
+        .portal-transition::after {
+            width: 28vmin;
+            height: 28vmin;
+            animation-delay: .06s;
+        }
+        @keyframes portalRingExpand {
+            from { opacity: 1; transform: translate(-50%, -50%) scale(.35) rotate(0deg); }
+            to { opacity: 0; transform: translate(-50%, -50%) scale(4.2) rotate(180deg); }
+        }
+        @media (max-width: 1080px) {
+            .role-wheel-stage { min-width: 980px; }
+        }
+
+        /* 雨后菌林入口：主页支线入口 */
+        .rainforest-section {
+            margin: 2.8rem auto 2.7rem;
+            position: relative;
+            z-index: 4;
+        }
+        .rainforest-card {
+            position: relative;
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 260px;
+            gap: 1.5rem;
+            align-items: center;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 1.45rem 1.7rem;
+            border-radius: 34px;
+            border: 1px solid rgba(226, 255, 238, 0.88);
+            background:
+                radial-gradient(circle at 14% 20%, rgba(255, 213, 226, 0.42), transparent 26%),
+                radial-gradient(circle at 83% 25%, rgba(170, 232, 247, 0.55), transparent 28%),
+                linear-gradient(135deg, rgba(245, 255, 232, 0.75), rgba(210, 242, 225, 0.66) 45%, rgba(197, 231, 239, 0.62));
+            backdrop-filter: blur(12px);
+            box-shadow:
+                0 18px 36px rgba(70, 111, 91, 0.14),
+                inset 0 1px 0 rgba(255, 255, 255, 0.72);
+        }
+        .rainforest-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(110deg, transparent 0 28%, rgba(255,255,255,.22) 38%, transparent 50% 100%),
+                repeating-linear-gradient(92deg, transparent 0 34px, rgba(255,255,255,.16) 35px 36px, transparent 38px 68px);
+            opacity: .55;
+            pointer-events: none;
+        }
+        .rainforest-card::after {
+            content: "";
+            position: absolute;
+            left: -8%;
+            right: -8%;
+            bottom: -45%;
+            height: 65%;
+            border-radius: 50%;
+            background: radial-gradient(ellipse at center, rgba(86, 156, 112, .22), transparent 72%);
+            pointer-events: none;
+        }
+        .rainforest-info,
+        .rainforest-visual {
+            position: relative;
+            z-index: 2;
+        }
+        .rainforest-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: .45rem;
+            margin-bottom: .55rem;
+            padding: .22rem .75rem;
+            border-radius: 999px;
+            font-size: .78rem;
+            letter-spacing: .12em;
+            color: #3c8064;
+            background: rgba(255, 252, 230, .7);
+            border: 1px solid rgba(255, 244, 191, .86);
+        }
+        .rainforest-info h2 {
+            margin: 0 0 .55rem;
+            font-size: clamp(1.45rem, 3vw, 2rem);
+            letter-spacing: .08em;
+            color: #2f6e58;
+            font-weight: 700;
+        }
+        .rainforest-info p {
+            max-width: 610px;
+            color: rgba(44, 82, 64, .82);
+            line-height: 1.78;
+            font-size: .95rem;
+            margin: 0 0 1rem;
+        }
+        .rainforest-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .75rem;
+            align-items: center;
+        }
+        .rainforest-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: .45rem;
+            padding: .72rem 1.35rem;
+            border-radius: 999px;
+            color: #fffaf0;
+            background: linear-gradient(135deg, #4e9473, #6ab3a1);
+            border: 1px solid rgba(255, 250, 220, .9);
+            text-decoration: none;
+            font-weight: 700;
+            letter-spacing: .05em;
+            box-shadow: 0 10px 20px rgba(55, 112, 89, .18);
+            transition: all .22s ease;
+        }
+        .rainforest-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 28px rgba(55, 112, 89, .24);
+            background: linear-gradient(135deg, #5aa180, #7bc3b2);
+        }
+        .rainforest-note {
+            font-size: .78rem;
+            color: rgba(60, 106, 83, .72);
+        }
+        .rainforest-visual {
+            min-height: 150px;
+            border-radius: 28px;
+            background:
+                radial-gradient(circle at 23% 72%, rgba(129, 255, 211, .95) 0 10px, transparent 12px),
+                radial-gradient(circle at 31% 67%, rgba(255, 223, 238, .92) 0 13px, transparent 15px),
+                radial-gradient(circle at 70% 60%, rgba(255, 242, 165, .9) 0 11px, transparent 13px),
+                radial-gradient(circle at 78% 55%, rgba(180, 230, 255, .95) 0 8px, transparent 10px),
+                linear-gradient(180deg, rgba(118, 183, 163, .38), rgba(55, 108, 82, .42));
+            border: 1px solid rgba(255, 255, 255, .45);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,.55), 0 12px 24px rgba(57, 105, 85, .12);
+        }
+        .rainforest-visual .umbrella {
+            position: absolute;
+            right: 28px;
+            top: 24px;
+            width: 94px;
+            height: 42px;
+            border-radius: 90px 90px 18px 18px;
+            background: linear-gradient(135deg, rgba(255, 166, 190, .92), rgba(255, 231, 237, .86));
+            border: 1px solid rgba(255, 255, 255, .75);
+            box-shadow: 0 9px 18px rgba(209, 105, 133, .18);
+        }
+        .rainforest-visual .umbrella::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 38px;
+            width: 2px;
+            height: 68px;
+            background: rgba(102, 123, 93, .48);
+        }
+        .rainforest-visual .mushroom-dot {
+            position: absolute;
+            width: 32px;
+            height: 20px;
+            border-radius: 50% 50% 38% 38%;
+            background: linear-gradient(180deg, rgba(255, 246, 211, .95), rgba(255, 177, 203, .9));
+            filter: drop-shadow(0 0 10px rgba(255, 198, 221, .65));
+            animation: mushroomGlow 2.4s ease-in-out infinite alternate;
+        }
+        .rainforest-visual .mushroom-dot::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 15px;
+            width: 9px;
+            height: 18px;
+            border-radius: 999px;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 241, .9);
+        }
+        .rainforest-visual .d1 { left: 32px; bottom: 38px; }
+        .rainforest-visual .d2 { left: 82px; bottom: 58px; transform: scale(.72); animation-delay: .4s; background: linear-gradient(180deg, rgba(210, 250, 255, .96), rgba(106, 213, 207, .82)); }
+        .rainforest-visual .d3 { right: 72px; bottom: 32px; transform: scale(.86); animation-delay: .9s; background: linear-gradient(180deg, rgba(255, 245, 190, .96), rgba(245, 175, 89, .82)); }
+        @keyframes mushroomGlow {
+            from { filter: drop-shadow(0 0 7px rgba(255, 198, 221, .42)); transform: translateY(0) scale(1); }
+            to { filter: drop-shadow(0 0 16px rgba(177, 255, 226, .9)); transform: translateY(-3px) scale(1.04); }
+        }
+
+        .products-section {
+            position: relative;
+            z-index: 1;
+            margin: 3rem 0 2rem;
+            text-align: center;
+        }
+        .products-title {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+        }
+        .market-btn {
+            display: inline-block;
+            background: rgba(90, 120, 80, 0.75);
+            backdrop-filter: blur(8px);
+            padding: 0.8rem 2rem;
+            border-radius: 60px;
+            color: #fffae6;
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: 500;
+            border: 1px solid #fff0bc;
+            transition: all 0.2s;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.1);
+            cursor: pointer;
+        }
+        .market-btn:hover {
+            background: #5e8c6a;
+            transform: translateY(-3px);
+            box-shadow: 0 12px 20px rgba(0,0,0,0.15);
+        }
+        footer {
+            text-align: center;
+            font-size: 0.75rem;
+            padding: 2rem 0 1rem;
+            color: #4f6e55;
+        }
+        @media (max-width: 820px) {
+            .rainforest-card {
+                grid-template-columns: 1fr;
+                padding: 1.2rem;
+            }
+            .rainforest-visual {
+                min-height: 120px;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .container { padding: 1rem; }
+            .character-card { width: 100px; }
+            .char-avatar { width: 85px; height: 85px; }
+            .logo-wrapper { width: 85%; }
+        }
+
+        /* 森林支线双入口：雨后菌林 + 叶片裁缝 */
+        .forest-quests-section{margin:2.8rem auto 2.7rem;position:relative;z-index:4}.forest-quests-title{text-align:center;margin-bottom:1.05rem;color:#336f58;font-size:1.35rem;letter-spacing:.08em;font-weight:700}.forest-quests-grid{max-width:1040px;margin:0 auto;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.35rem}.forest-quest-card{position:relative;overflow:hidden;min-height:230px;padding:1.35rem 1.45rem;border-radius:34px;border:1px solid rgba(226,255,238,.88);background:radial-gradient(circle at 14% 20%,rgba(255,213,226,.42),transparent 26%),radial-gradient(circle at 83% 25%,rgba(170,232,247,.55),transparent 28%),linear-gradient(135deg,rgba(245,255,232,.75),rgba(210,242,225,.66) 45%,rgba(197,231,239,.62));backdrop-filter:blur(12px);box-shadow:0 18px 36px rgba(70,111,91,.14),inset 0 1px 0 rgba(255,255,255,.72)}.forest-quest-card:before{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 0 28%,rgba(255,255,255,.22) 38%,transparent 50% 100%),repeating-linear-gradient(92deg,transparent 0 34px,rgba(255,255,255,.16) 35px 36px,transparent 38px 68px);opacity:.55;pointer-events:none}.forest-quest-card>*{position:relative;z-index:2}.forest-quest-kicker{display:inline-flex;align-items:center;gap:.45rem;margin-bottom:.55rem;padding:.22rem .75rem;border-radius:999px;font-size:.78rem;letter-spacing:.12em;color:#3c8064;background:rgba(255,252,230,.7);border:1px solid rgba(255,244,191,.86)}.forest-quest-card h2{margin:0 0 .55rem;font-size:clamp(1.35rem,2.6vw,1.9rem);letter-spacing:.08em;color:#2f6e58;font-weight:700}.forest-quest-card p{color:rgba(44,82,64,.82);line-height:1.78;font-size:.93rem;margin:0 0 1rem}.forest-quest-actions{display:flex;flex-wrap:wrap;gap:.75rem;align-items:center}.forest-quest-btn{display:inline-flex;align-items:center;justify-content:center;gap:.45rem;padding:.72rem 1.25rem;border-radius:999px;color:#fffaf0;background:linear-gradient(135deg,#4e9473,#6ab3a1);border:1px solid rgba(255,250,220,.9);text-decoration:none;font-weight:700;letter-spacing:.05em;box-shadow:0 10px 20px rgba(55,112,89,.18);transition:all .22s ease}.forest-quest-btn:hover{transform:translateY(-3px);box-shadow:0 15px 28px rgba(55,112,89,.24);background:linear-gradient(135deg,#5aa180,#7bc3b2)}.forest-quest-note{font-size:.76rem;color:rgba(60,106,83,.72)}.forest-quest-visual{position:absolute;right:18px;bottom:16px;width:170px;height:108px;border-radius:28px;opacity:.9;pointer-events:none}.forest-quest-visual.mushroom{background:radial-gradient(circle at 23% 72%,rgba(129,255,211,.95) 0 10px,transparent 12px),radial-gradient(circle at 31% 67%,rgba(255,223,238,.92) 0 13px,transparent 15px),radial-gradient(circle at 70% 60%,rgba(255,242,165,.9) 0 11px,transparent 13px),linear-gradient(180deg,rgba(118,183,163,.38),rgba(55,108,82,.42));border:1px solid rgba(255,255,255,.45)}.forest-quest-visual.bee{background:radial-gradient(circle at 68% 32%,rgba(255,235,122,.96) 0 11px,transparent 12px),radial-gradient(circle at 72% 36%,rgba(67,58,40,.8) 0 5px,transparent 6px),radial-gradient(circle at 43% 42%,rgba(167,224,121,.96) 0 32px,transparent 34px),radial-gradient(circle at 52% 42%,rgba(255,255,255,.92) 0 22px,transparent 23px),linear-gradient(145deg,rgba(229,255,207,.7),rgba(255,247,186,.58));border:1px solid rgba(255,255,255,.55);box-shadow:inset 0 1px 0 rgba(255,255,255,.55),0 12px 24px rgba(57,105,85,.12)}.forest-quest-visual.bee:before{content:"";position:absolute;right:54px;top:35px;width:58px;height:42px;border-radius:8% 80% 8% 80%;background:linear-gradient(135deg,#b7e79a,#6fbc68);transform:rotate(-16deg);box-shadow:inset 0 0 14px rgba(255,255,255,.3)}.forest-quest-visual.bee:after{content:"";position:absolute;right:42px;top:43px;width:24px;height:18px;border-radius:999px;background:repeating-linear-gradient(90deg,#f2c758 0 7px,#4d3b30 7px 10px);box-shadow:0 -7px 0 rgba(255,255,255,.48);transform:rotate(-12deg)}@media(max-width:860px){.forest-quests-grid{grid-template-columns:1fr}.forest-quest-card{min-height:215px}}
+
+
+
+        /* ========= 主页项目总览：星滩项目地图 ========= */
+        .project-harbor-section{
+            position:relative;
+            z-index:4;
+            max-width:1120px;
+            margin:3.2rem auto 2.6rem;
+            padding:1.55rem;
+            border-radius:42px;
+            border:1px solid rgba(255,245,200,.82);
+            background:
+                radial-gradient(circle at 12% 16%,rgba(255,226,236,.58),transparent 25%),
+                radial-gradient(circle at 85% 20%,rgba(174,229,247,.62),transparent 28%),
+                linear-gradient(135deg,rgba(255,253,236,.72),rgba(223,244,236,.62) 50%,rgba(219,239,248,.58));
+            backdrop-filter:blur(16px);
+            box-shadow:0 24px 60px rgba(72,105,91,.16),inset 0 1px 0 rgba(255,255,255,.78);
+            overflow:hidden;
+        }
+        .project-harbor-section::before{
+            content:"";
+            position:absolute;
+            inset:0;
+            pointer-events:none;
+            background:
+                linear-gradient(110deg,transparent 0 24%,rgba(255,255,255,.26) 38%,transparent 54% 100%),
+                repeating-linear-gradient(92deg,transparent 0 42px,rgba(255,255,255,.14) 43px 44px,transparent 45px 82px);
+            opacity:.58;
+        }
+        .project-harbor-head,
+        .project-harbor-grid,
+        .quick-role-links{
+            position:relative;
+            z-index:2;
+        }
+        .project-harbor-head{
+            display:flex;
+            justify-content:space-between;
+            align-items:flex-end;
+            gap:1rem;
+            flex-wrap:wrap;
+            margin-bottom:1.2rem;
+            padding:.15rem .2rem .75rem;
+            border-bottom:1px dashed rgba(91,137,117,.28);
+        }
+        .project-kicker{
+            display:inline-flex;
+            align-items:center;
+            gap:.45rem;
+            margin-bottom:.55rem;
+            padding:.24rem .78rem;
+            border-radius:999px;
+            color:#3b8269;
+            background:rgba(255,252,230,.7);
+            border:1px solid rgba(255,244,191,.86);
+            font-size:.78rem;
+            letter-spacing:.14em;
+            font-weight:800;
+        }
+        .project-harbor-head h2{
+            margin:0;
+            color:#2f6e58;
+            font-size:clamp(1.65rem,3.2vw,2.35rem);
+            letter-spacing:.08em;
+            font-weight:800;
+        }
+        .project-harbor-head p{
+            max-width:700px;
+            margin:.65rem 0 0;
+            color:rgba(44,82,64,.8);
+            line-height:1.86;
+            font-size:.95rem;
+        }
+        .project-count-badge{
+            flex:0 0 auto;
+            min-width:126px;
+            text-align:center;
+            padding:.72rem 1rem;
+            border-radius:24px;
+            color:#47725f;
+            background:rgba(255,255,255,.48);
+            border:1px solid rgba(255,255,255,.68);
+            box-shadow:0 10px 24px rgba(78,109,92,.1);
+        }
+        .project-count-badge strong{
+            display:block;
+            font-size:1.6rem;
+            color:#2f6e58;
+            line-height:1.1;
+        }
+        .project-count-badge span{font-size:.76rem;letter-spacing:.08em;}
+        .project-harbor-grid{
+            display:grid;
+            grid-template-columns:repeat(12,1fr);
+            gap:1rem;
+        }
+        .project-card{
+            position:relative;
+            overflow:hidden;
+            min-height:196px;
+            grid-column:span 4;
+            display:flex;
+            flex-direction:column;
+            justify-content:space-between;
+            padding:1.18rem 1.22rem;
+            border-radius:30px;
+            border:1px solid rgba(255,255,255,.68);
+            background:rgba(255,255,255,.42);
+            box-shadow:0 16px 32px rgba(70,111,91,.11),inset 0 1px 0 rgba(255,255,255,.64);
+            transition:transform .24s ease,box-shadow .24s ease,background .24s ease;
+        }
+        .project-card:hover{
+            transform:translateY(-5px);
+            box-shadow:0 22px 44px rgba(70,111,91,.17),0 0 22px rgba(255,241,200,.45);
+            background:rgba(255,255,255,.54);
+        }
+        .project-card.featured{grid-column:span 8;min-height:225px;}
+        .project-card.soft-pink{background:linear-gradient(135deg,rgba(255,244,249,.62),rgba(255,255,255,.42));}
+        .project-card.soft-blue{background:linear-gradient(135deg,rgba(232,249,255,.64),rgba(255,255,255,.42));}
+        .project-card.soft-green{background:linear-gradient(135deg,rgba(238,255,235,.66),rgba(255,255,255,.42));}
+        .project-card.soft-gold{background:linear-gradient(135deg,rgba(255,247,216,.7),rgba(255,255,255,.42));}
+        .project-card.soft-violet{background:linear-gradient(135deg,rgba(244,235,255,.64),rgba(255,255,255,.42));}
+        .project-card::after{
+            content:attr(data-icon);
+            position:absolute;
+            right:18px;
+            bottom:10px;
+            font-size:5rem;
+            opacity:.13;
+            filter:blur(.2px);
+            pointer-events:none;
+        }
+        .project-card .meta{
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            gap:.7rem;
+            margin-bottom:.7rem;
+        }
+        .project-card .tag{
+            display:inline-flex;
+            width:max-content;
+            max-width:100%;
+            padding:.24rem .72rem;
+            border-radius:999px;
+            color:#3d8067;
+            background:rgba(255,252,230,.72);
+            border:1px solid rgba(255,244,191,.78);
+            font-size:.74rem;
+            font-weight:800;
+            letter-spacing:.1em;
+        }
+        .project-card .status{
+            font-size:.72rem;
+            color:rgba(60,106,83,.62);
+            white-space:nowrap;
+        }
+        .project-card h3{
+            margin:0 0 .55rem;
+            color:#2f6e58;
+            font-size:1.28rem;
+            letter-spacing:.06em;
+        }
+        .project-card p{
+            margin:0;
+            color:rgba(44,82,64,.79);
+            line-height:1.72;
+            font-size:.9rem;
+        }
+        .project-actions{
+            display:flex;
+            flex-wrap:wrap;
+            gap:.62rem;
+            margin-top:1rem;
+        }
+        .project-btn{
+            display:inline-flex;
+            align-items:center;
+            justify-content:center;
+            gap:.36rem;
+            padding:.58rem 1rem;
+            border-radius:999px;
+            color:#fffaf0;
+            background:linear-gradient(135deg,#4e9473,#72b9a8);
+            border:1px solid rgba(255,250,220,.9);
+            text-decoration:none;
+            font-size:.86rem;
+            font-weight:800;
+            letter-spacing:.04em;
+            box-shadow:0 10px 18px rgba(55,112,89,.14);
+            transition:all .22s ease;
+        }
+        .project-btn:hover{transform:translateY(-2px);box-shadow:0 14px 24px rgba(55,112,89,.21);}
+        .project-btn.ghost{
+            color:#3d765f;
+            background:rgba(255,255,255,.46);
+            border:1px solid rgba(255,255,255,.72);
+            box-shadow:none;
+        }
+        .quick-role-links{
+            margin-top:1.05rem;
+            padding:1rem;
+            border-radius:28px;
+            background:rgba(255,255,255,.36);
+            border:1px solid rgba(255,255,255,.56);
+        }
+        .quick-role-links b{
+            display:block;
+            margin-bottom:.72rem;
+            color:#2f6e58;
+            letter-spacing:.08em;
+        }
+        .role-link-pills{
+            display:flex;
+            flex-wrap:wrap;
+            gap:.65rem;
+        }
+        .role-link-pills a{
+            display:inline-flex;
+            align-items:center;
+            justify-content:center;
+            padding:.45rem .9rem;
+            border-radius:999px;
+            color:#3f725d;
+            background:linear-gradient(135deg,rgba(255,250,225,.82),rgba(226,246,235,.62));
+            border:1px solid rgba(255,244,191,.8);
+            font-size:.84rem;
+            font-weight:800;
+            text-decoration:none;
+            transition:all .22s ease;
+        }
+        .role-link-pills a:hover{transform:translateY(-2px);background:rgba(255,255,255,.72);}
+        @media(max-width:980px){
+            .project-card,.project-card.featured{grid-column:span 6;}
+        }
+        @media(max-width:680px){
+            .project-harbor-section{padding:1.05rem;border-radius:32px;}
+            .project-card,.project-card.featured{grid-column:span 12;}
+            .project-harbor-head{align-items:flex-start;}
+        }
+
+
+        /* 主页内容保持在新版海浪上方 */
+        .container { position: relative; z-index: 3; padding-bottom: 5.5rem; }
+        footer { position: relative; z-index: 3; padding-bottom: 3.2rem; }
+
+    </style>
+</head>
+<body>
+<div class="sky-sand"></div>
+<div class="stars" id="starsContainer"></div>
+<div class="wave-container" aria-hidden="true">
+    <div class="wave wave1"></div>
+    <div class="wave wave2"></div>
+    <div class="wave wave3"></div>
+</div>
+<!-- 首页白噪音：把音频文件放在与 zhuye.html 同级的 audio 文件夹里，文件名可用 white-noise.mp3 / white-noise.wav / white-noise.m4a / white-noise.ogg -->
+<audio id="homeWhiteNoise" preload="auto" loop>
+    <source src="audio/white-noise.mp3" type="audio/mpeg">
+</audio>
+
+
+
+<div class="container">
+    <div class="header">
+        <div class="logo-area"><span>🌊 浅岸星滩</span></div>
+        <div class="nav-links">
+            <a href="xingtan_amo_lighthouse_ui_linked_update/xingtan_manbu.html">🌊 星滩漫步</a>
+            <a href="gallery.html">✨ 星辰画廊</a>
+            <a href="market.html">🏝️ 海岸集市</a>
+            <a href="ip.html">📖 关于IP</a>
+            <a href="project_review.html">📄 项目综述</a>
+            <a href="about.html">🌙 创作手记</a>
+            <a href="site-map.html">🧭 页面索引</a>
+        </div>
+    </div>
+
+    <div class="hero-logo">
+        <div class="logo-wrapper">
+            <div class="glow-ring"></div>
+            <img src="images/logo_brand_watermarked.png" alt="浅岸星滩 · Shallowstar Cove" draggable="false" oncontextmenu="return false" ondragstart="return false" onerror="this.src='https://placehold.co/800x300?text=Shallowstar+Cove'">
+        </div>
+    </div>
+    <div style="text-align: center;"><div class="quote">✨ 敏感不是缺点，而是可以被温柔安放、慢慢长大的特质 ✨</div></div>
+
+
+    <section class="role-wheel-stage" id="roleWheelStage" aria-label="浅岸星滩六角色滑轮选择区">
+        <div class="wheel-topline">
+            <span class="wheel-badge">✦ 角色滑轮入口 · Character Portal</span>
+            <span class="wheel-tip">左右滑动 / 滚轮切换角色 · 停住后点击中心角色进入单人页面</span>
+        </div>
+        <div class="wheel-layout">
+            <aside class="wheel-copy">
+                <span class="wheel-kicker">🌊 Shallowstar Cove</span>
+                <h2>潮间带群落<span class="en-title">Six sensitive spirits</span></h2>
+                <p id="wheelIntro">把六种敏感情绪收进同一片海岸。轻轻左右滑动，像拨动一枚海星罗盘，停在哪一位，就进入她的精神小世界。</p>
+                <div class="role-tags" id="wheelTags">
+                    <span>安全壳</span><span>电子海</span><span>退缩防御</span>
+                </div>
+                <button class="portal-enter-btn" id="portalEnterBtn" type="button">点击角色立绘进入当前角色页 ✨</button>
+            </aside>
+
+            <div class="wheel-viewport" id="wheelViewport" aria-live="polite">
+                <div class="orbit-field" aria-hidden="true">
+                    <span class="orbit-ring r1"></span>
+                    <span class="orbit-ring r2"></span>
+                    <span class="orbit-ring r3"></span>
+                    <span class="orbit-node n1"></span>
+                    <span class="orbit-node n2"></span>
+                    <span class="orbit-node n3"></span>
+                </div>
+                <div class="role-slide" data-index="0" role="button" tabindex="0" aria-label="进入阿隐页面"><img src="zhuye/ayin_full_watermarked.png" alt="阿隐立绘"></div>
+                <div class="role-slide" data-index="1" role="button" tabindex="0" aria-label="进入卡菈页面"><img src="zhuye/kala_full_watermarked.png" alt="卡菈立绘"></div>
+                <div class="role-slide" data-index="2" role="button" tabindex="0" aria-label="进入软软页面"><img src="zhuye/ruanruan_full_watermarked.png" alt="软软立绘"></div>
+                <div class="role-slide" data-index="3" role="button" tabindex="0" aria-label="进入莓莓页面"><img src="zhuye/meimei_full_watermarked.png" alt="莓莓立绘"></div>
+                <div class="role-slide" data-index="4" role="button" tabindex="0" aria-label="进入刺团页面"><img src="zhuye/cituan_full_watermarked.png" alt="刺团立绘"></div>
+                <div class="role-slide" data-index="5" role="button" tabindex="0" aria-label="进入阿默页面"><img src="zhuye/amo_full_watermarked.png" alt="阿默立绘"></div>
+                <button class="wheel-arrow prev" id="wheelPrev" type="button" aria-label="上一位角色">‹</button>
+                <button class="wheel-arrow next" id="wheelNext" type="button" aria-label="下一位角色">›</button>
+            </div>
+
+            <aside class="role-data-card">
+                <span class="role-count" id="roleCount">01 / 06</span>
+                <h3 id="roleName">阿隐</h3>
+                <div class="role-en" id="roleEn">Ayin</div>
+                <div class="role-emotion-line" id="roleEmotion">退缩 · 防御</div>
+                <p class="role-quote" id="roleQuote">“外面太吵了，我想躲进会发光的代码海里。”</p>
+                <div class="role-detail-chip"><img id="roleIconA" src="zhuye/ayin_icon_watermarked.png" alt="角色头像"> <strong id="roleChipA">安全壳模式</strong><br><span id="roleChipB">点击中心角色时，会触发圆形传送门转场。</span></div>
+                <div class="role-detail-chip"><img id="roleIconB" src="zhuye/ayin_icon_watermarked.png" alt="角色头像"> <strong>滑动提示</strong><br><span>滑得越快，切换越远；松手后自动吸附到最近角色。</span></div>
+            </aside>
+        </div>
+        <div class="role-node-row" id="roleNodeRow" aria-label="角色快速选择">
+            <button class="role-node active" type="button" data-index="0"><img src="zhuye/ayin_icon_watermarked.png" alt="阿隐头像"><span>阿隐</span></button>
+            <button class="role-node" type="button" data-index="1"><img src="zhuye/kala_icon_watermarked.png" alt="卡菈头像"><span>卡菈</span></button>
+            <button class="role-node" type="button" data-index="2"><img src="zhuye/ruanruan_icon_watermarked.png" alt="软软头像"><span>软软</span></button>
+            <button class="role-node" type="button" data-index="3"><img src="zhuye/meimei_icon_watermarked.png" alt="莓莓头像"><span>莓莓</span></button>
+            <button class="role-node" type="button" data-index="4"><img src="zhuye/cituan_icon_watermarked.png" alt="刺团头像"><span>刺团</span></button>
+            <button class="role-node" type="button" data-index="5"><img src="zhuye/amo_icon_watermarked.png" alt="阿默头像"><span>阿默</span></button>
+        </div>
+        <div class="role-progress" aria-hidden="true"><span></span></div>
+    </section>
+
+    <section class="project-harbor-section" aria-label="浅岸星滩项目总览">
+        <div class="project-harbor-head">
+            <div>
+                <span class="project-kicker">✦ PROJECT MAP · 当前开放内容</span>
+                <h2>星滩项目地图</h2>
+                <p>浅岸星滩已经不只是角色展示页，而是一组可以被进入、被探索、被停留的治愈系互动空间：角色图鉴、沿岸漫步、森林支线、故事章节、文创集市与项目综述都在这里汇合。</p>
+            </div>
+            <div class="project-count-badge"><strong>22</strong><span>HTML 页面 / 支线 / 展示模块</span></div>
+        </div>
+
+        <div class="project-harbor-grid">
+            <article class="project-card featured soft-blue" data-icon="🌊">
+                <div>
+                    <div class="meta"><span class="tag">海岸互动主线</span><span class="status">NEW</span></div>
+                    <h3>星滩漫步 · 沿岸小事</h3>
+                    <p>沿着海岸边走一会儿，依次遇见观海、拾贝、钓鱼、漂流瓶、海星浅滩和潮汐图鉴。它是浅岸星滩新加入的海岸探索总入口。</p>
+                </div>
+                <div class="project-actions">
+                    <a class="project-btn" href="xingtan_amo_lighthouse_ui_linked_update/xingtan_manbu.html">进入星滩漫步</a>
+                    <a class="project-btn ghost" href="xingtan_amo_lighthouse_ui_linked_update/guanhai.html">单独进入观海</a>
+                </div>
+            </article>
+
+            <article class="project-card soft-pink" data-icon="💌">
+                <div>
+                    <div class="meta"><span class="tag">情绪疗愈</span><span class="status">留言互动</span></div>
+                    <h3>漂流瓶 · 浅岸回响</h3>
+                    <p>把一句没说出口的话交给潮汐。这里承接高敏感人群的情绪表达，也能作为后续角色回应系统的入口。</p>
+                </div>
+                <div class="project-actions"><a class="project-btn" href="bottle.html">写一只漂流瓶</a></div>
+            </article>
+
+            <article class="project-card soft-green" data-icon="🍄">
+                <div>
+                    <div class="meta"><span class="tag">森林支线</span><span class="status">莓莓陪同</span></div>
+                    <h3>雨后菌林</h3>
+                    <p>雨声、发光菌子、小篮子和安静采集。它是浅岸星滩后方的森林互动支线，适合做成“慢慢点击”的治愈小游戏。</p>
+                </div>
+                <div class="project-actions"><a class="project-btn" href="rainforest.html">进入雨后菌林</a></div>
+            </article>
+
+            <article class="project-card soft-gold" data-icon="🐝">
+                <div>
+                    <div class="meta"><span class="tag">微观观察</span><span class="status">互动故事</span></div>
+                    <h3>叶片裁缝 · 切叶蜂</h3>
+                    <p>从一片叶缘缺口开始，跟随切叶蜂剪叶、飞行、回巢，把自然观察变成一段有节奏的网页小故事。</p>
+                </div>
+                <div class="project-actions"><a class="project-btn" href="leafcutter_bee_story_v5.html">跟随切叶蜂</a></div>
+            </article>
+
+            <article class="project-card soft-violet" data-icon="🎻">
+                <div>
+                    <div class="meta"><span class="tag">角色剧情</span><span class="status">软软支线</span></div>
+                    <h3>第一夜，风听见了海</h3>
+                    <p>软软与白昼先生的故事章节：夜晚琴房、竖琴、小提琴与远处的潮风，把角色关系从设定延展为剧情体验。</p>
+                </div>
+                <div class="project-actions">
+                    <a class="project-btn" href="story-ruanruan-wynn-v5/story-ruanruan-wynn.html">阅读故事</a>
+                    <a class="project-btn ghost" href="ruanruan.html">返回软软页面</a>
+                    <a class="project-btn ghost" href="tidewind_pasture_wynn_site_v38/index.html">进入白昼先生页面</a>
+                </div>
+            </article>
+
+            <article class="project-card soft-pink" data-icon="✨">
+                <div>
+                    <div class="meta"><span class="tag">视觉展示</span><span class="status">插画 / 展板</span></div>
+                    <h3>星辰画廊</h3>
+                    <p>集中展示浅岸星滩的插画、视觉延展与展板内容，是观众快速浏览项目视觉成果的入口。</p>
+                </div>
+                <div class="project-actions"><a class="project-btn" href="gallery.html">打开星辰画廊</a></div>
+            </article>
+
+            <article class="project-card soft-gold" data-icon="🏝️">
+                <div>
+                    <div class="meta"><span class="tag">商业化展示</span><span class="status">文创周边</span></div>
+                    <h3>海岸集市</h3>
+                    <p>徽章、贴纸、明信片、盲盒、亚克力、布艺小物等文创体系入口，用集市感承接全品类落地展示。</p>
+                </div>
+                <div class="project-actions"><a class="project-btn" href="market.html">进入海岸集市</a></div>
+            </article>
+
+            <article class="project-card soft-blue" data-icon="📖">
+                <div>
+                    <div class="meta"><span class="tag">项目说明</span><span class="status">IP / 综述</span></div>
+                    <h3>世界观、综述与创作手记</h3>
+                    <p>这里收纳项目理念、设计逻辑、技术实现、创作过程与最终总结，适合老师、评审或观众快速理解整个项目。</p>
+                </div>
+                <div class="project-actions">
+                    <a class="project-btn" href="ip.html">关于IP</a>
+                    <a class="project-btn ghost" href="project_review.html">项目综述</a>
+                    <a class="project-btn ghost" href="about.html">创作手记</a>
+                </div>
+            </article>
+
+            <article class="project-card soft-green" data-icon="🧭">
+                <div>
+                    <div class="meta"><span class="tag">全站导航</span><span class="status">22 HTML</span></div>
+                    <h3>完整页面索引</h3>
+                    <p>把根目录页面、角色页面、互动支线、故事页面、校正版页面全部汇总到一个清单里，方便毕设检查和后续整理文件夹。</p>
+                </div>
+                <div class="project-actions"><a class="project-btn" href="site-map.html">打开页面索引</a></div>
+            </article>
+        </div>
+
+        <div class="quick-role-links" aria-label="六位角色快速入口">
+            <b>六位角色单人页面 · Character Pages</b>
+            <div class="role-link-pills">
+                <a href="kala.html">卡菈 · 本真成长</a>
+                <a href="cituan.html">刺团 · 警觉防御</a>
+                <a href="ruanruan.html">软软 · 温柔共情</a>
+                <a href="amo.html">阿默 · 冷静观察</a>
+                <a href="meimei.html">莓莓 · 好奇童真</a>
+                <a href="ayin.html">阿隐 · 退缩防御</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>🌊 浅岸星滩 · Shallowstar Cove｜角色、文创、互动网页与故事支线持续生长中 🌊</footer>
+</div>
+
+<script>
+    // 生成星星
+    function generateStars() {
+        const starsContainer = document.getElementById('starsContainer');
+        if (!starsContainer) return;
+        const starCount = 120;
+        for (let i = 0; i < starCount; i++) {
+            const star = document.createElement('div');
+            star.classList.add('star');
+            const size = Math.random() * 3 + 1;
+            star.style.width = size + 'px';
+            star.style.height = size + 'px';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 60 + '%';
+            star.style.animationDuration = (Math.random() * 3 + 1.5) + 's';
+            star.style.animationDelay = (Math.random() * 5) + 's';
+            starsContainer.appendChild(star);
+        }
+    }
+    generateStars();
+
+
+    // 首页六角色滑轮切换 + 圆形传送门进入动画
+    const shallowstarRoles = [
+        {
+            key: 'ayin', cn: '阿隐', en: 'Ayin', href: 'ayin.html', icon: 'zhuye/ayin_icon_watermarked.png',
+            emotion: '退缩 · 防御', count: '01 / 06',
+            quote: '“外面太吵了，我想躲进会发光的代码海里。”',
+            intro: '阿隐像一枚藏在蓝光里的小贝壳。她不急着靠近世界，只把观察、逻辑和安全感慢慢编进自己的电子海。',
+            tags: ['安全壳', '电子海', '退缩防御'], chip: '安全壳模式', chipDesc: '蓝色 HUD 圆环会跟随她一起呼吸，像一扇安静的入口。',
+            main: '#62c8ff', soft: '#dff6ff', deep: '#277da8', glow: 'rgba(98, 200, 255, 0.42)'
+        },
+        {
+            key: 'kala', cn: '卡菈', en: 'Kala', href: 'kala.html', icon: 'zhuye/kala_icon_watermarked.png',
+            emotion: '本真 · 成长', count: '02 / 06',
+            quote: '“太阳很大也没关系，慢慢长大的人，也会拥有自己的海风。”',
+            intro: '卡菈带着热带椰风和阳光感，是浅岸星滩里最像大家长的存在。她代表本真、成长与向外打开的勇气。',
+            tags: ['热带阳光', '椰子蟹', '成长感'], chip: '热带引力', chipDesc: '切到卡菈时，整体色彩会变得更明亮、更靠近沙滩午后的温度。',
+            main: '#ffb85c', soft: '#fff1cf', deep: '#d47a28', glow: 'rgba(255, 184, 92, 0.42)'
+        },
+        {
+            key: 'ruanruan', cn: '软软', en: 'Ruanruan', href: 'ruanruan.html', icon: 'zhuye/ruanruan_icon_watermarked.png',
+            emotion: '温柔 · 共情', count: '03 / 06',
+            quote: '“你不用马上好起来，我会把今晚弹得轻一点。”',
+            intro: '软软像夜晚琴房里一段很轻的竖琴声。她把共情、珍珠、海浪和睡前安抚感放在同一束柔光里。',
+            tags: ['竖琴', '珍珠', '温柔共情'], chip: '珍珠回声', chipDesc: '她的切换节奏更柔，像一颗珍珠落进浅浅的潮水。',
+            main: '#f2a9bb', soft: '#fff0f6', deep: '#c66d89', glow: 'rgba(242, 169, 187, 0.42)'
+        },
+        {
+            key: 'meimei', cn: '莓莓', en: 'Meimei', href: 'meimei.html', icon: 'zhuye/meimei_icon_watermarked.png',
+            emotion: '好奇 · 童真', count: '04 / 06',
+            quote: '“那边好像有亮晶晶的东西，我们悄悄过去看一眼吧！”',
+            intro: '莓莓是小小的好奇心本身。她适合带着用户去捡菌子、看雨后森林，也负责把沉重的情绪变轻。',
+            tags: ['莓果色', '好奇心', '童真感'], chip: '莓果跳跃', chipDesc: '她的节点更活泼，像页面里突然跳出来的一颗草莓糖。',
+            main: '#ff7b8a', soft: '#ffe6eb', deep: '#d94f63', glow: 'rgba(255, 123, 138, 0.42)'
+        },
+        {
+            key: 'cituan', cn: '刺团', en: 'Cituan', href: 'cituan.html', icon: 'zhuye/cituan_icon_watermarked.png',
+            emotion: '警觉 · 防御', count: '05 / 06',
+            quote: '“靠太近之前，先让我确认你是不是安全的。”',
+            intro: '刺团不是冷漠，她只是把边界感练成了盔甲。紫色的锋芒、斧形武器和防御姿态，是她保护自己的方式。',
+            tags: ['紫色锋芒', '短腕寄居蟹', '边界感'], chip: '锋线警戒', chipDesc: '切到刺团时，圆环会更利落，像一圈保护边界的能量线。',
+            main: '#a77be8', soft: '#f0e7ff', deep: '#7c58bd', glow: 'rgba(167, 123, 232, 0.42)'
+        },
+        {
+            key: 'amo', cn: '阿默', en: 'Amo', href: 'amo.html', icon: 'zhuye/amo_icon_watermarked.png',
+            emotion: '冷静 · 观察', count: '06 / 06',
+            quote: '“先别急着回答，观察本身，也是一种温柔。”',
+            intro: '阿默像雾面玻璃后的灰白月光。她不吵闹，但总能看见别人忽略的细节，是冷静观察型的安全感。',
+            tags: ['灰白月光', '冷静观察', '安静判断'], chip: '静默观测', chipDesc: '她的切换会收束成更冷静的光，像月色落在海面。',
+            main: '#aeb8c2', soft: '#eef3f7', deep: '#6f7d88', glow: 'rgba(174, 184, 194, 0.42)'
+        }
+    ];
+
+    (function initRoleWheel() {
+        const stage = document.getElementById('roleWheelStage');
+        if (!stage) return;
+        const viewport = document.getElementById('wheelViewport');
+        const slides = Array.from(stage.querySelectorAll('.role-slide'));
+        const nodes = Array.from(stage.querySelectorAll('.role-node'));
+        const intro = document.getElementById('wheelIntro');
+        const tags = document.getElementById('wheelTags');
+        const count = document.getElementById('roleCount');
+        const name = document.getElementById('roleName');
+        const en = document.getElementById('roleEn');
+        const emotion = document.getElementById('roleEmotion');
+        const quote = document.getElementById('roleQuote');
+        const chipA = document.getElementById('roleChipA');
+        const chipB = document.getElementById('roleChipB');
+        const iconA = document.getElementById('roleIconA');
+        const iconB = document.getElementById('roleIconB');
+        const enterBtn = document.getElementById('portalEnterBtn');
+        const portal = document.createElement('div');
+        portal.className = 'portal-transition';
+        document.body.appendChild(portal);
+
+        let activeIndex = 0;
+        let wheelBuffer = 0;
+        let wheelLock = false;
+        let dragStartX = 0;
+        let dragStartT = 0;
+        let dragging = false;
+        let dragDistance = 0;
+        let suppressClick = false;
+
+        function clamp(value, min, max) { return Math.max(min, Math.min(max, value)); }
+        function circularDiff(i, active) {
+            const total = shallowstarRoles.length;
+            let diff = i - active;
+            if (diff > total / 2) diff -= total;
+            if (diff < -total / 2) diff += total;
+            return diff;
+        }
+        function applyStageTheme(role) {
+            stage.style.setProperty('--role-main', role.main);
+            stage.style.setProperty('--role-soft', role.soft);
+            stage.style.setProperty('--role-deep', role.deep);
+            stage.style.setProperty('--role-glow', role.glow);
+            stage.style.setProperty('--active-index', activeIndex);
+        }
+        function render() {
+            const role = shallowstarRoles[activeIndex];
+            applyStageTheme(role);
+            if (intro) intro.textContent = role.intro;
+            if (tags) tags.innerHTML = role.tags.map(t => `<span>${t}</span>`).join('');
+            if (count) count.textContent = role.count;
+            if (name) name.textContent = role.cn;
+            if (en) en.textContent = role.en;
+            if (emotion) emotion.textContent = role.emotion;
+            if (quote) quote.textContent = role.quote;
+            if (chipA) chipA.textContent = role.chip;
+            if (chipB) chipB.textContent = role.chipDesc;
+            if (iconA) iconA.src = role.icon;
+            if (iconB) iconB.src = role.icon;
+
+            slides.forEach((slide, i) => {
+                const diff = circularDiff(i, activeIndex);
+                const abs = Math.abs(diff);
+                const slideRole = shallowstarRoles[i];
+                slide.style.setProperty('--slide-main', slideRole.main);
+                slide.style.setProperty('--slide-soft', slideRole.soft);
+                slide.style.setProperty('--slide-deep', slideRole.deep);
+                slide.style.setProperty('--slide-glow', slideRole.glow);
+                const scale = Math.max(0.58, 1 - abs * 0.16);
+                const x = diff * 172;
+                const y = abs * 22;
+                const rot = diff * -13;
+                const opacity = abs > 3 ? 0 : Math.max(0.14, 1 - abs * 0.27);
+                const blur = abs === 0 ? 0 : Math.min(5, abs * 1.6);
+                slide.classList.toggle('active', i === activeIndex);
+                slide.style.transform = `translate(-50%, -50%) translateX(${x}px) translateY(${y}px) rotateY(${rot}deg) scale(${scale})`;
+                slide.style.opacity = opacity;
+                slide.style.zIndex = String(20 - abs);
+                slide.style.filter = `blur(${blur}px) saturate(${abs === 0 ? 1.05 : 0.76})`;
+                slide.setAttribute('aria-hidden', i === activeIndex ? 'false' : 'true');
+            });
+            nodes.forEach((node, i) => node.classList.toggle('active', i === activeIndex));
+        }
+        function wrapIndex(index) {
+            const total = shallowstarRoles.length;
+            return ((index % total) + total) % total;
+        }
+        function moveTo(index) {
+            const next = wrapIndex(index);
+            if (next === activeIndex) return;
+            activeIndex = next;
+            stage.classList.add('is-switching');
+            render();
+            window.setTimeout(() => stage.classList.remove('is-switching'), 360);
+        }
+        function moveBy(step) { moveTo(activeIndex + step); }
+        function stepFromSpeed(delta) {
+            const power = Math.abs(delta);
+            if (power > 520) return 3;
+            if (power > 260) return 2;
+            return 1;
+        }
+        stage.addEventListener('wheel', (e) => {
+            const rawDelta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+            if (!rawDelta) return;
+            // 只要鼠标在角色滑轮大框内，滚轮就完全交给角色切换，不再把事件漏给主页上下滚动。
+            e.preventDefault();
+            e.stopPropagation();
+            wheelBuffer += rawDelta;
+            if (wheelLock || Math.abs(wheelBuffer) < 64) return;
+            const step = stepFromSpeed(wheelBuffer) * (wheelBuffer > 0 ? 1 : -1);
+            wheelBuffer = 0;
+            wheelLock = true;
+            moveBy(step);
+            window.setTimeout(() => { wheelLock = false; }, 420);
+        }, { passive: false, capture: true });
+
+        viewport.addEventListener('pointerdown', (e) => {
+            if (e.target.closest('.wheel-arrow')) return;
+            dragging = true;
+            dragDistance = 0;
+            dragStartX = e.clientX;
+            dragStartT = performance.now();
+            stage.classList.add('is-dragging');
+            viewport.setPointerCapture(e.pointerId);
+        });
+        viewport.addEventListener('pointermove', (e) => {
+            if (!dragging) return;
+            dragDistance = Math.max(dragDistance, Math.abs(e.clientX - dragStartX));
+        });
+        viewport.addEventListener('pointerup', (e) => {
+            if (!dragging) return;
+            dragging = false;
+            stage.classList.remove('is-dragging');
+            const dx = e.clientX - dragStartX;
+            dragDistance = Math.max(dragDistance, Math.abs(dx));
+            const dt = Math.max(1, performance.now() - dragStartT);
+            const velocity = Math.abs(dx) / dt;
+            if (dragDistance <= 8 && velocity < .25) {
+                const activeSlide = slides[activeIndex];
+                if (activeSlide && (e.target === activeSlide || activeSlide.contains(e.target))) {
+                    enterPortal(e);
+                    return;
+                }
+            }
+            if (dragDistance > 8) {
+                suppressClick = true;
+                window.setTimeout(() => { suppressClick = false; }, 220);
+            }
+            if (Math.abs(dx) > 70 || velocity > .55) {
+                let step = 1;
+                if (Math.abs(dx) > 420 || velocity > 1.7) step = 3;
+                else if (Math.abs(dx) > 220 || velocity > 1.05) step = 2;
+                moveBy(dx < 0 ? step : -step);
+            }
+        });
+        viewport.addEventListener('pointercancel', () => {
+            dragging = false;
+            stage.classList.remove('is-dragging');
+        });
+
+        document.getElementById('wheelPrev')?.addEventListener('click', () => moveBy(-1));
+        document.getElementById('wheelNext')?.addEventListener('click', () => moveBy(1));
+        nodes.forEach(node => node.addEventListener('click', () => moveTo(Number(node.dataset.index))));
+        slides.forEach(slide => {
+            slide.addEventListener('click', (e) => {
+                if (suppressClick) { e.preventDefault(); return; }
+                const idx = Number(slide.dataset.index);
+                if (idx !== activeIndex) { moveTo(idx); return; }
+                enterPortal(e);
+            });
+            slide.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    const idx = Number(slide.dataset.index);
+                    if (idx !== activeIndex) moveTo(idx); else enterPortal(e);
+                }
+            });
+        });
+        enterBtn?.addEventListener('click', enterPortal);
+
+        function enterPortal(e) {
+            const role = shallowstarRoles[activeIndex];
+            const activeSlide = slides[activeIndex];
+            const rect = activeSlide.getBoundingClientRect();
+            // 不跟随按钮/鼠标位置。传送门固定从当前角色立绘背后（肩胛骨附近）打开。
+            const x = rect.left + rect.width / 2;
+            const y = rect.top + rect.height * 0.335;
+            portal.style.setProperty('--portal-x', `${x}px`);
+            portal.style.setProperty('--portal-y', `${y}px`);
+            portal.style.setProperty('--portal-main', role.main);
+            activeSlide.classList.add('enter-bounce');
+            window.setTimeout(() => portal.classList.add('active'), 160);
+            window.setTimeout(() => { window.location.href = role.href; }, 880);
+        }
+        render();
+    })();
+
+
+    // 确保每个预览图片路径正确，并为卡菈做特殊说明（用户可能需自行修正）
+    // 所有卡片已经内置预览html，无需额外js构建，但可补充图片加载失败的备选方案
+    function tryImageFallback(img) {
+        const fallbacks = (img.dataset.fallbacks || '').split('|').map(item => item.trim()).filter(Boolean);
+        const index = Number(img.dataset.fallbackIndex || 0);
+        if (index < fallbacks.length) {
+            img.dataset.fallbackIndex = String(index + 1);
+            img.src = fallbacks[index];
+            return;
+        }
+        img.style.opacity = 0;
+    }
+
+    document.querySelectorAll('img[data-fallbacks]').forEach(img => {
+        img.addEventListener('load', function() {
+            this.style.opacity = 1;
+        });
+    });
+
+    // 右键/保存禁用 (与原风格一致)
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+        return false;
+    });
+    document.addEventListener('keydown', function(e) {
+        if (e.ctrlKey && (e.key === 's' || e.key === 'S')) {
+            e.preventDefault();
+            return false;
+        }
+        if (e.key === 'PrintScreen') {
+            e.preventDefault();
+            return false;
+        }
+    });
+    
+    // 可选：给每个角色预览框加微调位置（防止超出左边界）
+    function adjustPreviewPosition() {
+        const cards = document.querySelectorAll('.character-card');
+        cards.forEach(card => {
+            const preview = card.querySelector('.preview-on-hover');
+            if (!preview) return;
+            const cardRect = card.getBoundingClientRect();
+            const previewRect = preview.getBoundingClientRect();
+            // 如果预览框超出左边界则临时调整（但一般不超出，因为父容器有padding）
+            if (cardRect.left - previewRect.width - 20 < 0 && window.innerWidth > 720) {
+                preview.style.right = 'auto';
+                preview.style.left = '100%';
+                preview.style.marginRight = '0';
+                preview.style.marginLeft = '20px';
+            } else {
+                preview.style.right = '100%';
+                preview.style.left = 'auto';
+                preview.style.marginRight = '20px';
+                preview.style.marginLeft = '0';
+            }
+        });
+    }
+    window.addEventListener('resize', adjustPreviewPosition);
+    setTimeout(adjustPreviewPosition, 100);
+</script>
+
+<!-- 说明：六位角色悬浮立绘已统一改为 zhuye 文件夹下的透明底图片：
+     卡菈：zhuye/卡拉.png
+     刺团：zhuye/刺团透明底.png
+     软软：zhuye/软软.png
+     阿默：zhuye/阿默透明底.png
+     莓莓：zhuye/莓莓人物透明底.png
+     阿隐：zhuye/阿隐透明底.png
+     请保持 zhuye 文件夹与本 HTML 文件同级。 -->
+
+
+
+<script>
+    // 首页白噪音：自动尝试播放；若浏览器拦截，会在第一次点击/滚动/按键时启动
+    (function initHomeWhiteNoise() {
+        const whiteNoise = document.getElementById('homeWhiteNoise');
+        if (!whiteNoise) return;
+
+        whiteNoise.volume = 0.24;
+        whiteNoise.loop = true;
+
+        function playWhiteNoise() {
+            if (!whiteNoise || !whiteNoise.paused) return;
+            whiteNoise.play().catch(() => {
+                // 浏览器可能拦截自动播放，等待用户第一次交互后再启动
+            });
+        }
+
+        window.addEventListener('load', playWhiteNoise);
+        ['pointerdown', 'click', 'wheel', 'keydown', 'touchstart'].forEach(eventName => {
+            document.addEventListener(eventName, playWhiteNoise, { once: true, passive: true });
+        });
+    })();
+</script>
+
+<style>
+.site-directory{position:relative;z-index:3;max-width:1180px;margin:40px auto 190px;padding:26px;background:rgba(255,255,255,.78);border:1px solid rgba(255,255,255,.9);border-radius:28px;box-shadow:0 16px 50px rgba(39,96,111,.15);color:#24575f}.site-directory h2{margin:0 0 8px;font-size:clamp(24px,4vw,34px)}.site-directory p{margin:0 0 18px;line-height:1.7;color:#56736c}.site-directory section{margin-top:18px}.site-directory h3{margin:0 0 10px;font-size:18px}.site-directory nav{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}.site-directory a{display:block;padding:12px 14px;border-radius:14px;background:#f1faf8;color:#285d5e;text-decoration:none;font-weight:700;border:1px solid #d9eeeb}.site-directory a:hover{background:#dff4f2;transform:translateY(-1px)}@media(max-width:600px){.site-directory{margin:24px 14px 170px;padding:18px}}
+</style>
+<section class="site-directory" id="site-directory" aria-label="浅岸星滩网站导航">
+<h2>浅岸星滩 · 全站导航</h2><p>从这里前往星滩的角色、森林、海岸与故事。每个页面也可通过“回到主页”返回这里。</p>
+<section><h3>角色与世界观</h3><nav><a href="ip.html">关于浅岸星滩 IP</a><a href="kala.html">可可·卡菈</a><a href="cituan.html">刺团</a><a href="ruanruan.html">软软</a><a href="amo.html">阿默</a><a href="meimei.html">莓莓</a><a href="ayin.html">阿隐</a></nav></section>
+<section><h3>森林图鉴</h3><nav><a href="星滩森屿_森林区_简洁链接版/forest.html">星滩森屿 · 森林区总入口</a><a href="星滩森屿_森林区_简洁链接版/index.html">雨后菌林</a><a href="星滩森屿_森林区_简洁链接版/leafcutter_bee_story_v5.html">叶片裁缝</a><a href="星滩森屿_森林区_简洁链接版/blue_wren_sisters/index.html">澜羽与绒蓝图鉴</a><a href="blue_wren_sisters_forest_v2/index.html">蓝灵鸟姐妹设定</a></nav></section>
+<section><h3>海岸与灯塔</h3><nav><a href="xingtan_amo_lighthouse_ui_linked_update/xingtan_manbu.html">星滩漫步</a><a href="xingtan_amo_lighthouse_ui_linked_update/guanhai.html">观海</a><a href="xingtan_amo_lighthouse_ui_linked_update/amo_lighthouse.html">雾灯塔 · 阿默的观星台</a><a href="guanhai/guanhai.html">观海旧版</a></nav></section>
+<section><h3>故事与白昼先生</h3><nav><a href="story-ruanruan-wynn-v5/story-ruanruan-wynn.html">第一夜，风听见了海</a><a href="tidewind_pasture_wynn_site_v38/index.html">潮风牧场 · 白昼先生</a><a href="leafcutter_bee_story_v5.html">叶片裁缝故事</a></nav></section>
+<section><h3>画廊、集市与项目</h3><nav><a href="gallery.html">星辰画廊</a><a href="market.html">海岸集市</a><a href="bottle.html">漂流瓶</a><a href="about.html">创作手记</a><a href="project_review.html">项目综述</a><a href="site-map.html">完整页面索引</a></nav></section>
+</section>
+</body>
+</html>

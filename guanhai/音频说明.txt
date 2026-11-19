@@ -1,0 +1,11 @@
+你的 sea-waves.mp3 就放在这个 guanhai 文件夹里即可。
+
+当前网页会读取：
+- guanhai/sea-waves.mp3  大海白噪音，点「观海」后循环播放
+- guanhai/ui-click.wav   按钮点击音效，已内置
+- guanhai/duck-quack.wav 查看鸭鸭时的鸭叫，已内置
+
+如果你想换自己的点击音或鸭叫，直接用同名文件覆盖即可。
+返回主页按钮目前链接到：
+https://fascinating-maamoul-822857.netlify.app/
+如果你要本地主页，改 homeBtn 的 href 为 index.html 或 project_review.html。

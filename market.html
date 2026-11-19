@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>海岸集市 · 浅岸星滩</title>
+    <style>
+        /* 允许文字选中，只对图片禁用拖拽/右键 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            min-height: 100vh;
+            font-family: 'Segoe UI', 'Roboto', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            overflow-x: hidden;
+            color: #2c4a3b;
+            position: relative;
+        }
+        .sky-sand {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: linear-gradient(165deg, #b3e0f5 0%, #d9f0fa 40%, #fef7e0 70%, #f5e6c4 100%);
+        }
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60%;
+            z-index: -1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .star {
+            position: absolute;
+            background-color: #fff9e0;
+            border-radius: 50%;
+            box-shadow: 0 0 4px 1px rgba(255,255,200,0.8);
+            opacity: 0;
+            animation: twinkle 3s infinite alternate;
+        }
+        @keyframes twinkle {
+            0% { opacity: 0; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1.2); }
+        }
+        .wave-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 150px;
+            z-index: 1;
+            pointer-events: none;
+            overflow: hidden;
+            filter: drop-shadow(0 -8px 18px rgba(66, 166, 208, .16));
+        }
+        .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 150px;
+            background-repeat: repeat-x;
+            background-size: 2400px 150px;
+            background-position-y: bottom;
+            mix-blend-mode: soft-light;
+            will-change: background-position;
+        }
+        .wave1 {
+            bottom: -8px;
+            opacity: .96;
+            background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%202400%20150%22%20preserveAspectRatio%3D%22none%22%3E%0A%3Cdefs%3E%0A%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%0A%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23f7fdff%22%20stop-opacity%3D%220.82%22/%3E%0A%3Cstop%20offset%3D%2255%25%22%20stop-color%3D%22%238fd8f2%22%20stop-opacity%3D%220.48%22/%3E%0A%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%232f9cc7%22%20stop-opacity%3D%220.10%22/%3E%0A%3C/linearGradient%3E%0A%3Cfilter%20id%3D%22softGlow%22%20x%3D%22-10%25%22%20y%3D%22-30%25%22%20width%3D%22120%25%22%20height%3D%22160%25%22%3E%0A%3CfeGaussianBlur%20stdDeviation%3D%222.2%22%20result%3D%22blur%22/%3E%0A%3CfeMerge%3E%3CfeMergeNode%20in%3D%22blur%22/%3E%3CfeMergeNode%20in%3D%22SourceGraphic%22/%3E%3C/feMerge%3E%0A%3C/filter%3E%0A%3C/defs%3E%0A%3Cpath%20fill%3D%22url%28%23g%29%22%20d%3D%22M0%2C64%20C150%2C18%20450%2C18%20600%2C64%20C750%2C110%201050%2C110%201200%2C64%20C1350%2C18%201650%2C18%201800%2C64%20C1950%2C110%202250%2C110%202400%2C64%20L2400%2C150%20L0%2C150%20Z%22/%3E%0A%3Cpath%20d%3D%22M0%2C64%20C150%2C18%20450%2C18%20600%2C64%20C750%2C110%201050%2C110%201200%2C64%20C1350%2C18%201650%2C18%201800%2C64%20C1950%2C110%202250%2C110%202400%2C64%22%20fill%3D%22none%22%20stroke%3D%22%23ffffff%22%20stroke-opacity%3D%220.88%22%20stroke-width%3D%228%22%20stroke-linecap%3D%22round%22%20filter%3D%22url%28%23softGlow%29%22/%3E%0A%3Cpath%20d%3D%22M0%2C64%20C150%2C18%20450%2C18%20600%2C64%20C750%2C110%201050%2C110%201200%2C64%20C1350%2C18%201650%2C18%201800%2C64%20C1950%2C110%202250%2C110%202400%2C64%22%20fill%3D%22none%22%20stroke%3D%22%23bcefff%22%20stroke-opacity%3D%220.45%22%20stroke-width%3D%224%22%20stroke-linecap%3D%22round%22/%3E%0A%3C/svg%3E");
+            animation: waveMove 22s linear infinite;
+        }
+        .wave2 {
+            bottom: -18px;
+            opacity: .82;
+            background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%202400%20150%22%20preserveAspectRatio%3D%22none%22%3E%0A%3Cdefs%3E%0A%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%0A%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23c9f1ff%22%20stop-opacity%3D%220.56%22/%3E%0A%3Cstop%20offset%3D%2255%25%22%20stop-color%3D%22%235fbde2%22%20stop-opacity%3D%220.30%22/%3E%0A%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23147ea8%22%20stop-opacity%3D%220.06%22/%3E%0A%3C/linearGradient%3E%0A%3Cfilter%20id%3D%22softGlow%22%20x%3D%22-10%25%22%20y%3D%22-30%25%22%20width%3D%22120%25%22%20height%3D%22160%25%22%3E%0A%3CfeGaussianBlur%20stdDeviation%3D%222.2%22%20result%3D%22blur%22/%3E%0A%3CfeMerge%3E%3CfeMergeNode%20in%3D%22blur%22/%3E%3CfeMergeNode%20in%3D%22SourceGraphic%22/%3E%3C/feMerge%3E%0A%3C/filter%3E%0A%3C/defs%3E%0A%3Cpath%20fill%3D%22url%28%23g%29%22%20d%3D%22M0%2C82%20C150%2C38%20450%2C38%20600%2C82%20C750%2C126%201050%2C126%201200%2C82%20C1350%2C38%201650%2C38%201800%2C82%20C1950%2C126%202250%2C126%202400%2C82%20L2400%2C150%20L0%2C150%20Z%22/%3E%0A%3Cpath%20d%3D%22M0%2C82%20C150%2C38%20450%2C38%20600%2C82%20C750%2C126%201050%2C126%201200%2C82%20C1350%2C38%201650%2C38%201800%2C82%20C1950%2C126%202250%2C126%202400%2C82%22%20fill%3D%22none%22%20stroke%3D%22%23f2fdff%22%20stroke-opacity%3D%220.42%22%20stroke-width%3D%225%22%20stroke-linecap%3D%22round%22%20filter%3D%22url%28%23softGlow%29%22/%3E%0A%3Cpath%20d%3D%22M0%2C82%20C150%2C38%20450%2C38%20600%2C82%20C750%2C126%201050%2C126%201200%2C82%20C1350%2C38%201650%2C38%201800%2C82%20C1950%2C126%202250%2C126%202400%2C82%22%20fill%3D%22none%22%20stroke%3D%22%238bdcf5%22%20stroke-opacity%3D%220.22%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22/%3E%0A%3C/svg%3E");
+            animation: waveMove 30s linear infinite reverse;
+        }
+        .wave3 {
+            bottom: -26px;
+            opacity: .72;
+            background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%202400%20150%22%20preserveAspectRatio%3D%22none%22%3E%0A%3Cdefs%3E%0A%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%0A%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%237fd2ee%22%20stop-opacity%3D%220.42%22/%3E%0A%3Cstop%20offset%3D%2255%25%22%20stop-color%3D%22%232f9bc9%22%20stop-opacity%3D%220.24%22/%3E%0A%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23075f86%22%20stop-opacity%3D%220.05%22/%3E%0A%3C/linearGradient%3E%0A%3Cfilter%20id%3D%22softGlow%22%20x%3D%22-10%25%22%20y%3D%22-30%25%22%20width%3D%22120%25%22%20height%3D%22160%25%22%3E%0A%3CfeGaussianBlur%20stdDeviation%3D%222.2%22%20result%3D%22blur%22/%3E%0A%3CfeMerge%3E%3CfeMergeNode%20in%3D%22blur%22/%3E%3CfeMergeNode%20in%3D%22SourceGraphic%22/%3E%3C/feMerge%3E%0A%3C/filter%3E%0A%3C/defs%3E%0A%3Cpath%20fill%3D%22url%28%23g%29%22%20d%3D%22M0%2C96%20C150%2C56%20450%2C56%20600%2C96%20C750%2C136%201050%2C136%201200%2C96%20C1350%2C56%201650%2C56%201800%2C96%20C1950%2C136%202250%2C136%202400%2C96%20L2400%2C150%20L0%2C150%20Z%22/%3E%0A%3Cpath%20d%3D%22M0%2C96%20C150%2C56%20450%2C56%20600%2C96%20C750%2C136%201050%2C136%201200%2C96%20C1350%2C56%201650%2C56%201800%2C96%20C1950%2C136%202250%2C136%202400%2C96%22%20fill%3D%22none%22%20stroke%3D%22%23e8fbff%22%20stroke-opacity%3D%220.26%22%20stroke-width%3D%224%22%20stroke-linecap%3D%22round%22%20filter%3D%22url%28%23softGlow%29%22/%3E%0A%3Cpath%20d%3D%22M0%2C96%20C150%2C56%20450%2C56%20600%2C96%20C750%2C136%201050%2C136%201200%2C96%20C1350%2C56%201650%2C56%201800%2C96%20C1950%2C136%202250%2C136%202400%2C96%22%20fill%3D%22none%22%20stroke%3D%22%236ed0ee%22%20stroke-opacity%3D%220.13%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22/%3E%0A%3C/svg%3E");
+            animation: waveMove 40s linear infinite;
+        }
+        @keyframes waveMove {
+            0% { background-position-x: 0; }
+            100% { background-position-x: 2400px; }
+        }
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 1.5rem 1.5rem 3rem;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            background: rgba(255, 248, 225, 0.55);
+            backdrop-filter: blur(8px);
+            border-radius: 60px;
+            padding: 0.5rem 2rem;
+            border: 1px solid rgba(255, 245, 200, 0.8);
+        }
+        .back-home {
+            text-decoration: none;
+            font-weight: 500;
+            color: #2a6b4a;
+            background: rgba(255, 250, 220, 0.7);
+            padding: 0.4rem 1.2rem;
+            border-radius: 40px;
+            transition: 0.2s;
+        }
+        .back-home:hover {
+            background: #fff1cc;
+            transform: translateY(-2px);
+        }
+        .title {
+            font-size: 1.6rem;
+            font-weight: 400;
+            color: #2b5a3b;
+        }
+        .market-card {
+            background: rgba(255, 250, 235, 0.5);
+            backdrop-filter: blur(12px);
+            border-radius: 48px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 245, 200, 0.8);
+            box-shadow: 0 20px 35px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+        }
+        .shop-name {
+            text-align: center;
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            color: #3a6b4a;
+        }
+        .sub {
+            text-align: center;
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+            color: #6e8f6a;
+        }
+        .qr-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2.5rem;
+        }
+        .qr-item {
+            text-align: center;
+            width: 180px;
+        }
+        .qr-item img {
+            width: 100%;
+            border-radius: 24px;
+            background: white;
+            padding: 0.5rem;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        .qr-label {
+            margin-top: 0.6rem;
+            font-size: 0.9rem;
+            color: #4f775a;
+        }
+        .expo-section {
+            margin: 2rem 0;
+        }
+        .expo-title {
+            font-size: 1.3rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            color: #3a6b4a;
+        }
+        .scroll-container {
+            overflow-x: auto;
+            display: flex;
+            gap: 1rem;
+            padding: 0.5rem 0.2rem 1rem;
+            scroll-snap-type: x mandatory;
+        }
+        .scroll-item {
+            flex: 0 0 auto;
+            width: 260px;
+            scroll-snap-align: start;
+            background: rgba(255,245,210,0.6);
+            border-radius: 24px;
+            padding: 0.5rem;
+            backdrop-filter: blur(4px);
+        }
+        .scroll-item img {
+            width: 100%;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            user-select: none;
+            -webkit-user-drag: none;
+        }
+        .scroll-item img:hover {
+            transform: scale(1.02);
+        }
+        .scroll-item p {
+            text-align: center;
+            font-size: 0.75rem;
+            margin-top: 0.4rem;
+            color: #4f775a;
+        }
+        .combo-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+        .combo-item img {
+            width: 100%;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            user-select: none;
+            -webkit-user-drag: none;
+        }
+        /* 产品分组样式：三大类外框 */
+        .main-category {
+            margin-bottom: 2rem;
+            background: rgba(230, 245, 215, 0.3);
+            border-radius: 32px;
+            padding: 1.2rem;
+            border: 1px solid #c8ddb5;
+        }
+        .main-category h3 {
+            font-size: 1.4rem;
+            color: #3a6b4a;
+            border-left: 5px solid #9ac2c9;
+            padding-left: 1rem;
+            margin-bottom: 1rem;
+        }
+        .sub-category {
+            margin-bottom: 1.5rem;
+        }
+        .sub-category-name {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            padding-left: 0.5rem;
+            color: #4f775a;
+        }
+        /* 亚克力、吧唧的外框样式 */
+        .group-box {
+            background: rgba(220, 235, 210, 0.5);
+            border-radius: 24px;
+            padding: 1rem 1rem 0.5rem 1rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid #c2d6b3;
+        }
+        .group-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #4a6e3a;
+            margin-bottom: 0.8rem;
+            padding-left: 0.5rem;
+            border-left: 4px solid #7faa5a;
+        }
+        .product-scroll {
+            overflow-x: auto;
+            display: flex;
+            gap: 0.8rem;
+            padding: 0.5rem 0.2rem;
+            scroll-snap-type: x mandatory;
+        }
+        .product-card {
+            flex: 0 0 auto;
+            width: 110px;
+            scroll-snap-align: start;
+            background: rgba(255,245,210,0.6);
+            border-radius: 20px;
+            padding: 0.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .product-card:hover {
+            transform: scale(1.03);
+        }
+        .product-card img {
+            width: 100%;
+            border-radius: 12px;
+            user-select: none;
+            -webkit-user-drag: none;
+        }
+        .product-card span {
+            display: block;
+            font-size: 0.7rem;
+            margin-top: 0.3rem;
+            color: #4f775a;
+        }
+                .project-summary {
+            font-size: 0.82rem;
+            line-height: 1.7;
+            color: #5f7d66;
+            margin: -0.25rem 0 1rem 1.25rem;
+            max-width: 720px;
+        }
+        .product-note {
+            display: block;
+            font-size: 0.62rem;
+            line-height: 1.35;
+            margin-top: 0.25rem;
+            color: #6d896f;
+            opacity: 0.82;
+        }.lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+        .lightbox-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+        }
+        .lightbox-content img {
+            width: 100%;
+            height: auto;
+            max-height: 90vh;
+            border-radius: 20px;
+            display: block;
+        }
+        .lightbox .close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 2rem;
+            color: white;
+            cursor: pointer;
+            z-index: 1002;
+        }
+        footer {
+            text-align: center;
+            font-size: 0.7rem;
+            padding: 1rem;
+            color: #6e8f6a;
+        }
+        @media (max-width: 640px) {
+            .container { padding: 1rem; }
+            .market-card { padding: 1rem; }
+            .qr-item { width: 140px; }
+            .scroll-item { width: 220px; }
+            .product-card { width: 90px; }
+        }
+    </style>
+</head>
+<body>
+<div class="sky-sand"></div>
+<div class="stars" id="starsContainer"></div>
+<div class="wave-container" aria-hidden="true">
+    <div class="wave wave1"></div>
+    <div class="wave wave2"></div>
+    <div class="wave wave3"></div>
+</div>
+<audio id="homeWhiteNoise" preload="auto" loop>
+    <source src="audio/white-noise.mp3" type="audio/mpeg">
+</audio>
+
+<div class="container">
+    <div class="header">
+        <span class="title">🏝️ 海岸集市</span>
+        <a href="zhuye.html" class="back-home">🌊 返回浅岸星滩</a>
+    </div>
+
+    <div class="market-card">
+        <div class="shop-name">星滩小铺</div>
+        <div class="sub">—— 拾一颗星星，带走一片浅滩 ——</div>
+
+        <div class="qr-container">
+            <div class="qr-item">
+                <img src="images/qrcode1_watermarked.png" alt="微店小程序码" onerror="this.src='https://placehold.co/200x200?text=小程序码'">
+                <div class="qr-label">📱 微信小程序</div>
+            </div>
+            <div class="qr-item">
+                <img src="images/qrcode2_watermarked.png" alt="微店店铺二维码" onerror="this.src='https://placehold.co/200x200?text=店铺二维码'">
+                <div class="qr-label">🏪 微店店铺</div>
+            </div>
+        </div>
+
+        <div class="expo-section">
+            <div class="expo-title">📸 毕设展板 · 现场留影</div>
+            <div class="scroll-container" id="expoScroll"></div>
+        </div>
+
+        <div class="products-preview">
+            <div class="products-title">🌊 潮汐小物精选 🌊</div>
+            <div id="productGroupsContainer"></div>
+        </div>
+    </div>
+    <footer>🌊 扫码进店，带走属于你的那片浪 🌊</footer>
+</div>
+
+<!-- 灯箱 -->
+<div id="lightbox" class="lightbox">
+    <span class="close">&times;</span>
+    <div class="lightbox-content">
+        <img id="lightboxImg" src="">
+    </div>
+</div>
+
+<script>
+    function generateStars() {
+        const starsContainer = document.getElementById('starsContainer');
+        if (!starsContainer) return;
+        const starCount = 100;
+        for (let i = 0; i < starCount; i++) {
+            const star = document.createElement('div');
+            star.classList.add('star');
+            const size = Math.random() * 3 + 1;
+            star.style.width = size + 'px';
+            star.style.height = size + 'px';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 60 + '%';
+            star.style.animationDuration = (Math.random() * 3 + 1.5) + 's';
+            star.style.animationDelay = (Math.random() * 5) + 's';
+            starsContainer.appendChild(star);
+        }
+    }
+    generateStars();
+
+    // ========== 毕设展板照片列表（共11张） ==========
+    const photos = [
+        "images/1_watermarked.jpg", "images/2_watermarked.jpg", "images/3_watermarked.jpg", "images/4_watermarked.jpg", "images/5_watermarked.jpg",
+        "images/6_watermarked.jpg", "images/7_watermarked.jpg", "images/8_watermarked.jpg", "images/9_watermarked.jpg", "images/10_watermarked.jpg",
+        "images/11_watermarked.jpg"
+    ];
+    // 将展板3(索引2)、10(索引9)、11(索引10)合并为一个卡片
+    const items = [];
+    items.push({
+        type: 'triple',
+        src1: photos[2],
+        src2: photos[9],
+        src3: photos[10],
+        index1: 3,
+        index2: 10,
+        index3: 11
+    });
+    for (let i = 0; i < photos.length; i++) {
+        if (i !== 2 && i !== 9 && i !== 10) {
+            items.push({
+                type: 'single',
+                src: photos[i],
+                index: i + 1
+            });
+        }
+    }
+
+    const scrollContainer = document.getElementById('expoScroll');
+    if (scrollContainer) {
+        let html = '';
+        items.forEach(item => {
+            if (item.type === 'single') {
+                html += `
+                    <div class="scroll-item">
+                        <img src="${item.src}" alt="毕设展板 ${item.index}" onclick="openLightbox(this.src, true)">
+                        <p>展板 ${item.index}</p>
+                    </div>
+                `;
+            } else if (item.type === 'triple') {
+                html += `
+                    <div class="scroll-item">
+                        <div class="combo-item">
+                            <img src="${item.src1}" alt="毕设展板 ${item.index1}" onclick="openLightbox(this.src, true)">
+                            <img src="${item.src2}" alt="毕设展板 ${item.index2}" onclick="openLightbox(this.src, true)">
+                            <img src="${item.src3}" alt="毕设展板 ${item.index3}" onclick="openLightbox(this.src, true)">
+                        </div>
+                        <p>展板 ${item.index1}、${item.index2}、${item.index3}</p>
+                    </div>
+                `;
+            }
+        });
+        scrollContainer.innerHTML = html;
+    }
+
+    // ========== 辅助函数 ==========
+    const roles = ["kala", "cituan", "ruanruan", "amo", "meimei", "ayin"];
+    const roleNames = {
+        kala: "卡菈", cituan: "刺团", ruanruan: "软软", amo: "阿默", meimei: "莓莓", ayin: "阿隐"
+    };
+
+    function renderMulti(catName, path) {
+        let html = `<div class="sub-category"><div class="sub-category-name">${catName}</div><div class="product-scroll">`;
+        for (let role of roles) {
+            const imgSrc = path.replace('{role}', role);
+            html += `
+                <div class="product-card" onclick="openLightbox('${imgSrc}', false)">
+                    <img src="${imgSrc}" alt="${catName} - ${roleNames[role]}" draggable="false" oncontextmenu="return false" ondragstart="return false">
+                    <span>${roleNames[role]}</span>
+                </div>
+            `;
+        }
+        html += `</div></div>`;
+        return html;
+    }
+
+    function renderCustom(catName, imagesArray, needCenter = false) {
+        if (!catName) return `<div class="product-scroll">${imagesArray.map(img => `
+            <div class="product-card" onclick="openLightbox('${img.src}', ${needCenter})">
+                <img src="${img.src}" alt="${img.label}" draggable="false" oncontextmenu="return false" ondragstart="return false">
+                <span>${img.label}</span>
+                ${img.note ? `<small class="product-note">${img.note}</small>` : ""}
+            </div>
+        `).join('')}</div>`;
+        return `<div class="sub-category"><div class="sub-category-name">${catName}</div><div class="product-scroll">${imagesArray.map(img => `
+            <div class="product-card" onclick="openLightbox('${img.src}', ${needCenter})">
+                <img src="${img.src}" alt="${img.label}" draggable="false" oncontextmenu="return false" ondragstart="return false">
+                <span>${img.label}</span>
+                ${img.note ? `<small class="product-note">${img.note}</small>` : ""}
+            </div>
+        `).join('')}</div></div>`;
+    }
+
+    // 构建内容
+    const logoHtml = `
+        <div class="main-category">
+            <h3>浅岸星滩logo文创</h3>
+            ${renderCustom("浅岸星滩logo实物", [
+                { src: "images/products/logo_tshirt_watermarked.jpg", label: "短袖" },
+                { src: "images/products/logo_tag_watermarked.jpg", label: "标签" },
+                { src: "images/products/logo_bag_watermarked.jpg", label: "书包" },
+                { src: "images/products/logo_tote_watermarked.jpg", label: "帆布袋" },
+                { src: "images/products/canvas_bag_watermarked.jpg", label: "帆布包实物" }
+            ], false)}
+            ${renderCustom("浅岸星滩方卡设计", [{ src: "images/products/square_card_watermarked.jpg", label: "海洋主题插画方卡" }], false)}  <!-- 右下角 -->
+        </div>
+    `;
+
+    const acrylicHtml = `
+        <div class="group-box">
+            <div class="group-title">🎨 亚克力</div>
+            ${renderMulti("透明亚克力挂件", "images/products/keychain_{role}.jpg")}  <!-- 默认右下角 -->
+            ${renderMulti("彩窗亚克力立牌", "images/products/stand_{role}.jpg")}
+        </div>
+    `;
+    const badgeHtml = `
+        <div class="group-box">
+            <div class="group-title">🎖️ 吧唧</div>
+            ${renderMulti("吧唧设计图", "images/products/badge_{role}.jpg")}
+            ${renderCustom("吧唧实物图", [{ src: "images/products/badge_display_watermarked.jpg", label: "吧唧实物展板" }], true)}  <!-- 居中 -->
+            ${renderCustom("金属吧唧", [
+                { src: "images/products/metal_badge_kala_watermarked.jpg", label: "卡菈" },
+                { src: "images/products/metal_badge_ruanruan_watermarked.jpg", label: "软软" }
+            ], false)}  <!-- 右下角 -->
+            ${renderCustom("开瓶器镭射吧唧", [{ src: "images/products/opener_real_watermarked.jpg", label: "镭射开瓶器" }], false)}  <!-- 右下角 -->
+        </div>
+    `;
+    // 修正 renderMulti 无法传递 needCenter 的问题：重写吧唧设计图部分
+    // 单独处理吧唧设计图
+    const badgeDesignHtml = `
+        <div class="sub-category">
+            <div class="sub-category-name">吧唧设计图</div>
+            <div class="product-scroll">
+                ${roles.map(role => {
+                    const imgSrc = `images/products/badge_${role}.jpg`;
+                    return `
+                        <div class="product-card" onclick="openLightbox('${imgSrc}', true)">
+                            <img src="${imgSrc}" alt="吧唧设计图 - ${roleNames[role]}" draggable="false" oncontextmenu="return false" ondragstart="return false">
+                            <span>${roleNames[role]}</span>
+                        </div>
+                    `;
+                }).join('')}
+            </div>
+        </div>
+    `;
+    // 重新组装 badgeHtml
+    const updatedBadgeHtml = `
+        <div class="group-box">
+            <div class="group-title">🎖️ 吧唧</div>
+            ${badgeDesignHtml}
+            ${renderCustom("吧唧实物图", [{ src: "images/products/badge_display_watermarked.jpg", label: "吧唧实物展板" }], true)}
+            ${renderCustom("金属吧唧", [
+                { src: "images/products/metal_badge_kala_watermarked.jpg", label: "卡菈" },
+                { src: "images/products/metal_badge_ruanruan_watermarked.jpg", label: "软软" }
+            ], false)}
+            ${renderCustom("开瓶器镭射吧唧", [{ src: "images/products/opener_real_watermarked.jpg", label: "镭射开瓶器" }], false)}
+        </div>
+    `;
+
+    const otherXiaoChong = `
+        ${renderCustom("寄居蟹抱枕", [
+            { src: "images/products/pillow_watermarked.jpg", label: "抱枕1" },
+            { src: "images/products/pillow2_watermarked.jpg", label: "抱枕2" },
+            { src: "images/products/pillow3_watermarked.jpg", label: "抱枕3" },
+            { src: "images/products/pillow4_watermarked.jpg", label: "抱枕4" }
+        ], false)}  <!-- 右下角 -->
+        ${renderMulti("毛绒卡套设计展板", "images/products/plush_{role}_watermarked.jpg")}  <!-- 右下角 -->
+        ${renderCustom("寄居蟹贴纸实物图", [
+            { src: "images/products/sticker_real_watermarked.jpg", label: "贴纸1" },
+            { src: "images/products/sticker_real2_watermarked.jpg", label: "贴纸2" }
+        ], false)}  <!-- 右下角 -->
+        <div class="sub-category">
+            <div class="sub-category-name">文创展板</div>
+            <div class="product-scroll">
+                ${renderCustom("", [{ src: "images/products/display_board_watermarked.jpg", label: "文创展板" }], true)}
+                ${renderCustom("", [{ src: "images/products/sticker_card_watermarked.jpg", label: "贴纸背卡卡头设计展板" }], true)}
+                ${renderCustom("", [{ src: "images/products/blindbox_display_watermarked.png", label: "寄居蟹盲盒展板设计" }], true)}
+            </div>
+        </div>
+    `;
+
+    const characterBoardHtml = `
+        <div class="sub-category">
+            <div class="sub-category-name">角色文创展板</div>
+            <div class="product-scroll">
+                ${renderCustom("", [{ src: "images/products/display_cituan_q_watermarked.jpg", label: "刺团Q版" }], true)}
+                ${renderCustom("", [{ src: "images/products/display_kala_watermarked.jpg", label: "卡菈" }], true)}
+                ${renderCustom("", [{ src: "images/products/display_ruanruan_watermarked.jpg", label: "软软" }], true)}
+                ${renderCustom("", [{ src: "images/products/hairband_ruanruan_watermarked.jpg", label: "软软发圈设计展板" }], true)}
+            </div>
+        </div>
+    `;
+    // 拟人角色文创中的实物图子分类
+    const physicalItems = `
+        <div class="sub-category">
+            <div class="sub-category-name">实物图</div>
+            <div class="product-scroll">
+                ${renderCustom("", [{ src: "images/products/fan_real_watermarked.jpg", label: "拟人Q版圆形扇子" }], false)}
+                ${renderCustom("", [{ src: "images/products/stamp_real_watermarked.jpg", label: "邮票实物" }], false)}
+            </div>
+        </div>
+    `;
+    // 拟人Q版杯垫和邮票
+    const coasterHtml = `
+        <div class="sub-category">
+            <div class="sub-category-name">拟人Q版杯垫</div>
+            <div class="product-scroll">
+                ${roles.map(role => {
+                    const imgSrc = `images/products/coaster_${role}.jpg`;
+                    return `
+                        <div class="product-card" onclick="openLightbox('${imgSrc}', true)">
+                            <img src="${imgSrc}" alt="拟人Q版杯垫 - ${roleNames[role]}" draggable="false" oncontextmenu="return false" ondragstart="return false">
+                            <span>${roleNames[role]}</span>
+                        </div>
+                    `;
+                }).join('')}
+            </div>
+        </div>
+    `;
+    const stampHtml = `
+        <div class="sub-category">
+            <div class="sub-category-name">拟人Q版邮票</div>
+            <div class="product-scroll">
+                ${roles.map(role => {
+                    const imgSrc = `images/products/stamp_${role}.jpg`;
+                    return `
+                        <div class="product-card" onclick="openLightbox('${imgSrc}', true)">
+                            <img src="${imgSrc}" alt="拟人Q版邮票 - ${roleNames[role]}" draggable="false" oncontextmenu="return false" ondragstart="return false">
+                            <span>${roleNames[role]}</span>
+                        </div>
+                    `;
+                }).join('')}
+            </div>
+        </div>
+    `;
+
+    const otherCharacterItems = `
+        ${characterBoardHtml}
+        ${physicalItems}
+        ${coasterHtml}
+        ${stampHtml}
+    `;
+
+    const tideDrinkProjectHtml = `
+        <div class="main-category">
+            <h3>星滩潮饮企划</h3>
+            <p class="project-summary">把角色气质做成可以带走的风味：莓莓的草莓红、软软的白桃荔枝、卡菈的热带阳光、阿默的清冷月汐、刺团的黑加仑能量、阿隐的蓝莓气泡，都收进这一组限定饮品里。</p>
+            ${renderCustom("角色限定饮品", [
+                { src: "images/products/meimei_strawberry_juice_watermarked.png", label: "莓莓星滩草莓汁", note: "草莓红与清新果香，像莓莓把小快乐认真装瓶。" },
+                { src: "images/products/ruanruan_peach_lychee_pearl_watermarked.png", label: "软软月海白桃荔枝珍珠饮", note: "白桃、荔枝与珍珠感，温柔得像月光落进海面。" },
+                { src: "images/products/kala_tropical_juice_watermarked.png", label: "卡菈热带椰菠果汁", note: "椰香清甜、菠萝明亮，是卡菈式的热带勇气。" },
+                { src: "images/products/amo_aqua_balance_watermarked.png", label: "阿默月汐平衡保湿水", note: "清透补水系联名，延续阿默安静冷白的月汐感。" },
+                { src: "images/products/amo_earl_white_tea_watermarked.png", label: "阿默灰雾伯爵白茶", note: "佛手柑香与白茶清透感结合，低甜、淡雅、清醒。" },
+                { src: "images/products/cituan_blackcurrant_energy_watermarked.png", label: "刺团紫莓黑加仑能量饮", note: "黑加仑果香与紫莓微酸感，适合警觉补能。" },
+                { src: "images/products/ayin_blueberry_soda_watermarked.png", label: "阿隐蓝莓气泡水", note: "蓝莓果香和气泡感，像屏幕蓝光一样清爽醒神。" }
+            ], false)}
+            ${renderCustom("收藏小物", [
+                { src: "images/products/kala_cotton_doll_watermarked.png", label: "卡菈棉花娃娃", note: "礼盒装棉花娃娃，保留卡菈的橙发与热带裙摆。" }
+            ], false)}
+        </div>
+    `;
+    const groupsContainer = document.getElementById('productGroupsContainer');
+    if (groupsContainer) {
+        let html = `
+            ${logoHtml}
+            ${tideDrinkProjectHtml}
+            <div class="main-category">
+                <h3>寄居蟹小宠文创</h3>
+                ${acrylicHtml}
+                ${updatedBadgeHtml}
+                ${otherXiaoChong}
+            </div>
+            <div class="main-category">
+                <h3>拟人角色文创</h3>
+                ${otherCharacterItems}
+            </div>
+        `;
+        groupsContainer.innerHTML = html;
+    }
+
+    // 灯箱功能
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightboxImg');
+
+    window.openLightbox = (src, needCenter = false) => {
+        lightboxImg.src = src;
+        lightbox.style.display = 'flex';
+    };
+    document.querySelector('.lightbox .close').addEventListener('click', () => {
+        lightbox.style.display = 'none';
+    });
+    lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) lightbox.style.display = 'none';
+    });
+</script>
+
+<script>
+    // 首页白噪音：自动尝试播放；若浏览器拦截，会在第一次点击/滚动/按键时启动
+    (function initHomeWhiteNoise() {
+        const whiteNoise = document.getElementById('homeWhiteNoise');
+        if (!whiteNoise) return;
+
+        whiteNoise.volume = 0.24;
+        whiteNoise.loop = true;
+
+        function playWhiteNoise() {
+            if (!whiteNoise || !whiteNoise.paused) return;
+            whiteNoise.play().catch(() => {
+                // 浏览器可能拦截自动播放，等待用户第一次交互后再启动
+            });
+        }
+
+        window.addEventListener('load', playWhiteNoise);
+        ['pointerdown', 'click', 'wheel', 'keydown', 'touchstart'].forEach(eventName => {
+            document.addEventListener(eventName, playWhiteNoise, { once: true, passive: true });
+        });
+    })();
+</script>
+</body>
+</html>

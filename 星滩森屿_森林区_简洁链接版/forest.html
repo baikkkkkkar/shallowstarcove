@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>星滩森屿｜森林区总入口</title>
+<style>
+:root{
+  --ink:#20314a;--muted:#5b7287;--blue:#46b7ff;--ice:#8df2ff;--green:#7cbc8d;
+  --panel:rgba(255,255,255,.50);--shadow:0 28px 80px rgba(42,96,138,.22);--r:32px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  min-height:100vh;
+  font-family:"Noto Serif SC","Microsoft YaHei",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  color:var(--ink);
+  background:
+    radial-gradient(circle at 14% 16%,rgba(136,229,255,.58),transparent 24%),
+    radial-gradient(circle at 84% 12%,rgba(183,176,255,.46),transparent 28%),
+    radial-gradient(circle at 72% 86%,rgba(151,220,156,.36),transparent 30%),
+    linear-gradient(135deg,#effcff 0%,#f7f4ff 46%,#f1fbef 100%);
+  overflow-x:hidden;
+}
+.wrap{width:min(1180px,calc(100% - 40px));margin:auto;padding:26px 0 110px}
+.topbar{
+  position:sticky;top:16px;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:14px;
+  padding:12px 16px;border-radius:999px;background:rgba(255,255,255,.56);
+  border:1px solid rgba(255,255,255,.78);backdrop-filter:blur(18px);box-shadow:0 16px 50px rgba(73,129,169,.15);
+}
+.brand{display:flex;align-items:center;gap:10px;font-weight:900;letter-spacing:.06em;color:#173a5f}
+.logo{width:36px;height:36px;border-radius:50%;background:conic-gradient(from 20deg,#1d6f8d,#62cfff,#eaffff,#8bd886,#1d6f8d);box-shadow:0 0 28px rgba(76,186,255,.45),inset 0 0 13px rgba(255,255,255,.84)}
+.navlinks{display:flex;gap:8px;flex-wrap:wrap}
+.navlinks a,.btn{text-decoration:none;color:#17405f;font-weight:900;border-radius:999px;background:rgba(255,255,255,.58);border:1px solid rgba(255,255,255,.78);transition:.25s}
+.navlinks a{padding:8px 11px;font-size:13px}
+.navlinks a:hover,.btn:hover{background:#fff;transform:translateY(-2px)}
+.hero{display:grid;grid-template-columns:.92fr 1.08fr;gap:34px;align-items:center;min-height:680px;padding:58px 0 34px}
+.kicker{display:inline-flex;padding:8px 14px;border-radius:999px;border:1px solid rgba(111,207,255,.52);background:rgba(255,255,255,.48);color:#2b6d95;font-size:13px;font-weight:900;letter-spacing:.13em}
+h1{margin-top:22px;font-size:clamp(52px,7.6vw,96px);line-height:1.02;letter-spacing:.05em;color:#19314c;text-shadow:0 14px 34px rgba(72,146,210,.22)}
+h1 span{display:block;background:linear-gradient(90deg,#1d6f8d,#3fa8ff,#8df4ff,#78bd72);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p,.lead{color:#425b75;font-size:18px;line-height:2;max-width:760px}
+.hero p{margin-top:22px}
+.ctas{display:flex;gap:13px;flex-wrap:wrap;margin-top:30px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 18px;box-shadow:0 13px 32px rgba(68,126,171,.16)}
+.btn.primary{color:white;background:linear-gradient(135deg,#2f8d6b,#3dbbff 56%,#8bf0ff)}
+.map{position:relative;min-height:560px;border-radius:48px;overflow:hidden;background:linear-gradient(145deg,rgba(255,255,255,.56),rgba(190,238,255,.25) 48%,rgba(140,188,118,.20));border:1px solid rgba(255,255,255,.78);box-shadow:var(--shadow)}
+.branch,.branch::before,.branch::after{position:absolute;content:"";height:7px;border-radius:999px;background:linear-gradient(90deg,transparent,#6f7f5e 16%,#344e3b 55%,transparent);opacity:.36;transform:rotate(-20deg)}
+.branch{width:82%;left:-80px;top:120px}.branch::before{width:82%;left:190px;top:240px;transform:rotate(28deg)}.branch::after{width:60%;left:120px;top:380px;transform:rotate(-11deg)}
+.node{position:absolute;width:182px;min-height:146px;padding:18px;border-radius:28px;background:rgba(255,255,255,.60);border:1px solid rgba(255,255,255,.78);backdrop-filter:blur(16px);box-shadow:0 18px 44px rgba(62,112,153,.17)}
+.node b{display:block;color:#1b4e79;margin-bottom:8px}.node span{display:block;color:#5a7288;font-size:13px;line-height:1.7}.node .dot{width:48px;height:48px;border-radius:50%;margin-bottom:12px;display:grid;place-items:center;font-size:26px}
+.node.mush{left:58px;bottom:72px}.node.bee{right:70px;top:96px}.node.bird{right:150px;bottom:88px}
+section{margin:46px 0;padding:34px;border-radius:var(--r);border:1px solid rgba(255,255,255,.68);background:rgba(255,255,255,.40);backdrop-filter:blur(20px);box-shadow:var(--shadow);position:relative;overflow:hidden}
+h2{color:#173b61;font-size:clamp(30px,4.6vw,48px);line-height:1.15;letter-spacing:.08em;margin-bottom:14px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:26px}
+.card{overflow:hidden;border-radius:30px;background:rgba(255,255,255,.52);border:1px solid rgba(255,255,255,.78);box-shadow:0 20px 52px rgba(70,126,166,.14);transition:.25s}
+.card:hover{transform:translateY(-6px);box-shadow:0 28px 64px rgba(70,126,166,.24)}
+.thumb{height:300px;overflow:hidden;background:linear-gradient(145deg,rgba(236,251,255,.9),rgba(238,244,255,.72))}
+.thumb img{width:100%;height:100%;object-fit:cover}.placeholder{height:100%;display:grid;place-items:center;font-size:88px}
+.card-body{padding:24px}.badge{display:inline-flex;margin-bottom:12px;padding:7px 11px;border-radius:999px;font-size:12px;font-weight:900;color:#275675;background:rgba(106,211,255,.15);border:1px solid rgba(106,211,255,.35)}
+.card h3{font-size:25px;color:#1c4d78;margin-bottom:10px}.card p{color:#4a6075;line-height:1.95;font-size:15px;margin-bottom:18px}.card a{text-decoration:none;font-weight:900;color:#1c5e86}
+.footer{text-align:center;color:#66839a;font-size:13px;letter-spacing:.08em;padding:36px 0 16px}
+.float{position:fixed;right:22px;bottom:22px;z-index:80;display:flex;flex-direction:column;gap:10px}.float a{width:50px;height:50px;display:grid;place-items:center;border-radius:50%;text-decoration:none;color:#17405f;font-size:12px;font-weight:900;background:rgba(255,255,255,.66);border:1px solid rgba(255,255,255,.86);box-shadow:0 12px 30px rgba(54,112,156,.20);backdrop-filter:blur(14px)}
+@media(max-width:980px){.hero,.cards{grid-template-columns:1fr}.hero{min-height:auto}.map{min-height:520px}}
+@media(max-width:640px){.wrap{width:min(100% - 24px,1180px)}.topbar{align-items:flex-start;border-radius:24px;flex-direction:column}h1{font-size:46px}section{padding:24px 18px}.node{position:relative;left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;width:calc(100% - 36px);margin:18px}.branch{display:none}}
+</style>
+</head>
+<body>
+<div class="float"><a href="../zhuye.html" title="返回浅岸星滩主页">主页</a><a href="#top" title="返回顶部">↑</a></div>
+<main class="wrap" id="top">
+  <nav class="topbar">
+    <div class="brand"><span class="logo"></span>星滩森屿｜森林区</div>
+    <div class="navlinks">
+      <a href="../zhuye.html">返回浅岸星滩主页</a>
+      <a href="#projects">三个小项目</a>
+    </div>
+  </nav>
+  <header class="hero">
+    <div>
+      <div class="kicker">MIDDLE LEVEL · FOREST AREA</div>
+      <h1>星滩<br><span>森屿</span></h1>
+      <p>这里是浅岸星滩的森林区总入口。它不是雨天总区，而是一片会随天气、时间与目光方向变化的森林：低头看见菌子，平视看见切叶蜂，抬头遇见蓝色小鸟。</p>
+      <div class="ctas">
+        <a class="btn primary" href="#projects">进入森林区</a>
+        <a class="btn" href="../zhuye.html">返回浅岸星滩主页</a>
+      </div>
+    </div>
+    <div class="map">
+      <div class="branch"></div>
+      <div class="node mush"><div class="dot">🍄</div><b>小项目 01｜雨后菌径</b><span>下雨 / 雨后天气触发</span></div>
+      <div class="node bee"><div class="dot">🐝</div><b>小项目 02｜叶片裁缝</b><span>白天 / 枝叶生态观察</span></div>
+      <div class="node bird"><div class="dot">🐦</div><b>小项目 03｜蓝灵鸟姐妹</b><span>枝头 / 生灵图鉴</span></div>
+    </div>
+  </header>
+  <section id="projects">
+    <h2>三个小项目</h2>
+    <p class="lead">这是“主页 → 森林区 → 单独小项目”的中间层。进入小项目后，只保留返回森林区和返回主页，不额外加其他跳转。</p>
+    <div class="cards">
+      <article class="card"><div class="thumb"><img src="grove_assets/mushroom_thumb.webp" alt="雨后菌径"></div><div class="card-body"><span class="badge">天气项目</span><h3>雨后菌径</h3><p>雨停之后，潮湿的地面亮起微弱菌光。和莓莓一起采集六种性格不同的菌子。</p><a href="index.html">进入采蘑菇 →</a></div></article>
+      <article class="card"><div class="thumb"><img src="grove_assets/bee_thumb_watermarked.png" alt="叶片裁缝"></div><div class="card-body"><span class="badge">生态观察</span><h3>叶片裁缝</h3><p>跟随切叶蜂，从叶片缺口走进树洞里的育婴室，观察小小建筑师的工作。</p><a href="leafcutter_bee_story_v5.html">观察切叶蜂 →</a></div></article>
+      <article class="card"><div class="thumb"><img src="grove_assets/blue_wren_thumb_watermarked.png" alt="蓝灵鸟姐妹"></div><div class="card-body"><span class="badge">生灵图鉴</span><h3>蓝灵鸟姐妹</h3><p>两只小鸟停在枝头，用互相整理羽毛的方式确认彼此还在身边。</p><a href="blue_wren_sisters/index.html">查看蓝灵鸟姐妹 →</a></div></article>
+    </div>
+  </section>
+  <footer class="footer">© 浅岸星滩・Shallowstar Cove｜星滩森屿｜创作者：白kar</footer>
+</main>
+</body>
+</html>

@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, user-scalable=yes" name="viewport"/>
+<title>莓莓 · 草莓红心 · 巨蟹座寄居蟹少女</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  /* 主色调改为红色系（保持原明度） */
+  background:linear-gradient(135deg,#fff0f0,#ffdfdf);
+  color:#b33636;
+  font-family:"微软雅黑",system-ui, -apple-system, 'Segoe UI', sans-serif;
+  min-height:100vh;
+  position:relative;
+  overflow-x:hidden;
+  /* 让文字可以被选中复制 */
+  user-select: text;
+  -webkit-user-select: text;
+}
+/* 让所有文字都可以被选中复制 */
+p, div, span, h1, h2, h3, h4, .description, .char-quote, .info-text, .caption {
+  user-select: text;
+  -webkit-user-select: text;
+}
+/* ========= 巨蟹座图腾：红色滤镜（与波浪红色系匹配） ========= */
+.cancer-totem {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(80%, 700px);
+  opacity: 0.6;
+  pointer-events: none;
+  z-index: 0;
+  /* 红色滤镜：使图腾呈现草莓红/珊瑚红 */
+  filter: sepia(1) hue-rotate(300deg) saturate(2.2) brightness(1.05);
+}
+/* ========= 底部海浪：卡菈同款三层泡沫水波 · 莓莓草莓红版 ========= */
+.waves {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 150px;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+  filter: drop-shadow(0 -8px 18px rgba(255,94,94,.16));
+}
+.waves::before {
+  content: "";
+  position: absolute;
+  inset: 34px -8% 0;
+  background:
+    radial-gradient(circle at 18% 42%, rgba(255,235,235,.22), transparent 28%),
+    radial-gradient(circle at 74% 46%, rgba(255,126,126,.16), transparent 34%),
+    linear-gradient(180deg, rgba(255,94,94,0) 0%, rgba(255,123,123,.24) 48%, rgba(176,34,50,.24) 100%);
+  filter: blur(.4px);
+}
+.waves::after {
+  content: "";
+  position: absolute;
+  left: -10%;
+  right: -10%;
+  bottom: 106px;
+  height: 42px;
+  background:
+    radial-gradient(ellipse at 12% 50%, rgba(255,255,255,.58) 0 2px, transparent 3px),
+    radial-gradient(ellipse at 28% 54%, rgba(255,216,216,.48) 0 2px, transparent 3px),
+    radial-gradient(ellipse at 48% 46%, rgba(255,255,255,.44) 0 2px, transparent 3px),
+    radial-gradient(ellipse at 72% 52%, rgba(255,216,216,.48) 0 2px, transparent 3px),
+    linear-gradient(90deg, transparent, rgba(255,235,235,.30), transparent);
+  opacity: .78;
+  filter: blur(.2px);
+  animation: foamDrift 15s ease-in-out infinite alternate;
+}
+.wave-layer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 150px;
+  background-repeat: repeat-x;
+  background-size: 2400px 150px;
+  background-position-y: bottom;
+  mix-blend-mode: screen;
+  will-change: background-position;
+}
+.wave1 {
+  bottom: -8px;
+  opacity: .98;
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%202400%20150%22%20preserveAspectRatio=%22none%22%3E%3Cdefs%3E%3ClinearGradient%20id=%22g%22%20x1=%220%22%20y1=%220%22%20x2=%220%22%20y2=%221%22%3E%3Cstop%20offset=%220%25%22%20stop-color=%22%23fff3f3%22%20stop-opacity=%220.72%22/%3E%3Cstop%20offset=%2255%25%22%20stop-color=%22%23ff8d8d%22%20stop-opacity=%220.38%22/%3E%3Cstop%20offset=%22100%25%22%20stop-color=%22%23a82335%22%20stop-opacity=%220.06%22/%3E%3C/linearGradient%3E%3Cfilter%20id=%22softGlow%22%20x=%22-10%25%22%20y=%22-30%25%22%20width=%22120%25%22%20height=%22160%25%22%3E%3CfeGaussianBlur%20stdDeviation=%222.2%22%20result=%22blur%22/%3E%3CfeMerge%3E%3CfeMergeNode%20in=%22blur%22/%3E%3CfeMergeNode%20in=%22SourceGraphic%22/%3E%3C/feMerge%3E%3C/filter%3E%3C/defs%3E%3Cpath%20fill=%22url(%23g)%22%20d=%22M0,64%20C150,18%20450,18%20600,64%20C750,110%201050,110%201200,64%20C1350,18%201650,18%201800,64%20C1950,110%202250,110%202400,64%20L2400,150%20L0,150%20Z%22/%3E%3Cpath%20d=%22M0,64%20C150,18%20450,18%20600,64%20C750,110%201050,110%201200,64%20C1350,18%201650,18%201800,64%20C1950,110%202250,110%202400,64%22%20fill=%22none%22%20stroke=%22%23ffffff%22%20stroke-opacity=%220.82%22%20stroke-width=%228%22%20stroke-linecap=%22round%22%20filter=%22url(%23softGlow)%22/%3E%3C/svg%3E");
+  animation: waveMove 22s linear infinite;
+}
+.wave2 {
+  bottom: -18px;
+  opacity: .82;
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%202400%20150%22%20preserveAspectRatio=%22none%22%3E%3Cdefs%3E%3ClinearGradient%20id=%22g%22%20x1=%220%22%20y1=%220%22%20x2=%220%22%20y2=%221%22%3E%3Cstop%20offset=%220%25%22%20stop-color=%22%23ffdede%22%20stop-opacity=%220.46%22/%3E%3Cstop%20offset=%2255%25%22%20stop-color=%22%23ff6b6b%22%20stop-opacity=%220.24%22/%3E%3Cstop%20offset=%22100%25%22%20stop-color=%22%23891728%22%20stop-opacity=%220.04%22/%3E%3C/linearGradient%3E%3Cfilter%20id=%22softGlow%22%20x=%22-10%25%22%20y=%22-30%25%22%20width=%22120%25%22%20height=%22160%25%22%3E%3CfeGaussianBlur%20stdDeviation=%222.2%22%20result=%22blur%22/%3E%3CfeMerge%3E%3CfeMergeNode%20in=%22blur%22/%3E%3CfeMergeNode%20in=%22SourceGraphic%22/%3E%3C/feMerge%3E%3C/filter%3E%3C/defs%3E%3Cpath%20fill=%22url(%23g)%22%20d=%22M0,82%20C150,38%20450,38%20600,82%20C750,126%201050,126%201200,82%20C1350,38%201650,38%201800,82%20C1950,126%202250,126%202400,82%20L2400,150%20L0,150%20Z%22/%3E%3Cpath%20d=%22M0,82%20C150,38%20450,38%20600,82%20C750,126%201050,126%201200,82%20C1350,38%201650,38%201800,82%20C1950,126%202250,126%202400,82%22%20fill=%22none%22%20stroke=%22%23ffffff%22%20stroke-opacity=%220.34%22%20stroke-width=%225%22%20stroke-linecap=%22round%22%20filter=%22url(%23softGlow)%22/%3E%3C/svg%3E");
+  animation: waveMove 30s linear infinite reverse;
+}
+.wave3 {
+  bottom: -26px;
+  opacity: .72;
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%202400%20150%22%20preserveAspectRatio=%22none%22%3E%3Cdefs%3E%3ClinearGradient%20id=%22g%22%20x1=%220%22%20y1=%220%22%20x2=%220%22%20y2=%221%22%3E%3Cstop%20offset=%220%25%22%20stop-color=%22%23ffb4b4%22%20stop-opacity=%220.35%22/%3E%3Cstop%20offset=%2255%25%22%20stop-color=%22%23ff4f62%22%20stop-opacity=%220.18%22/%3E%3Cstop%20offset=%22100%25%22%20stop-color=%22%236f1020%22%20stop-opacity=%220.03%22/%3E%3C/linearGradient%3E%3Cfilter%20id=%22softGlow%22%20x=%22-10%25%22%20y=%22-30%25%22%20width=%22120%25%22%20height=%22160%25%22%3E%3CfeGaussianBlur%20stdDeviation=%222.2%22%20result=%22blur%22/%3E%3CfeMerge%3E%3CfeMergeNode%20in=%22blur%22/%3E%3CfeMergeNode%20in=%22SourceGraphic%22/%3E%3C/feMerge%3E%3C/filter%3E%3C/defs%3E%3Cpath%20fill=%22url(%23g)%22%20d=%22M0,96%20C150,56%20450,56%20600,96%20C750,136%201050,136%201200,96%20C1350,56%201650,56%201800,96%20C1950,136%202250,136%202400,96%20L2400,150%20L0,150%20Z%22/%3E%3Cpath%20d=%22M0,96%20C150,56%20450,56%20600,96%20C750,136%201050,136%201200,96%20C1350,56%201650,56%201800,96%20C1950,136%202250,136%202400,96%22%20fill=%22none%22%20stroke=%22%23ffffff%22%20stroke-opacity=%220.2%22%20stroke-width=%224%22%20stroke-linecap=%22round%22%20filter=%22url(%23softGlow)%22/%3E%3C/svg%3E");
+  animation: waveMove 40s linear infinite;
+}
+@keyframes waveMove {
+  0% { background-position-x: 0; }
+  100% { background-position-x: 2400px; }
+}
+@keyframes foamDrift {
+  0% { transform: translateX(-18px); opacity: .58; }
+  100% { transform: translateX(18px); opacity: .84; }
+}
+
+
+/* ========= 顶部固定星星粒子：只闪烁，不跟随页面滑动 ========= */
+.fixed-stars {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 46vh;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+.fixed-star {
+  position: absolute;
+  border-radius: 50%;
+  background: #fff7ee;
+  opacity: 0;
+  box-shadow:
+    0 0 5px rgba(255,255,255,.95),
+    0 0 12px rgba(255,113,113,.48);
+  animation: fixedStarTwinkle 2.8s ease-in-out infinite alternate;
+}
+@keyframes fixedStarTwinkle {
+  0% { opacity: .12; transform: scale(.72); }
+  100% { opacity: .95; transform: scale(1.22); }
+}
+
+/* ========= 右下角返回顶部 / 返回底部按钮：卡菈同款文字款 ========= */
+.page-scroll-actions {
+  position: fixed;
+  right: 18px;
+  bottom: 24px;
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: auto;
+}
+.page-scroll-actions button {
+  border: 1px solid rgba(200,80,80,.48);
+  background: rgba(255,248,248,.62);
+  color: #b33030;
+  border-radius: 999px;
+  padding: .55rem .9rem;
+  font-size: .82rem;
+  cursor: pointer;
+  box-shadow: 0 10px 22px rgba(180,60,60,.13), 0 0 14px rgba(255,94,94,.14);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: .2s ease;
+  white-space: nowrap;
+}
+.page-scroll-actions button:hover {
+  transform: translateY(-2px);
+  background: rgba(255,226,226,.78);
+  box-shadow: 0 12px 26px rgba(180,60,60,.18), 0 0 18px rgba(255,94,94,.20);
+}
+@media (max-width:700px){
+  .page-scroll-actions { right: 10px; bottom: 14px; }
+  .page-scroll-actions button { padding: .48rem .68rem; font-size: .74rem; }
+  .waves { height: 132px; }
+  .wave-layer { height: 132px; background-size: 2400px 132px; }
+}
+
+.particle{
+  position:fixed;
+  background:#ffffff;
+  border-radius:50%;
+  opacity:0.7;
+  pointer-events:none;
+  animation:float 12s linear infinite;
+  z-index:1;
+}
+.emoji-bg{
+  position:fixed;
+  font-size:30px;
+  opacity:0.12;
+  pointer-events:none;
+  animation:emojiFloat 18s linear infinite;
+  z-index:1;
+}
+@keyframes float{
+  0%{transform:translateY(100vh) rotate(0deg);}
+  100%{transform:translateY(-100vh) rotate(360deg);}
+}
+@keyframes emojiFloat{
+  0%{transform:translateY(100vh) rotate(0deg);}
+  100%{transform:translateY(-100vh) rotate(-360deg);}
+}
+.container{
+  max-width:1000px;
+  margin:0 auto;
+  padding:60px 20px 100px 20px;
+  position:relative;
+  z-index:2;
+}
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:1rem;
+  margin-bottom:2rem;
+  background:rgba(255,255,255,.34);
+  backdrop-filter:blur(12px);
+  border-radius:60px;
+  padding:.55rem 1.6rem;
+  border:1px solid rgba(200,80,80,.45);
+  text-align:left;
+}
+.title{
+  font-size:1.35rem;
+  color:#b33030;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.cancer-icon {
+  display: inline-block;
+  font-size: 1.6rem;
+  filter: drop-shadow(0 0 2px #c88080);
+}
+.back-home{
+  color:#b33636;
+  text-decoration:none;
+  background:rgba(200,80,80,.24);
+  border-radius:40px;
+  padding:.4rem 1.1rem;
+  transition:.2s
+}
+.back-home:hover{
+  background:rgba(200,80,80,.35);
+  transform:translateY(-2px)
+}
+
+/* 角色卡片模糊度与刺团一致，背景调整为红色半透 */
+.character-card.layout-card{
+  background:rgba(255,255,255,0.45);
+  backdrop-filter:blur(2px);
+  border:1px solid rgba(200,80,80,.3);
+  box-shadow:0 18px 32px rgba(180,60,60,.12);
+  border-radius:56px;
+  padding:2rem;
+  margin-bottom:2rem;
+}
+.char-top{
+  display:flex;
+  flex-wrap:wrap;
+  gap:2rem;
+  margin-bottom:1.6rem;
+  align-items:flex-start;
+  justify-content:space-between;
+}
+.char-avatar{
+  width:220px;
+  height:220px;
+  flex-shrink:0;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  background:rgba(255,255,255,.28);
+  border:3px solid rgba(200,80,80,.5);
+}
+.char-avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+.char-info-wrapper{
+  flex:1;
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:1rem;
+  min-width:240px;
+}
+.char-info{
+  flex:1;
+  min-width:0;
+}
+.char-logo{
+  flex-shrink:0;
+  width:112px;
+  text-align:right;
+}
+.char-logo img{
+  max-width:100%;
+  height:auto;
+  filter:drop-shadow(0 0 2px rgba(255,255,255,.65));
+}
+.char-name{
+  font-size:2.35rem;
+  margin-bottom:.15rem;
+  color:#b33030;
+}
+.char-name-en{
+  font-size:1.05rem;
+  margin-bottom:.55rem;
+  opacity:.82;
+  letter-spacing:1px;
+}
+.char-tag{
+  display:inline-block;
+  margin-bottom:.85rem;
+  background:rgba(200,80,80,.28);
+  padding:.25rem 1rem;
+  border-radius:40px;
+  color:#b33030;
+}
+.char-meta{
+  margin-top:.5rem;
+}
+.char-meta p{
+  margin-bottom:.35rem;
+  line-height:1.55;
+}
+.char-quote{
+  background:rgba(255,255,255,.4);
+  border-left:3px solid #d66;
+  padding:1rem;
+  border-radius:30px;
+  text-align:center;
+  color:#b33636;
+  margin:1.3rem 0;
+}
+.keywords{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.6rem;
+  margin:1rem 0 1.3rem;
+  justify-content:center;
+}
+.keyword{
+  background:rgba(255,255,255,.28);
+  padding:.22rem .95rem;
+  border-radius:30px;
+  font-size:.86rem;
+}
+.description{
+  margin:1.3rem 0;
+  line-height:1.75;
+  font-size:1rem;
+}
+.description p{
+  margin-bottom:.8rem;
+}
+.section{
+  margin:2rem 0;
+}
+.section h3{
+  font-size:1.25rem;
+  margin-bottom:1rem;
+  padding-left:.8rem;
+  border-left:4px solid currentColor;
+  color:#b33030;
+}
+/* 寄居蟹卡片红色适配 */
+.info-card, .pet-card {
+  background: rgba(255,255,255,0.35);
+  border-radius: 32px;
+  padding: 1.2rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.5rem;
+  margin: 1rem 0;
+  backdrop-filter: blur(2px);
+}
+.info-card .info-img, .pet-card .pet-img {
+  width: 200px;
+  flex-shrink: 0;
+}
+.info-card img, .pet-card img {
+  width: 100%;
+  border-radius: 24px;
+  object-fit: contain;
+  background: rgba(200,80,80,0.2);
+}
+.info-card .info-text, .pet-card .pet-info {
+  flex: 1;
+  color: #b33636;
+}
+.info-card p, .pet-card p {
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+}
+.info-card strong, .pet-card strong {
+  color: #cc5555;
+}
+.scroll-x, .three-grid{
+  overflow-x:auto;
+  display:flex;
+  gap:1rem;
+  padding-bottom:.6rem;
+  scroll-snap-type:x mandatory;
+}
+.three-grid{
+  gap:1.2rem;
+}
+.img-container, .three-item{
+  flex:0 0 auto;
+  scroll-snap-align:start;
+  background:rgba(255,255,255,.26);
+  border-radius:24px;
+  padding:.65rem;
+  text-align:center;
+  width:280px;
+}
+.three-item{
+  width:310px;
+}
+.img-container img, .three-item img{
+  width:100%;
+  border-radius:16px;
+  object-fit:contain;
+  max-height:520px;
+}
+.img-container p, .three-item p, .banner-21x9 p{
+  margin-top:.45rem;
+  font-size:.78rem;
+  opacity:.82;
+}
+.banner-21x9{
+  width:100%;
+  background:rgba(255,255,255,.24);
+  border-radius:32px;
+  padding:1rem;
+  text-align:center;
+}
+.banner-21x9 img{
+  width:100%;
+  border-radius:20px;
+  object-fit:contain;
+}
+.merchandise{
+  margin-top:2rem;
+}
+.merchandise h3{
+  font-size:1.25rem;
+  margin-bottom:1rem;
+  padding-left:.8rem;
+  border-left:4px solid currentColor;
+  color:#b33030;
+}
+.merch-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(115px,1fr));
+  gap:1rem;
+}
+.merch-item{
+  background:rgba(255,255,255,.24);
+  border-radius:20px;
+  padding:.55rem;
+  text-align:center;
+}
+.merch-item img{
+  width:100%;
+  border-radius:16px;
+  object-fit:contain;
+}
+.merch-item span{
+  display:block;
+  font-size:.72rem;
+  margin-top:.35rem;
+  opacity:.84;
+}
+.nav-others{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:.8rem;
+  margin-top:2rem;
+}
+.nav-others a{
+  background:rgba(200,80,80,.3);
+  color:#b33636;
+  padding:.4rem 1.1rem;
+  border-radius:40px;
+  text-decoration:none;
+}
+.nav-others a:hover{
+  background:rgba(200,80,80,.45);
+}
+footer{
+  text-align:center;
+  font-size:0.7rem;
+  padding:1rem 0;
+  color:#cc6a6a;
+}
+@media (max-width:700px){
+  .character-card.layout-card{padding:1.1rem;}
+  .char-top{flex-direction:column;align-items:center;}
+  .char-avatar{width:160px;height:160px;}
+  .char-info-wrapper{flex-direction:column;align-items:center;text-align:center;}
+  .char-logo{text-align:center;width:94px;}
+  .char-name{font-size:1.8rem;}
+  .img-container{width:220px;}
+  .three-item{width:250px;}
+  .description{text-align:left;}
+  .info-card .info-img, .pet-card .pet-img{width:140px;}
+}
+
+.section-intro{
+  margin:.4rem 0 1rem;
+  line-height:1.65;
+  font-size:.94rem;
+  opacity:.92;
+}
+
+/* 房间图片容器样式 */
+.room-images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+.room-card {
+  flex: 1;
+  min-width: 200px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 24px;
+  padding: 1rem;
+  text-align: center;
+}
+.room-card img {
+  width: 100%;
+  border-radius: 20px;
+  object-fit: cover;
+}
+.room-card .room-name {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: bold;
+  color: #b33030;
+}
+.room-card .room-filename {
+  font-size: 0.7rem;
+  opacity: 0.7;
+  font-family: monospace;
+  margin-top: 0.25rem;
+}
+</style>
+</head>
+<body>
+<!-- 巨蟹座图腾（红色滤镜，与红色主色调匹配） -->
+<img alt="巨蟹座图腾" class="cancer-totem" draggable="false" oncontextmenu="return false" src="images/cancer_totem_watermarked.png"/>
+<div class="fixed-stars" id="fixedStars" aria-hidden="true"></div>
+<!-- 底部海浪（红色系） -->
+<div class="waves">
+<div class="wave-layer wave1"></div>
+<div class="wave-layer wave2"></div>
+<div class="wave-layer wave3"></div>
+</div>
+<script>
+
+// 顶部固定星星粒子：固定在视口顶部，只闪烁，不随内容滚动
+(function generateFixedStars(){
+  const box = document.getElementById('fixedStars');
+  if (!box || box.children.length) return;
+  const count = window.innerWidth < 700 ? 56 : 92;
+  for (let i = 0; i < count; i++) {
+    const s = document.createElement('span');
+    s.className = 'fixed-star';
+    const size = Math.random() * 2.8 + 1.1;
+    s.style.width = size + 'px';
+    s.style.height = size + 'px';
+    s.style.left = (Math.random() * 100) + '%';
+    s.style.top = (Math.random() * 100) + '%';
+    s.style.animationDuration = (Math.random() * 2.6 + 1.8) + 's';
+    s.style.animationDelay = (Math.random() * 4.8) + 's';
+    box.appendChild(s);
+  }
+})();
+// 白色悬浮颗粒（保留）
+for(let i=0;i<60;i++){
+  let p = document.createElement('div');
+  p.className = 'particle';
+  p.style.width = Math.random()*4+1 + 'px';
+  p.style.height = p.style.width;
+  p.style.left = Math.random()*100 + '%';
+  p.style.animationDelay = Math.random()*12 + 's';
+  document.body.appendChild(p);
+}
+// 莓莓专属草莓emoji背景
+for(let i=0;i<12;i++){
+  let e = document.createElement('div');
+  e.className = 'emoji-bg';
+  e.innerText = '🍓';
+  e.style.left = Math.random()*100 + '%';
+  e.style.animationDelay = Math.random()*18 + 's';
+  document.body.appendChild(e);
+}
+</script>
+<div class="page-scroll-actions" aria-label="页面快速滚动">
+<button type="button" onclick="window.scrollTo({top:0,behavior:'smooth'})">返回顶部</button>
+<button type="button" onclick="window.scrollTo({top:document.documentElement.scrollHeight,behavior:'smooth'})">返回底部</button>
+</div>
+<div class="container">
+<div class="header">
+<span class="title">
+<span class="cancer-icon">🦀♋</span> 莓莓 · 草莓红心 · 巨蟹座守护
+    </span>
+<a class="back-home" href="zhuye.html">🌊 返回浅岸星滩</a>
+</div>
+<div class="character-card layout-card">
+<div class="char-top">
+<div class="char-avatar">
+<img alt="莓莓" draggable="false" oncontextmenu="return false" src="images/characters/meimei/meimei_avatar_1_watermarked.png"/>
+</div>
+<div class="char-info-wrapper">
+<div class="char-info">
+<div class="char-name">莓莓</div>
+<div class="char-name-en">Meimei</div>
+<div class="char-tag">草莓红心 · 元气少女 · 甜辣治愈</div>
+<div class="char-meta">
+<p>定位：元气少女｜甜系治愈者</p>
+<p>气质：草莓红、明媚、活泼、可爱</p>
+<p>性格：活泼直率、简单纯粹、温柔明亮</p>
+<p>专属符号：🍓｜巨蟹座守护</p>
+</div>
+</div>
+<div class="char-logo">
+<img alt="莓莓专属logo" draggable="false" oncontextmenu="return false" src="images/characters/meimei/meimei_logo_watermarked.png"/>
+</div>
+</div>
+</div>
+<div class="keywords">
+<span class="keyword">草莓红心</span>
+<span class="keyword">元气可爱</span>
+<span class="keyword">软萌乖巧</span>
+<span class="keyword">甜辣治愈</span>
+<span class="keyword">少女感</span>
+<span class="keyword">明媚亲近</span>
+<span class="keyword">温柔直球</span>
+<span class="keyword">红粉氛围</span>
+</div>
+<div class="description">
+<p>莓莓像一颗刚洗好的草莓，明亮、清甜、带着让人放松的元气。她的表达直接又柔软，很容易把平凡日子染成红色草莓味。</p>
+<p>作为巨蟹座的一员，她用柔软的外壳包裹着最细腻的关心——就像寄居蟹一样，把温暖的家背在身上，走到哪里都带着安心感。</p>
+</div>
+<div class="char-quote">“把日子过成草莓红，热烈又温柔。我的壳里永远给你留一个位置哦～”</div>
+
+<!-- ========= 生物原型 ========= -->
+<div class="section">
+<h3>🦀 草莓寄居蟹 · 生物原型</h3>
+<div class="info-card">
+<div class="info-img">
+<img alt="草莓寄居蟹" draggable="false" oncontextmenu="return false" src="images/characters/meimei/meimei_crab_species_watermarked.jpg"/>
+</div>
+<div class="info-text">
+<p><strong>草莓寄居蟹（Coenobita perlatus）</strong></p>
+<p>草莓寄居蟹体色鲜艳，常呈红色、橙红或粉红色，外观像一颗小草莓。它们栖息于热带海岸附近，对湿度、温度与环境变化较为敏感，需要依靠螺壳保护柔软腹部。</p>
+<p>这种“鲜亮外表与柔软内里并存”的特质，成为莓莓角色设定的核心灵感：她天真、好奇、充满甜感，但也需要被温柔守护。</p>
+</div>
+</div>
+</div>
+
+<!-- ========= 寄居蟹小宠 · 小莓壳 ========= -->
+<div class="section">
+<h3>🐚 寄居蟹小宠 · 小莓壳</h3>
+<div class="pet-card">
+<div class="pet-img">
+<img alt="莓莓的小寄居蟹" draggable="false" oncontextmenu="return false" src="images/characters/meimei/meimei_pet_5_watermarked.png"/>
+</div>
+<div class="pet-info">
+<p><strong>姓名：</strong>小莓壳</p>
+<p><strong>物种：</strong>草莓陆寄居蟹（虚构亚种）</p>
+<p><strong>性格：</strong>温顺、粘人、喜欢趴在莓莓的肩膀上</p>
+<p><strong>特征：</strong>粉白色甲壳，背着一个螺旋草莓纹螺壳，左螯比右螯稍小，触须经常探出来东张西望。</p>
+<p>小莓壳是莓莓在海边捡到的迷路小家伙，当时它的壳破了，莓莓用草莓糖纸和树脂帮它修补了一个新家。从此小莓壳就成了莓莓最忠实的跟班，最喜欢钻进莓莓的衣兜里睡觉。</p>
+</div>
+</div>
+</div>
+
+<!-- ========= 角色形象 ========= -->
+<div class="section"><h3>📐 角色形象</h3>
+<div class="three-grid">
+<div class="three-item"><img alt="透明底立绘" draggable="false" oncontextmenu="return false" src="images/characters/meimei/meimei_full_4_watermarked.png"/><p>透明底立绘</p></div>
+<div class="three-item"><img alt="三视图" draggable="false" oncontextmenu="return false" src="images/characters/meimei/meimei_threeview_6_watermarked.png"/><p>三视图</p></div>
+<div class="three-item"><img alt="角色概念" draggable="false" oncontextmenu="return false" src="images/characters/meimei/meimei_concept_2_watermarked.png"/><p>角色概念</p></div>
+</div>
+</div>
+
+<!-- ========= 表情与日常 ========= -->
+<div class="section"><h3>🍓 表情与日常</h3>
+<div class="scroll-x">
+<div class="img-container"><img alt="表情设定" draggable="false" oncontextmenu="return false" src="images/characters/meimei/meimei_expression_3_watermarked.png"/><p>表情设定</p></div>
+<div class="img-container"><img alt="夏日出游" draggable="false" oncontextmenu="return false" src="images/gallery/7_summer_ruanruan_meimei_watermarked.jpg"/><p>夏日出游</p></div>
+</div>
+</div>
+
+<!-- ========= 21:9 角色展板 ========= -->
+<div class="section"><h3>🖼️ 21:9 角色展板</h3>
+<div class="banner-21x9"><img alt="莓莓 · 角色展板" draggable="false" oncontextmenu="return false" src="images/gallery/banner_meimei_watermarked.jpg"/><p>莓莓 · 角色展板</p></div>
+</div>
+
+<!-- ========= 莓莓的草莓糖果房间（已添加三张房间图片及英文命名） ========= -->
+<div class="section"><h3>🏠 莓莓的草莓糖果房间</h3>
+<div class="info-card">
+<div class="info-text">
+<p>莓莓的房间以草莓红、奶油白和糖果感圆角家具为核心，像一颗被贝壳包住的甜心。空间强调玩偶、贴纸、透明收纳和明亮窗边，突出她好奇、童真、把快乐传递给家人的性格。</p>
+</div>
+</div>
+<!-- 房间图片展示区，显示三张房间图片及文件名 -->
+<div class="room-images">
+<div class="room-card">
+<img alt="莓莓的家" draggable="false" oncontextmenu="return false" src="images/characters/meimei/莓莓的家_8_watermarked.png" onerror="this.src='https://placehold.co/400x300?text=莓莓的家'"/>
+<div class="room-name">莓莓的家</div>
+</div>
+<div class="room-card">
+<img alt="莓莓的次卧" draggable="false" oncontextmenu="return false" src="images/characters/meimei/莓莓的次卧_7_watermarked.png" onerror="this.src='https://placehold.co/400x300?text=莓莓的次卧'"/>
+<div class="room-name">莓莓的次卧</div>
+</div>
+<div class="room-card">
+<img alt="莓莓的主卧" draggable="false" oncontextmenu="return false" src="images/characters/meimei/莓莓的主卧_9_watermarked.png" onerror="this.src='https://placehold.co/400x300?text=莓莓的主卧'"/>
+<div class="room-name">莓莓的主卧</div>
+</div>
+</div>
+</div>
+
+<!-- ========= 周边小物 ========= -->
+<div class="merchandise"><h3>🛍️ 周边小物</h3>
+<div class="merch-grid">
+<div class="merch-item"><img alt="吧唧" draggable="false" oncontextmenu="return false" src="images/products/badge_meimei_watermarked.jpg"/><span>吧唧</span></div>
+<div class="merch-item"><img alt="方形邮票" draggable="false" oncontextmenu="return false" src="images/products/stamp_meimei_watermarked.jpg"/><span>方形邮票</span></div>
+<div class="merch-item"><img alt="杯垫" draggable="false" oncontextmenu="return false" src="images/products/coaster_meimei_watermarked.jpg"/><span>杯垫</span></div>
+<div class="merch-item"><img alt="立牌" draggable="false" oncontextmenu="return false" src="images/products/stand_meimei_watermarked.jpg"/><span>立牌</span></div>
+<div class="merch-item"><img alt="挂件" draggable="false" oncontextmenu="return false" src="images/products/keychain_meimei_watermarked.jpg"/><span>挂件</span></div>
+<div class="merch-item"><img alt="毛绒" draggable="false" oncontextmenu="return false" src="images/products/plush_meimei_watermarked.jpg"/><span>毛绒</span></div>
+<div class="merch-item"><img alt="抱枕" draggable="false" oncontextmenu="return false" src="images/products/pillow_meimei_watermarked.jpg"/><span>抱枕</span></div>
+<div class="merch-item"><img alt="莓莓星滩草莓汁" draggable="false" oncontextmenu="return false" src="images/products/meimei_strawberry_juice_watermarked.png"/><span>莓莓星滩草莓汁</span><small class="merch-note">莓莓限定草莓汁，草莓红与清新果香一起放大她的小快乐气质。</small></div>
+</div>
+</div>
+
+<!-- ========= 导航链接 ========= -->
+<div class="nav-others">
+<a href="kala.html">卡菈</a>
+<a href="cituan.html">刺团</a>
+<a href="ruanruan.html">软软</a>
+<a href="amo.html">阿默</a>
+<a href="ayin.html">阿隐</a>
+</div>
+</div>
+<footer>🌊 潮间带群落 · 六种情绪 · 巨蟹座的温柔守护 🌊</footer>
+</div>
+
+<!-- 灯箱 -->
+<div class="lightbox" id="lightbox" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); backdrop-filter:blur(8px); z-index:1000; justify-content:center; align-items:center; cursor:pointer;">
+<span style="position:absolute; top:20px; right:30px; font-size:2rem; color:white; cursor:pointer;">×</span>
+<div style="position:relative; max-width:90%; max-height:90%;">
+<img id="lightboxImg" style="width:100%; height:auto; max-height:90vh; border-radius:20px; display:block;"/>
+</div>
+</div>
+
+<script>
+    // 灯箱点击放大
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightboxImg');
+    const closeBtn = document.querySelector('#lightbox span');
+    const allImages = document.querySelectorAll('.three-item img, .img-container img, .merch-item img, .banner-21x9 img, .char-avatar img, .info-card img, .pet-card img, .char-logo img, .room-card img');
+    allImages.forEach(img => {
+        img.style.cursor = 'pointer';
+        img.addEventListener('click', (e) => {
+            e.stopPropagation();
+            lightboxImg.src = img.src;
+            lightbox.style.display = 'flex';
+        });
+    });
+    if(closeBtn) {
+        closeBtn.onclick = () => lightbox.style.display = 'none';
+    }
+    lightbox.onclick = (e) => { if (e.target === lightbox) lightbox.style.display = 'none'; };
+</script>
+</body>
+</html>

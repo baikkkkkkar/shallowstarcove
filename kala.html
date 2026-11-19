@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, user-scalable=yes" name="viewport"/>
+<title>可可·卡菈 · 椰子蟹 · 浅岸星滩</title>
+<style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            min-height: 100vh;
+            font-family: 'Segoe UI', 'Roboto', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            overflow-x: hidden;
+            color: #4a2e2a;
+            position: relative;
+        }
+        .bg-totem {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: min(80%, 700px);
+            opacity: 0.3;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .sky-sand {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: linear-gradient(165deg, #fce5c4 0%, #ffe6b3 40%, #ffefcf 70%, #f5e0be 100%);
+        }
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60%;
+            z-index: -1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .star {
+            position: absolute;
+            background-color: #ffefb0;
+            border-radius: 50%;
+            box-shadow: 0 0 4px 1px rgba(255,220,100,0.8);
+            opacity: 0;
+            animation: twinkle 3s infinite alternate;
+        }
+        @keyframes twinkle {
+            0% { opacity: 0; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1.2); }
+        }
+        .particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 1.5rem 1.5rem 3rem;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            background: rgba(255, 242, 220, 0.7);
+            backdrop-filter: blur(8px);
+            border-radius: 60px;
+            padding: 0.5rem 2rem;
+            border: 1px solid rgba(255, 210, 150, 0.8);
+        }
+        .back-home {
+            text-decoration: none;
+            font-weight: 500;
+            color: #b45f2b;
+            background: rgba(255, 235, 200, 0.8);
+            padding: 0.4rem 1.2rem;
+            border-radius: 40px;
+            transition: 0.2s;
+        }
+        .back-home:hover { background: #ffe0b3; transform: translateY(-2px); }
+        .title { font-size: 1.6rem; font-weight: 400; color: #b45f2b; }
+
+        .character-card {
+            background: rgba(255, 248, 235, 0.2);
+            border-radius: 56px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 220, 160, 0.8);
+            box-shadow: 0 20px 35px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+        }
+        .char-top {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            align-items: flex-start;
+            justify-content: space-between;
+        }
+        .char-avatar {
+            width: 220px;
+            height: 220px;
+            flex-shrink: 0;
+            border-radius: 50%;
+            background: rgba(255, 235, 200, 0.6);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border: 4px solid #ffcd99;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        .char-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .char-info-wrapper {
+            flex: 1;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+        .char-info { flex: 1; }
+        .char-logo {
+            flex-shrink: 0;
+            width: 120px;
+            text-align: right;
+        }
+        .char-logo img {
+            max-width: 100%;
+            height: auto;
+            filter: drop-shadow(0 0 2px white);
+        }
+        .char-name { font-size: 2.4rem; font-weight: 500; color: #c16a2e; margin-bottom: 0.2rem; }
+        .char-name-en { font-size: 1.2rem; color: #a05a2a; margin-bottom: 0.5rem; letter-spacing: 1px; }
+        .char-tag {
+            background: #ffd9a5;
+            display: inline-block;
+            padding: 0.2rem 1rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            color: #7a3e1a;
+            margin-bottom: 1rem;
+        }
+        .char-meta { margin-top: 0.8rem; }
+        .char-meta p { margin-bottom: 0.3rem; font-size: 0.95rem; }
+
+        .elements {
+            display: flex;
+            justify-content: center;
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: rgba(255, 240, 210, 0.4);
+            border-radius: 60px;
+        }
+        .elements-img { max-width: 100%; height: auto; max-height: 90px; }
+
+        .keywords {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin: 1rem 0;
+            justify-content: center;
+        }
+        .keyword {
+            background: #f7e1bd;
+            padding: 0.2rem 1rem;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            color: #8b4e26;
+        }
+        .description { margin: 1.8rem 0; line-height: 1.7; font-size: 1rem; }
+        .section { margin: 2rem 0; }
+        .section h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: #b45f2b;
+            border-left: 4px solid #ffb669;
+            padding-left: 0.8rem;
+        }
+
+        /* 横向滚动通用 */
+        .scroll-x {
+            overflow-x: auto;
+            display: flex;
+            gap: 1rem;
+            padding-bottom: 0.5rem;
+            scroll-snap-type: x mandatory;
+        }
+        .img-container {
+            flex: 0 0 auto;
+            scroll-snap-align: start;
+            background: rgba(255,245,220,0.6);
+            border-radius: 24px;
+            padding: 0.6rem;
+            width: 280px;
+            text-align: center;
+        }
+        .img-container img {
+            width: 100%;
+            border-radius: 16px;
+            object-fit: contain;
+            background: #ffe0b3;
+        }
+        .img-container p { font-size: 0.75rem; margin-top: 0.3rem; color: #4f775a; }
+
+        /* 三视图：强制一排（横向滚动） */
+        .three-grid {
+            display: flex;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+        }
+        .three-item {
+            flex: 0 0 auto;
+            width: 320px;
+            background: rgba(255,245,220,0.6);
+            border-radius: 24px;
+            padding: 1rem;
+            text-align: center;
+        }
+        .three-item img {
+            width: 100%;
+            max-height: 500px;
+            object-fit: contain;
+            border-radius: 16px;
+        }
+        .three-item p { margin-top: 0.4rem; font-size: 0.8rem; color: #4f775a; }
+
+        /* 21:9 展板专用 */
+        .banner-21x9 {
+            width: 100%;
+            background: rgba(255,245,220,0.6);
+            border-radius: 32px;
+            padding: 1rem;
+            text-align: center;
+            margin-top: 1rem;
+        }
+        .banner-21x9 img {
+            width: 100%;
+            border-radius: 20px;
+            object-fit: contain;
+        }
+        .banner-21x9 p {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: #4f775a;
+        }
+
+        /* 宠物卡片 & 生物原型卡片共用样式 */
+        .info-card {
+            background: rgba(255,245,220,0.6);
+            border-radius: 32px;
+            padding: 1.2rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+        .info-card .info-img {
+            width: 220px;
+            flex-shrink: 0;
+        }
+        .info-card img {
+            width: 100%;
+            border-radius: 24px;
+            object-fit: contain;
+            background: #ffe0b3;
+        }
+        .info-card .info-text {
+            flex: 1;
+        }
+        .info-card .info-text p {
+            margin-bottom: 0.5rem;
+            line-height: 1.5;
+        }
+        .info-card .info-text strong {
+            color: #b45f2b;
+        }
+
+        /* 宠物卡片（原有）保留，但为了统一，也使用 info-card 类？为了不破坏现有结构，保留原有 pet-card，新生物原型使用 info-card */
+        .pet-card {
+            background: rgba(255,245,220,0.6);
+            border-radius: 32px;
+            padding: 1.2rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+        .pet-card .pet-img { width: 220px; flex-shrink: 0; }
+        .pet-card img { width: 100%; border-radius: 24px; object-fit: contain; background: #ffe0b3; }
+        .pet-info { flex: 1; }
+        .pet-info p { margin-bottom: 0.5rem; line-height: 1.5; }
+        .pet-info strong { color: #b45f2b; }
+
+        .merchandise { margin-top: 2rem; }
+        .merchandise h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: #b45f2b;
+            border-left: 4px solid #ffb669;
+            padding-left: 0.8rem;
+        }
+        .merch-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+            gap: 1rem;
+        }
+        .merch-item {
+            background: rgba(255,245,210,0.5);
+            border-radius: 20px;
+            padding: 0.5rem;
+            text-align: center;
+        }
+        .merch-item img { width: 100%; border-radius: 16px; }
+        .merch-item span { display: block; font-size: 0.7rem; margin-top: 0.3rem; color: #4f775a; }
+        .merch-note { display: block; margin-top: 0.28rem; font-size: 0.62rem; line-height: 1.35; color: #6f8468; opacity: 0.82; }
+        .char-quote {
+            font-style: italic;
+            background: rgba(255, 225, 180, 0.5);
+            padding: 1.2rem;
+            border-radius: 40px;
+            margin: 1.5rem 0;
+            text-align: center;
+            font-size: 1.1rem;
+            color: #a85f2e;
+        }
+        .nav-others {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.8rem;
+            margin-top: 2rem;
+        }
+        .nav-others a {
+            text-decoration: none;
+            background: #e1b282;
+            padding: 0.4rem 1.2rem;
+            border-radius: 40px;
+            color: #fff8ea;
+            font-size: 0.9rem;
+            transition: 0.2s;
+        }
+        .nav-others a:hover { background: #c58146; transform: translateY(-2px); }
+        footer { text-align: center; font-size: 0.7rem; padding: 1rem; color: #b18154; }
+
+
+        /* ========= 卡菈底部海浪：阿隐同款三层泡沫水波 · 暖椰奶色 ========= */
+        .wave-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 150px;
+            z-index: 1;
+            pointer-events: none;
+            overflow: hidden;
+            filter: drop-shadow(0 -8px 18px rgba(196, 106, 46, .13));
+        }
+        .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 150px;
+            background-repeat: repeat-x;
+            background-size: 2400px 150px;
+            background-position-y: bottom;
+            mix-blend-mode: soft-light;
+            will-change: background-position;
+        }
+        .wave1 {
+            bottom: -8px;
+            opacity: .96;
+            background-image: url("data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%202400%20150%22%20preserveAspectRatio=%22none%22%3E%0A%3Cdefs%3E%0A%3ClinearGradient%20id=%22g%22%20x1=%220%22%20y1=%220%22%20x2=%220%22%20y2=%221%22%3E%0A%3Cstop%20offset=%220%%22%20stop-color=%22%23fff8e8%22%20stop-opacity=%220.78%22/%3E%0A%3Cstop%20offset=%2255%%22%20stop-color=%22%23ffd39b%22%20stop-opacity=%220.42%22/%3E%0A%3Cstop%20offset=%22100%%22%20stop-color=%22%23b96b37%22%20stop-opacity=%220.08%22/%3E%0A%3C/linearGradient%3E%0A%3Cfilter%20id=%22softGlow%22%20x=%22-10%%22%20y=%22-30%%22%20width=%22120%%22%20height=%22160%%22%3E%0A%3CfeGaussianBlur%20stdDeviation=%222.2%22%20result=%22blur%22/%3E%0A%3CfeMerge%3E%3CfeMergeNode%20in=%22blur%22/%3E%3CfeMergeNode%20in=%22SourceGraphic%22/%3E%3C/feMerge%3E%0A%3C/filter%3E%0A%3C/defs%3E%0A%3Cpath%20fill=%22url(%23g)%22%20d=%22M0,64%20C150,18%20450,18%20600,64%20C750,110%201050,110%201200,64%20C1350,18%201650,18%201800,64%20C1950,110%202250,110%202400,64%20L2400,150%20L0,150%20Z%22/%3E%0A%3Cpath%20d=%22M0,64%20C150,18%20450,18%20600,64%20C750,110%201050,110%201200,64%20C1350,18%201650,18%201800,64%20C1950,110%202250,110%202400,64%22%20fill=%22none%22%20stroke=%22%23fffdf2%22%20stroke-opacity=%220.86%22%20stroke-width=%228%22%20stroke-linecap=%22round%22%20filter=%22url(%23softGlow)%22/%3E%0A%3Cpath%20d=%22M0,64%20C150,18%20450,18%20600,64%20C750,110%201050,110%201200,64%20C1350,18%201650,18%201800,64%20C1950,110%202250,110%202400,64%22%20fill=%22none%22%20stroke=%22%23ffe7bd%22%20stroke-opacity=%220.42%22%20stroke-width=%224%22%20stroke-linecap=%22round%22/%3E%0A%3C/svg%3E");
+            animation: waveMove 22s linear infinite;
+        }
+        .wave2 {
+            bottom: -18px;
+            opacity: .82;
+            background-image: url("data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%202400%20150%22%20preserveAspectRatio=%22none%22%3E%0A%3Cdefs%3E%0A%3ClinearGradient%20id=%22g%22%20x1=%220%22%20y1=%220%22%20x2=%220%22%20y2=%221%22%3E%0A%3Cstop%20offset=%220%%22%20stop-color=%22%23ffe8bd%22%20stop-opacity=%220.52%22/%3E%0A%3Cstop%20offset=%2255%%22%20stop-color=%22%23f2a765%22%20stop-opacity=%220.28%22/%3E%0A%3Cstop%20offset=%22100%%22%20stop-color=%22%238f4b2a%22%20stop-opacity=%220.05%22/%3E%0A%3C/linearGradient%3E%0A%3Cfilter%20id=%22softGlow%22%20x=%22-10%%22%20y=%22-30%%22%20width=%22120%%22%20height=%22160%%22%3E%0A%3CfeGaussianBlur%20stdDeviation=%222.2%22%20result=%22blur%22/%3E%0A%3CfeMerge%3E%3CfeMergeNode%20in=%22blur%22/%3E%3CfeMergeNode%20in=%22SourceGraphic%22/%3E%3C/feMerge%3E%0A%3C/filter%3E%0A%3C/defs%3E%0A%3Cpath%20fill=%22url(%23g)%22%20d=%22M0,82%20C150,38%20450,38%20600,82%20C750,126%201050,126%201200,82%20C1350,38%201650,38%201800,82%20C1950,126%202250,126%202400,82%20L2400,150%20L0,150%20Z%22/%3E%0A%3Cpath%20d=%22M0,82%20C150,38%20450,38%20600,82%20C750,126%201050,126%201200,82%20C1350,38%201650,38%201800,82%20C1950,126%202250,126%202400,82%22%20fill=%22none%22%20stroke=%22%23fff9ea%22%20stroke-opacity=%220.38%22%20stroke-width=%225%22%20stroke-linecap=%22round%22%20filter=%22url(%23softGlow)%22/%3E%0A%3Cpath%20d=%22M0,82%20C150,38%20450,38%20600,82%20C750,126%201050,126%201200,82%20C1350,38%201650,38%201800,82%20C1950,126%202250,126%202400,82%22%20fill=%22none%22%20stroke=%22%23ffd39b%22%20stroke-opacity=%220.19%22%20stroke-width=%222%22%20stroke-linecap=%22round%22/%3E%0A%3C/svg%3E");
+            animation: waveMove 30s linear infinite reverse;
+        }
+        .wave3 {
+            bottom: -26px;
+            opacity: .72;
+            background-image: url("data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%202400%20150%22%20preserveAspectRatio=%22none%22%3E%0A%3Cdefs%3E%0A%3ClinearGradient%20id=%22g%22%20x1=%220%22%20y1=%220%22%20x2=%220%22%20y2=%221%22%3E%0A%3Cstop%20offset=%220%%22%20stop-color=%22%23f4b979%22%20stop-opacity=%220.40%22/%3E%0A%3Cstop%20offset=%2255%%22%20stop-color=%22%23c87742%22%20stop-opacity=%220.22%22/%3E%0A%3Cstop%20offset=%22100%%22%20stop-color=%22%236f351f%22%20stop-opacity=%220.04%22/%3E%0A%3C/linearGradient%3E%0A%3Cfilter%20id=%22softGlow%22%20x=%22-10%%22%20y=%22-30%%22%20width=%22120%%22%20height=%22160%%22%3E%0A%3CfeGaussianBlur%20stdDeviation=%222.2%22%20result=%22blur%22/%3E%0A%3CfeMerge%3E%3CfeMergeNode%20in=%22blur%22/%3E%3CfeMergeNode%20in=%22SourceGraphic%22/%3E%3C/feMerge%3E%0A%3C/filter%3E%0A%3C/defs%3E%0A%3Cpath%20fill=%22url(%23g)%22%20d=%22M0,96%20C150,56%20450,56%20600,96%20C750,136%201050,136%201200,96%20C1350,56%201650,56%201800,96%20C1950,136%202250,136%202400,96%20L2400,150%20L0,150%20Z%22/%3E%0A%3Cpath%20d=%22M0,96%20C150,56%20450,56%20600,96%20C750,136%201050,136%201200,96%20C1350,56%201650,56%201800,96%20C1950,136%202250,136%202400,96%22%20fill=%22none%22%20stroke=%22%23fff5df%22%20stroke-opacity=%220.24%22%20stroke-width=%224%22%20stroke-linecap=%22round%22%20filter=%22url(%23softGlow)%22/%3E%0A%3Cpath%20d=%22M0,96%20C150,56%20450,56%20600,96%20C750,136%201050,136%201200,96%20C1350,56%201650,56%201800,96%20C1950,136%202250,136%202400,96%22%20fill=%22none%22%20stroke=%22%23ffd19a%22%20stroke-opacity=%220.11%22%20stroke-width=%222%22%20stroke-linecap=%22round%22/%3E%0A%3C/svg%3E");
+            animation: waveMove 40s linear infinite;
+        }
+        @keyframes waveMove {
+            0% { background-position-x: 0; }
+            100% { background-position-x: 2400px; }
+        }
+
+        /* ========= 右侧返回顶部 / 返回底部：同款文字按钮 ========= */
+        .page-jump-nav {
+            position: fixed;
+            right: 18px;
+            bottom: 24px;
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            pointer-events: auto;
+        }
+        .jump-btn {
+            border: 1px solid rgba(180, 95, 43, .42);
+            background: rgba(255, 248, 235, .72);
+            color: #b45f2b;
+            border-radius: 999px;
+            padding: .55rem .85rem;
+            font-size: .82rem;
+            line-height: 1;
+            cursor: pointer;
+            box-shadow: 0 0 16px rgba(196,106,46,.13), 0 10px 22px rgba(113,65,28,.12);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            transition: transform .2s ease, background .2s ease, box-shadow .2s ease;
+            white-space: nowrap;
+        }
+        .jump-btn:hover {
+            transform: translateY(-2px);
+            background: rgba(255, 226, 184, .88);
+            box-shadow: 0 0 22px rgba(196,106,46,.24), 0 12px 26px rgba(113,65,28,.16);
+        }
+        @media (max-width: 700px) {
+            .page-jump-nav { right: 10px; bottom: 14px; gap: 8px; }
+            .jump-btn { padding: .5rem .68rem; font-size: .74rem; }
+        }
+
+
+        /* 顶部星星粒子固定闪烁：固定在视口顶部，不随页面内容滑动 */
+        .stars {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: 42vh !important;
+            z-index: 1 !important;
+            pointer-events: none !important;
+            overflow: hidden !important;
+            transform: none !important;
+        }
+        .star {
+            animation-name: twinkleFixed !important;
+            will-change: opacity, transform;
+        }
+        @keyframes twinkleFixed {
+            0% { opacity: .16; transform: scale(.72); }
+            48% { opacity: .96; transform: scale(1.18); }
+            100% { opacity: .34; transform: scale(.9); }
+        }
+
+        @media (max-width: 700px) {
+            .char-top { flex-direction: column; align-items: center; }
+            .char-avatar { width: 160px; height: 160px; }
+            .char-name { font-size: 1.8rem; }
+            .img-container { width: 220px; }
+            .three-item { width: 260px; }
+            .char-info-wrapper { flex-direction: column; align-items: center; }
+            .char-logo { text-align: center; margin-top: 0.5rem; }
+            .pet-card .pet-img, .info-card .info-img { width: 160px; }
+        }
+    
+.section-intro{
+  margin:.4rem 0 1rem;
+  line-height:1.65;
+  font-size:.94rem;
+  opacity:.92;
+}
+
+        .container { z-index: 3; padding-bottom: 5.5rem; }
+        footer { position: relative; z-index: 3; padding-bottom: 3.2rem; }
+
+
+
+        /* ========= 卡菈语音台词 · 热带阳光角色页 ========= */
+        .voice-section {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, rgba(255, 246, 218, .72), rgba(255, 220, 158, .46), rgba(255, 245, 225, .68));
+            border: 1px solid rgba(255, 184, 100, .62);
+            border-radius: 38px;
+            padding: 1.35rem;
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,.45), 0 16px 30px rgba(178, 96, 36, .08);
+        }
+        .voice-section::before,
+        .voice-section::after {
+            content: "";
+            position: absolute;
+            pointer-events: none;
+            border-radius: 999px;
+            filter: blur(.2px);
+        }
+        .voice-section::before {
+            width: 180px;
+            height: 180px;
+            right: -70px;
+            top: -78px;
+            background: radial-gradient(circle, rgba(255, 200, 91, .36) 0 34%, transparent 35% 100%);
+            box-shadow: -34px 50px 0 rgba(255, 239, 186, .18);
+        }
+        .voice-section::after {
+            width: 220px;
+            height: 96px;
+            left: -88px;
+            bottom: -42px;
+            background: radial-gradient(ellipse, rgba(255, 156, 78, .18), transparent 68%);
+        }
+        .voice-topline {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: .8rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+        .voice-hint {
+            margin: 0;
+            line-height: 1.65;
+            font-size: .94rem;
+            color: #8a4b26;
+            opacity: .95;
+            max-width: 690px;
+        }
+        .kala-bgm-control {
+            border: 1px solid rgba(180, 95, 43, .34);
+            background: rgba(255, 249, 230, .74);
+            color: #a75524;
+            border-radius: 999px;
+            padding: .55rem 1rem;
+            font-size: .84rem;
+            cursor: pointer;
+            box-shadow: 0 8px 18px rgba(147, 78, 30, .10), inset 0 0 0 1px rgba(255,255,255,.45);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            transition: transform .2s ease, background .2s ease, box-shadow .2s ease;
+            white-space: nowrap;
+        }
+        .kala-bgm-control:hover {
+            transform: translateY(-2px);
+            background: rgba(255, 228, 181, .9);
+            box-shadow: 0 12px 24px rgba(147, 78, 30, .14), inset 0 0 0 1px rgba(255,255,255,.55);
+        }
+        .kala-bgm-control.is-playing {
+            background: rgba(255, 209, 132, .86);
+            color: #7f3f18;
+        }
+        .voice-grid {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1rem;
+        }
+        .voice-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 30px;
+            padding: 1rem;
+            background: rgba(255, 253, 240, .64);
+            border: 1px solid rgba(255, 196, 124, .56);
+            box-shadow: 0 12px 24px rgba(141, 80, 34, .08), inset 0 0 0 1px rgba(255,255,255,.42);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+        }
+        .voice-card::before {
+            content: "🌴";
+            position: absolute;
+            right: 14px;
+            top: 10px;
+            font-size: 1.3rem;
+            opacity: .22;
+            transform: rotate(7deg);
+        }
+        .voice-index {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 2rem;
+            height: 2rem;
+            padding: 0 .55rem;
+            margin-bottom: .65rem;
+            border-radius: 999px;
+            background: linear-gradient(135deg, #ffd17d, #ffad72);
+            color: #7a3617;
+            font-size: .78rem;
+            font-weight: 700;
+            box-shadow: 0 6px 14px rgba(190, 95, 38, .16);
+        }
+        .voice-cn {
+            font-size: .98rem;
+            line-height: 1.65;
+            color: #70401f;
+            margin-bottom: .55rem;
+        }
+        .voice-jp {
+            font-size: .9rem;
+            line-height: 1.65;
+            color: #9a5a2d;
+            opacity: .96;
+            margin-bottom: .9rem;
+        }
+        .voice-play-btn {
+            border: none;
+            cursor: pointer;
+            border-radius: 999px;
+            padding: .58rem 1rem;
+            background: linear-gradient(135deg, #ffc56e, #ff9e68);
+            color: #fffaf0;
+            font-size: .86rem;
+            box-shadow: 0 10px 18px rgba(185, 93, 42, .2), inset 0 0 0 1px rgba(255,255,255,.32);
+            transition: transform .2s ease, filter .2s ease, box-shadow .2s ease;
+        }
+        .voice-play-btn:hover {
+            transform: translateY(-2px) scale(1.02);
+            filter: brightness(1.04);
+            box-shadow: 0 13px 24px rgba(185, 93, 42, .24), inset 0 0 0 1px rgba(255,255,255,.4);
+        }
+        .voice-play-btn.is-active {
+            background: linear-gradient(135deg, #ff8b5f, #d96a38);
+            animation: kalaVoicePulse 1.25s ease-in-out infinite alternate;
+        }
+        @keyframes kalaVoicePulse {
+            from { box-shadow: 0 9px 18px rgba(185, 93, 42, .22), 0 0 0 rgba(255, 158, 104, 0); }
+            to { box-shadow: 0 12px 26px rgba(185, 93, 42, .28), 0 0 18px rgba(255, 177, 98, .42); }
+        }
+        @media (max-width: 760px) {
+            .voice-section { padding: 1rem; border-radius: 30px; }
+            .voice-grid { grid-template-columns: 1fr; }
+            .voice-topline { align-items: flex-start; }
+            .kala-bgm-control { width: 100%; }
+        }
+
+</style>
+</head>
+<body>
+<img alt="巨蟹座图腾" class="bg-totem" draggable="false" oncontextmenu="return false" src="images/characters/kala/cancer_totem_watermarked.png"/>
+<div class="sky-sand"></div>
+<div class="stars" id="starsContainer"></div>
+<div class="wave-container" aria-hidden="true">
+<div class="wave wave1"></div>
+<div class="wave wave2"></div>
+<div class="wave wave3"></div>
+</div>
+<canvas class="particle-canvas" id="particleCanvas"></canvas>
+<div class="page-jump-nav" aria-label="页面快速滚动">
+<button class="jump-btn" id="jumpTop" type="button" aria-label="返回顶部">返回顶部</button>
+<button class="jump-btn" id="jumpBottom" type="button" aria-label="返回底部">返回底部</button>
+</div>
+
+<audio id="kalaBgm" src="images/characters/kala/kara%20bgm.mp3" preload="auto" loop></audio>
+<audio id="kalaVoice1" src="images/characters/kala/voice/1.mp3" preload="auto"></audio>
+<audio id="kalaVoice2" src="images/characters/kala/voice/2.mp3" preload="auto"></audio>
+<audio id="kalaVoice3" src="images/characters/kala/voice/3.mp3" preload="auto"></audio>
+<audio id="kalaVoice4" src="images/characters/kala/voice/4.mp3" preload="auto"></audio>
+
+<div class="container">
+<div class="header">
+<span class="title">🐚 角色 · 可可・卡菈</span>
+<a class="back-home" href="zhuye.html">🌊 返回浅岸星滩</a>
+</div>
+<div class="character-card">
+<div class="char-top">
+<div class="char-avatar">
+<img alt="卡菈" id="avatarImg" style="width:100%; height:100%; object-fit:cover;"/>
+</div>
+<div class="char-info-wrapper">
+<div class="char-info">
+<div class="char-name">可可・卡菈</div>
+<div class="char-name-en">Coco Cara</div>
+<div class="char-tag">椰子蟹 · 30岁 · 家族大家长</div>
+<div class="char-meta">
+<p>📅 年龄：30岁</p>
+<p>🐚 原型物种：椰子蟹</p>
+<p>✨ 定位：水果守护 | 家族大家长 | 家的守灯人</p>
+<p>♋ 星座：巨蟹座 | 水象守护，母性包容</p>
+</div>
+</div>
+<div class="char-logo">
+<img alt="卡菈logo" draggable="false" oncontextmenu="return false" src="images/characters/kala/kala_logo_watermarked.png"/>
+</div>
+</div>
+</div>
+<div class="elements">
+<img alt="卡菈代表元素" class="elements-img" draggable="false" oncontextmenu="return false" onerror="this.style.display='none'" src="images/characters/kala/cancer_totem_watermarked.png"/>
+</div>
+<div class="keywords">
+<span class="keyword">温柔善良</span>
+<span class="keyword">细腻体贴</span>
+<span class="keyword">母性光辉</span>
+<span class="keyword">敏感共情</span>
+<span class="keyword">理解包容</span>
+<span class="keyword">情绪稳定</span>
+<span class="keyword">坚定守护</span>
+<span class="keyword">照顾家人</span>
+</div>
+<div class="description">
+<p>可可・卡菈是以椰子蟹为原型的治愈系角色，是浅岸星滩世界观中五姐妹的母亲与家族大家长。她温柔沉稳，是家庭的温暖核心与精神支柱。气质温婉包容、共情细腻，外表柔和却内心坚定，不喜冲突，习惯以温柔化解矛盾；体贴顾家，重视整洁温馨的居家氛围，将家人安稳放在首位。</p>
+<p>幼年饱受侵扰的经历，让她收敛锋芒，也更懂得守护与包容，与女儿们双向治愈，彼此救赎。视觉上以暖棕、奶咖、柔珊瑚等低饱和暖调为主，营造治愈氛围；线条舒展柔和，服饰融入椰子纹理、椰叶暗纹与巨蟹座图腾，呼应原型与守护特质，整体温润大气，暗藏坚韧力量。</p>
+<p>她喜爱椰子、舒适的居家环境与海边氛围，厌恶争吵与欺凌。作为家族的守护者与治愈者，她以温柔维系家庭，诠释“彼此守护、温柔共生”的主题，成为所有人的温暖港湾。</p>
+</div>
+<div class="char-quote">“有你们在，我才有了现在的家。”</div>
+<div class="section voice-section" id="kalaVoiceSection">
+<h3>🎙️ 卡菈的声音</h3>
+<div class="voice-topline">
+<p class="voice-hint">阳光、椰子、海风和热带雨林的卡菈感——点击任意台词会播放对应配音；背景音乐只会启动或继续播放，不会因为切换语音而反复重头开始。</p>
+<button class="kala-bgm-control" id="kalaBgmToggle" type="button">🌺 开启岛屿BGM</button>
+</div>
+<div class="voice-grid">
+<div class="voice-card">
+<span class="voice-index">01</span>
+<p class="voice-cn">哎呀，终于来啦！太阳正好，海风也刚刚好——走吧，今天跟卡菈一起去海边晒晒心情！</p>
+<p class="voice-jp">あら、やっと来たね！太陽もちょうどいいし、海風も気持ちいいよ。さあ、今日はカラと一緒に、心まで日向ぼっこしに行こう！</p>
+<button class="voice-play-btn" type="button" data-voice="1">▶ 播放语音 01</button>
+</div>
+<div class="voice-card">
+<span class="voice-index">02</span>
+<p class="voice-cn">别急嘛，成长又不是比赛。像椰子树一样，慢慢往上长，也很了不起哦。</p>
+<p class="voice-jp">焦らなくていいよ。成長は競争じゃないんだから。ヤシの木みたいに、ゆっくり上へ伸びていけるだけで、十分すごいんだよ。</p>
+<button class="voice-play-btn" type="button" data-voice="2">▶ 播放语音 02</button>
+</div>
+<div class="voice-card">
+<span class="voice-index">03</span>
+<p class="voice-cn">累了就到我这边来吧。这里有阳光、椰子、海浪，还有我给你留的位置。</p>
+<p class="voice-jp">疲れたら、こっちにおいで。ここには太陽も、ココナッツも、波の音もあるし……あなたのための場所も、ちゃんと空けてあるよ。</p>
+<button class="voice-play-btn" type="button" data-voice="3">▶ 播放语音 03</button>
+</div>
+<div class="voice-card">
+<span class="voice-index">04</span>
+<p class="voice-cn">今天也要热烈地活着哦！哪怕只是一点点开心，也要像阳光一样，好好接住它。</p>
+<p class="voice-jp">今日も、思いきり生きようね！ほんの少しの幸せでも、太陽みたいに、ちゃんと受け止めてあげよう。</p>
+<button class="voice-play-btn" type="button" data-voice="4">▶ 播放语音 04</button>
+</div>
+</div>
+</div>
+<div class="section">
+<h3>🦀 椰子蟹 · 生物原型</h3>
+<div class="info-card" id="speciesCard">
+<div class="info-img">
+<img alt="椰子蟹" draggable="false" id="speciesImg" oncontextmenu="return false"/>
+</div>
+<div class="info-text">
+<p><strong>椰子蟹（Birgus latro）</strong></p>
+<p>椰子蟹是陆生寄居蟹中体型最大的物种，成年后不再依赖螺壳，靠自身坚硬的外骨骼保护自己。它们擅长攀爬椰树，能用强壮的双螯打开椰子，因此得名。椰子蟹栖息于热带海岸的椰子林和岩礁地带，夜行性，寿命可长达30-60年。</p>
+<p>其强大的独立生存能力与“不再背壳”的蜕变成为了卡菈角色设定的核心隐喻——“从依赖外壳到长出铠甲，温柔而坚定地守护家人”。</p>
+</div>
+</div>
+</div><div class="section">
+<h3>🐚 椰子蟹宠物</h3>
+<div class="pet-card">
+<div class="pet-img"><img alt="椰子蟹宠物" id="petImg"/></div>
+<div class="pet-info">
+<p><strong>姓名：</strong>椰椰</p>
+<p><strong>物种：</strong>椰子蟹（幼年体）</p>
+<p><strong>性格：</strong>安静、粘人、喜欢趴在卡菈肩上</p>
+<p><strong>特征：</strong>橙棕色甲壳，左螯略大，平时缩在小螺壳里，只有卡菈在时才会探出头来。</p>
+<p>椰椰是卡菈在浅滩上捡到的小椰子蟹，她把它当成最小的孩子照顾。椰椰长大后也会像卡菈一样不再背壳，但此刻它还是个需要保护的小家伙。</p>
+</div>
+</div>
+</div>
+<!-- 三视图 -->
+<div class="section">
+<h3>📐 三视图</h3>
+<div class="three-grid" id="threeGrid"></div>
+</div>
+<!-- 21:9 角色展板 -->
+<div class="section">
+<h3>🖼️ 21:9 角色展板</h3>
+<div class="banner-21x9" id="banner21x9"></div>
+</div>
+<!-- 表情 -->
+<div class="section">
+<h3>😊 表情</h3>
+<div class="scroll-x" id="emotionScroll"></div>
+</div>
+<!-- 长发 & 短发插画 -->
+<div class="section">
+<h3>🌸 长发 &amp; 短发插画</h3>
+<div class="scroll-x" id="hairScroll"></div>
+</div>
+<!-- 椰子蟹生物原型（新增） -->
+
+<!-- 宠物（椰子蟹小宠） -->
+
+<!-- 卡菈的家 -->
+<div class="section">
+<h3>🏠 卡菈的家</h3><p class="section-intro">卡菈的家以温暖木色、椰叶纹理和海风感为核心，像一盏长期亮着的灯。空间强调开放式客厅、柔软坐垫、椰子与贝壳装饰，表达她“把家人安放好”的大家长气质。</p>
+<div class="scroll-x" id="homeScroll"></div>
+</div>
+<!-- 周边小物 -->
+<div class="merchandise">
+<h3>🛍️ 周边小物</h3>
+<div class="merch-grid" id="merchGrid"></div>
+</div>
+<!-- 周边展板 -->
+<div class="section">
+<h3>📋 周边展板</h3>
+<div class="scroll-x" id="displayBoardScroll"></div>
+</div>
+<div class="nav-others">
+<a href="cituan.html">刺团</a>
+<a href="ruanruan.html">软软</a>
+<a href="amo.html">阿默</a>
+<a href="meimei.html">莓莓</a>
+<a href="ayin.html">阿隐</a>
+</div>
+</div>
+<footer>🌊 潮间带群落 · 温柔共生 🌊</footer>
+</div>
+<script>
+    // 星星生成
+    function generateStars() {
+        const starsContainer = document.getElementById('starsContainer');
+        if (!starsContainer) return;
+        for (let i = 0; i < 100; i++) {
+            const star = document.createElement('div');
+            star.classList.add('star');
+            const size = Math.random() * 3 + 1;
+            star.style.width = size + 'px';
+            star.style.height = size + 'px';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 96 + '%';
+            star.style.animationDuration = (Math.random() * 3 + 1.5) + 's';
+            star.style.animationDelay = (Math.random() * 5) + 's';
+            starsContainer.appendChild(star);
+        }
+    }
+    generateStars();
+
+    // 粒子系统
+    const canvas = document.getElementById('particleCanvas');
+    const ctx = canvas.getContext('2d');
+    let width, height, particles = [];
+    function resizeCanvas() { width = window.innerWidth; height = window.innerHeight; canvas.width = width; canvas.height = height; }
+    class Particle {
+        constructor(x, y, radius, vx, vy, alpha) { this.x = x; this.y = y; this.radius = radius; this.vx = vx; this.vy = vy; this.alpha = alpha; }
+        update() {
+            this.x += this.vx; this.y += this.vy;
+            if (this.x < -50) this.x = width + 50;
+            if (this.x > width + 50) this.x = -50;
+            if (this.y < -50) this.y = height + 50;
+            if (this.y > height + 50) this.y = -50;
+        }
+        draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.radius, 0, Math.PI*2); ctx.fillStyle = `rgba(255,235,170,${this.alpha})`; ctx.fill(); }
+    }
+    function initParticles() {
+        particles = [];
+        for (let i=0; i<130; i++) {
+            const radius = Math.random()*3+1.2;
+            const x = Math.random()*width;
+            const y = Math.random()*height;
+            const vx = (Math.random()-0.5)*0.2;
+            const vy = (Math.random()-0.5)*0.15;
+            const alpha = Math.random()*0.5+0.2;
+            particles.push(new Particle(x,y,radius,vx,vy,alpha));
+        }
+    }
+    function animateParticles() { if(!ctx) return; ctx.clearRect(0,0,width,height); for(let p of particles){ p.update(); p.draw(); } requestAnimationFrame(animateParticles); }
+    window.addEventListener('resize', () => { resizeCanvas(); initParticles(); });
+    resizeCanvas(); initParticles(); animateParticles();
+
+    // 定义所有图片路径
+    const imageSources = {
+        avatar: "images/characters/kala/kala_full_watermarked.png",
+        pet: "images/characters/kala/kala_pet_watermarked.png",
+        banner21x9: "images/characters/kala/kala_banner_21x9_watermarked.jpg",
+        species: "images/characters/kala/kala_crab_species_watermarked.jpg",  // 新增椰子蟹物种图片
+        threeViews: [
+            { src: "images/characters/kala/kala_front_watermarked.png", name: "正面" },
+            { src: "images/characters/kala/kala_side_watermarked.png", name: "侧面" },
+            { src: "images/characters/kala/kala_back_watermarked.png", name: "背面" }
+        ],
+        emotion: [
+            { src: "images/characters/kala/kala_emoji_grid_watermarked.png", name: "九宫格表情" },
+            { src: "images/characters/kala/kala_emotion_watermarked.png", name: "表情立绘" }
+        ],
+        hair: [
+            { src: "images/characters/kala/kala_longhair_watermarked.jpg", name: "长发插画" },
+            { src: "images/characters/kala/kala_shorthair_watermarked.jpg", name: "短发插画" }
+        ],
+        home: [
+            { src: "images/characters/kala/kala_house1_watermarked.jpg", name: "海景房外观" },
+            { src: "images/characters/kala/kala_house2_watermarked.jpg", name: "海景房室内" },
+            { src: "images/characters/kala/kala_house3_watermarked.jpg", name: "椰子房外观" }
+        ],
+        merch: [
+            { src: "images/characters/kala/kala_badge_watermarked.png", name: "吧唧徽章" },
+            { src: "images/characters/kala/kala_stamp_watermarked.png", name: "方形邮票" },
+            { src: "images/characters/kala/kala_metal_watermarked.png", name: "金属徽章" },
+            { src: "images/characters/kala/kala_coaster_watermarked.png", name: "圆形杯垫" },
+            { src: "images/characters/kala/kala_stand_watermarked.png", name: "彩窗立牌" },
+            { src: "images/characters/kala/kala_pillow_watermarked.png", name: "方形抱枕" },
+            { src: "images/characters/kala/kala_keychain_watermarked.png", name: "亚克力挂件" },
+            { src: "images/products/kala_tropical_juice_watermarked.png", name: "卡拉热带椰菠果汁", note: "卡菈限定果汁，椰香清甜、菠萝明亮，像把热带阳光装进玻璃瓶。" },
+            { src: "images/products/kala_cotton_doll_watermarked.png", name: "卡菈棉花娃娃", note: "礼盒装棉花娃娃，保留卡菈的橙发与热带裙摆，适合作为收藏展示。" }
+        ],
+        displayBoards: [
+            { src: "images/characters/kala/kala_plush_design_watermarked.jpg", name: "毛绒卡套设计展板" },
+            { src: "images/characters/kala/kala_display_board_watermarked.jpg", name: "周边展板" }
+        ]
+    };
+
+    async function buildPage() {
+        // 头像
+        const avatarImg = document.getElementById('avatarImg');
+        if (avatarImg) avatarImg.src = imageSources.avatar;
+        // 宠物
+        const petImg = document.getElementById('petImg');
+        if (petImg) petImg.src = imageSources.pet;
+        // 椰子蟹物种图片
+        const speciesImg = document.getElementById('speciesImg');
+        if (speciesImg) speciesImg.src = imageSources.species;
+
+        // 21:9 展板
+        const bannerContainer = document.getElementById('banner21x9');
+        if (bannerContainer) {
+            const img = document.createElement('img');
+            img.alt = "21:9 角色展板";
+            bannerContainer.appendChild(img);
+            img.src = imageSources.banner21x9;
+        }
+
+        // 三视图
+        const threeGrid = document.getElementById('threeGrid');
+        threeGrid.innerHTML = '';
+        for (let item of imageSources.threeViews) {
+            const div = document.createElement('div'); div.className = 'three-item';
+            const img = document.createElement('img'); img.alt = item.name;
+            div.appendChild(img);
+            const p = document.createElement('p'); p.textContent = item.name;
+            div.appendChild(p);
+            threeGrid.appendChild(div);
+            img.src = item.src;
+        }
+
+        // 表情
+        const emotionContainer = document.getElementById('emotionScroll');
+        emotionContainer.innerHTML = '';
+        for (let item of imageSources.emotion) {
+            const div = document.createElement('div'); div.className = 'img-container';
+            const img = document.createElement('img'); img.alt = item.name;
+            const p = document.createElement('p'); p.textContent = item.name;
+            div.appendChild(img); div.appendChild(p);
+            emotionContainer.appendChild(div);
+            img.src = item.src;
+        }
+
+        // 长发短发
+        const hairContainer = document.getElementById('hairScroll');
+        hairContainer.innerHTML = '';
+        for (let item of imageSources.hair) {
+            const div = document.createElement('div'); div.className = 'img-container';
+            const img = document.createElement('img'); img.alt = item.name;
+            const p = document.createElement('p'); p.textContent = item.name;
+            div.appendChild(img); div.appendChild(p);
+            hairContainer.appendChild(div);
+            img.src = item.src;
+        }
+
+        // 卡菈的家
+        const homeContainer = document.getElementById('homeScroll');
+        homeContainer.innerHTML = '';
+        for (let item of imageSources.home) {
+            const div = document.createElement('div'); div.className = 'img-container';
+            const img = document.createElement('img'); img.alt = item.name;
+            const p = document.createElement('p'); p.textContent = item.name;
+            div.appendChild(img); div.appendChild(p);
+            homeContainer.appendChild(div);
+            img.src = item.src;
+        }
+
+        // 周边小物
+        const merchGrid = document.getElementById('merchGrid');
+        merchGrid.innerHTML = '';
+        for (let item of imageSources.merch) {
+            const div = document.createElement('div'); div.className = 'merch-item';
+            const img = document.createElement('img'); img.alt = item.name;
+            const span = document.createElement('span'); span.textContent = item.name;
+            div.appendChild(img); div.appendChild(span);
+            if (item.note) {
+                const note = document.createElement("small");
+                note.className = "merch-note";
+                note.textContent = item.note;
+                div.appendChild(note);
+            }
+            merchGrid.appendChild(div);
+            img.src = item.src;
+        }
+
+        // 周边展板
+        const displayBoardScroll = document.getElementById('displayBoardScroll');
+        displayBoardScroll.innerHTML = '';
+        for (let item of imageSources.displayBoards) {
+            const div = document.createElement('div'); div.className = 'img-container';
+            const img = document.createElement('img'); img.alt = item.name;
+            const p = document.createElement('p'); p.textContent = item.name;
+            div.appendChild(img); div.appendChild(p);
+            displayBoardScroll.appendChild(div);
+            img.src = item.src;
+        }
+
+        // 点击放大
+        const lightbox = document.createElement('div');
+        lightbox.id = 'lightbox';
+        lightbox.style.cssText = 'display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); backdrop-filter:blur(8px); z-index:1000; justify-content:center; align-items:center; cursor:pointer;';
+        const lightboxImg = document.createElement('img');
+        lightboxImg.style.maxWidth = '90%';
+        lightboxImg.style.maxHeight = '90%';
+        lightboxImg.style.borderRadius = '20px';
+        const closeBtn = document.createElement('span');
+        closeBtn.textContent = '×';
+        closeBtn.style.cssText = 'position:absolute; top:20px; right:30px; font-size:2rem; color:white; cursor:pointer; z-index:1002;';
+        lightbox.appendChild(closeBtn);
+        lightbox.appendChild(lightboxImg);
+        document.body.appendChild(lightbox);
+        closeBtn.onclick = () => lightbox.style.display = 'none';
+        lightbox.onclick = (e) => { if (e.target === lightbox) lightbox.style.display = 'none'; };
+        const allImages = document.querySelectorAll('.three-item img, .img-container img, .merch-item img, .pet-card img, .char-avatar img, .banner-21x9 img, .info-card img');
+        allImages.forEach(img => {
+            img.style.cursor = 'pointer';
+            img.addEventListener('click', (e) => {
+                e.stopPropagation();
+                lightboxImg.src = img.src;
+                lightbox.style.display = 'flex';
+            });
+        });
+    }
+
+
+
+    // 卡菈页面 BGM 与四段中日文语音
+    function initKalaAudio() {
+        const bgm = document.getElementById('kalaBgm');
+        const bgmToggle = document.getElementById('kalaBgmToggle');
+        const voiceButtons = Array.from(document.querySelectorAll('.voice-play-btn'));
+        const voices = {
+            '1': document.getElementById('kalaVoice1'),
+            '2': document.getElementById('kalaVoice2'),
+            '3': document.getElementById('kalaVoice3'),
+            '4': document.getElementById('kalaVoice4')
+        };
+        let currentVoice = null;
+
+        if (bgm) {
+            bgm.volume = 0.34;
+            bgm.loop = true;
+        }
+        Object.values(voices).forEach(audio => {
+            if (audio) audio.volume = 0.95;
+        });
+
+        function updateBgmButton() {
+            if (!bgmToggle || !bgm) return;
+            if (!bgm.paused) {
+                bgmToggle.classList.add('is-playing');
+                bgmToggle.textContent = '🌺 岛屿BGM播放中';
+            } else {
+                bgmToggle.classList.remove('is-playing');
+                bgmToggle.textContent = '🌺 开启岛屿BGM';
+            }
+        }
+
+        function playBgmWithoutRestart() {
+            if (!bgm || !bgm.paused) {
+                updateBgmButton();
+                return Promise.resolve();
+            }
+            return bgm.play()
+                .then(updateBgmButton)
+                .catch(() => {
+                    if (bgmToggle) bgmToggle.textContent = '🌺 点击开启岛屿BGM';
+                });
+        }
+
+        function stopVoiceButtonState() {
+            voiceButtons.forEach(btn => {
+                btn.classList.remove('is-active');
+                const index = btn.dataset.voice;
+                btn.textContent = `▶ 播放语音 ${String(index).padStart(2, '0')}`;
+            });
+        }
+
+        if (bgmToggle && bgm) {
+            bgmToggle.addEventListener('click', () => {
+                if (bgm.paused) {
+                    playBgmWithoutRestart();
+                } else {
+                    bgm.pause();
+                    updateBgmButton();
+                }
+            });
+            bgm.addEventListener('play', updateBgmButton);
+            bgm.addEventListener('pause', updateBgmButton);
+            bgm.addEventListener('error', () => {
+                bgmToggle.textContent = '🌺 BGM文件未找到';
+                bgmToggle.classList.remove('is-playing');
+            });
+        }
+
+        voiceButtons.forEach(btn => {
+            btn.addEventListener('click', async () => {
+                await playBgmWithoutRestart();
+                const key = btn.dataset.voice;
+                const audio = voices[key];
+                if (!audio) return;
+
+                Object.entries(voices).forEach(([voiceKey, voiceAudio]) => {
+                    if (voiceAudio && voiceKey !== key) {
+                        voiceAudio.pause();
+                        voiceAudio.currentTime = 0;
+                    }
+                });
+
+                audio.pause();
+                audio.currentTime = 0;
+                stopVoiceButtonState();
+                audio.play().then(() => {
+                    currentVoice = audio;
+                    btn.classList.add('is-active');
+                    btn.textContent = `✦ 正在播放 ${String(key).padStart(2, '0')}`;
+                }).catch(() => {
+                    btn.textContent = `▶ 播放语音 ${String(key).padStart(2, '0')}`;
+                });
+            });
+        });
+
+        Object.entries(voices).forEach(([key, audio]) => {
+            if (!audio) return;
+            audio.addEventListener('ended', () => {
+                if (currentVoice === audio) currentVoice = null;
+                const btn = document.querySelector(`.voice-play-btn[data-voice="${key}"]`);
+                if (btn) {
+                    btn.classList.remove('is-active');
+                    btn.textContent = `▶ 播放语音 ${String(key).padStart(2, '0')}`;
+                }
+            });
+            audio.addEventListener('error', () => {
+                const btn = document.querySelector(`.voice-play-btn[data-voice="${key}"]`);
+                if (btn) btn.textContent = `语音 ${String(key).padStart(2, '0')} 未找到`;
+            });
+        });
+
+        // 尝试自动播放；浏览器拦截时，首次点击/按键/触摸会继续启动，不会重置进度。
+        playBgmWithoutRestart();
+        ['pointerdown', 'keydown', 'touchstart'].forEach(eventName => {
+            document.addEventListener(eventName, playBgmWithoutRestart, { once: true, passive: true });
+        });
+    }
+
+    // 右侧返回顶部 / 返回底部
+    const jumpTop = document.getElementById('jumpTop');
+    const jumpBottom = document.getElementById('jumpBottom');
+    if (jumpTop) {
+        jumpTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
+    if (jumpBottom) {
+        jumpBottom.addEventListener('click', () => {
+            window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' });
+        });
+    }
+
+    buildPage();
+    initKalaAudio();
+</script>
+</body>
+</html>

@@ -1,0 +1,2257 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>浅岸星滩 · 潮风牧场｜白昼先生 Wynn</title>
+  <style>
+    :root{
+      --ink:#17252d;
+      --ink-soft:#425058;
+      --milk:#fffdf4;
+      --glass:rgba(255,255,247,.60);
+      --glass-strong:rgba(255,255,247,.76);
+      --line:rgba(255,255,255,.58);
+      --gold:#d5ae69;
+      --gold-deep:#a37a36;
+      --grass:#8dae72;
+      --grass-deep:#52735f;
+      --sky:#d9f1ff;
+      --blue:#8fcbe6;
+      --shadow:0 28px 88px rgba(33,55,52,.22);
+      --soft-shadow:0 18px 48px rgba(35,58,54,.13);
+      --radius:32px;
+      --side-ui-right:36px;
+      --side-ui-width:58px;
+      --float-ui-width:58px;
+      --side-ui-align-width:58px;
+    }
+    *{box-sizing:border-box;}
+    html{scroll-behavior:smooth;}
+    body{
+      margin:0;
+      min-height:100vh;
+      color:var(--ink);
+      font-family:"Microsoft YaHei","PingFang SC","Hiragino Sans GB",system-ui,sans-serif;
+      background:#d9edec;
+      overflow-x:hidden;
+    }
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      z-index:-5;
+      background:
+        linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,247,220,.22) 38%,rgba(37,61,47,.24) 100%),
+        url("assets/tidewind_pasture_bg_watermarked.png") center/cover no-repeat;
+      transform:scale(1.01);
+    }
+    a{color:inherit;text-decoration:none;}
+    button{font-family:inherit;}
+    .veil{
+      position:fixed;
+      inset:0;
+      z-index:-4;
+      pointer-events:none;
+      background:
+        radial-gradient(circle at 50% 19%, rgba(255,255,255,.86), transparent 34%),
+        radial-gradient(circle at 8% 72%, rgba(255,251,226,.55), transparent 28%),
+        radial-gradient(circle at 92% 72%, rgba(220,244,255,.34), transparent 32%),
+        linear-gradient(180deg,rgba(218,244,255,.20) 0%,rgba(255,251,232,.08) 45%,rgba(34,57,44,.35) 100%);
+    }
+    .noise{
+      position:fixed;
+      inset:0;
+      z-index:-3;
+      pointer-events:none;
+      opacity:.16;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.88' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.22'/%3E%3C/svg%3E");
+    }
+    .sky-lines,.petals,.stars,.grass-ribbon{position:fixed;inset:0;pointer-events:none;overflow:hidden;}
+    .sky-lines{z-index:-2;}
+    .sky-lines::before,.sky-lines::after{
+      content:"";
+      position:absolute;
+      width:96vw;height:34vh;
+      left:2vw;top:8vh;
+      border-top:1px solid rgba(255,255,255,.42);
+      border-radius:50%;
+      transform:rotate(-5deg);
+      filter:drop-shadow(0 0 16px rgba(238,250,255,.76));
+      opacity:.62;
+    }
+    .sky-lines::after{
+      width:72vw;left:26vw;top:13vh;
+      border-top-color:rgba(246,225,154,.34);
+      transform:rotate(-9deg);
+      opacity:.55;
+    }
+    .stars{z-index:-1;}
+    .star{
+      position:absolute;
+      width:3px;height:3px;border-radius:50%;
+      background:#fff;
+      box-shadow:0 0 14px rgba(255,255,255,.95), 0 0 26px rgba(246,225,154,.38);
+      animation:twinkle var(--dur) ease-in-out infinite;
+      opacity:.6;
+    }
+    @keyframes twinkle{50%{opacity:.16;transform:scale(.55);}100%{opacity:.68;transform:scale(1);}}
+    .petals{z-index:8;}
+    .petal{
+      position:absolute;
+      font-size:18px;
+      color:rgba(255,255,248,.88);
+      text-shadow:0 8px 18px rgba(63,83,70,.18);
+      animation:floatPetal var(--dur) linear forwards;
+      will-change:transform,opacity;
+    }
+    @keyframes floatPetal{
+      0%{transform:translate3d(0,14vh,0) rotate(-12deg);opacity:0;}
+      12%{opacity:.82;}
+      100%{transform:translate3d(var(--x),-112vh,0) rotate(28deg);opacity:0;}
+    }
+    .grass-ribbon{
+      z-index:-1;
+      inset:auto 0 0 0;
+      height:28vh;
+      opacity:.62;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(232,245,238,.10) 28%, rgba(201,224,210,.18) 58%, rgba(145,181,151,.22) 100%),
+        radial-gradient(ellipse at 18% 100%, rgba(255,255,255,.20) 0, rgba(255,255,255,0) 52%),
+        radial-gradient(ellipse at 50% 105%, rgba(219,239,229,.24) 0, rgba(219,239,229,0) 56%),
+        radial-gradient(ellipse at 82% 100%, rgba(255,255,255,.16) 0, rgba(255,255,255,0) 50%);
+      backdrop-filter:blur(3px);
+    }
+
+    header{
+      position:fixed;
+      top:18px;left:50%;transform:translateX(-50%);
+      width:min(1240px,calc(100% - 48px));
+      z-index:40;
+      display:flex;align-items:center;justify-content:space-between;
+      gap:18px;
+      padding:14px 18px;
+      border:1px solid rgba(255,255,255,.58);
+      background:linear-gradient(135deg,rgba(255,255,255,.58),rgba(255,255,255,.30));
+      backdrop-filter:blur(24px) saturate(1.15);
+      -webkit-backdrop-filter:blur(24px) saturate(1.15);
+      border-radius:30px;
+      box-shadow:0 22px 60px rgba(38,58,56,.14), inset 0 1px 0 rgba(255,255,255,.42);
+      overflow:visible;
+    }
+    .brand{display:flex;align-items:center;gap:14px;min-width:0;font-weight:900;letter-spacing:.06em;color:#24343a;}
+    .brand-mark{
+      width:58px;height:58px;min-width:58px;border-radius:20px;
+      display:flex;align-items:center;justify-content:center;
+      padding:0;
+      background:linear-gradient(135deg,rgba(255,255,255,.92),rgba(248,242,223,.84));
+      border:1px solid rgba(255,255,255,.86);
+      box-shadow:0 12px 26px rgba(67,93,70,.14), inset 0 1px 0 rgba(255,255,255,.82);
+      overflow:hidden;
+    }
+    .brand-mark img{display:block;width:100%;height:100%;object-fit:cover;object-position:center;border-radius:19px;}
+    .brand-copy{display:flex;flex-direction:column;gap:4px;line-height:1;min-width:0;}
+    .brand-copy strong{font-size:clamp(18px,1.7vw,24px);font-weight:950;letter-spacing:.04em;color:#22343a;font-style:italic;white-space:nowrap;}
+    .brand-copy em{font-style:normal;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#6e8174;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    nav{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end;}
+    nav a, .mini-btn{
+      font-size:13px;
+      font-weight:800;
+      padding:10px 13px;
+      border-radius:14px;
+      color:#34474b;
+      border:1px solid rgba(255,255,255,.22);
+      background:rgba(255,255,255,.12);
+      transition:.24s ease;
+      cursor:pointer;
+      white-space:nowrap;
+    }
+    nav a:hover,.mini-btn:hover{background:rgba(255,255,255,.58);border-color:rgba(232,206,143,.78);transform:translateY(-1px);box-shadow:0 10px 22px rgba(67,93,70,.10);}
+
+    .bubble-menu{position:relative;display:flex;align-items:center;justify-content:flex-end;gap:10px;}
+    .menu-bubble-toggle{
+      display:flex;align-items:center;gap:10px;
+      border:none;cursor:pointer;
+      min-width:132px;
+      padding:10px 14px 10px 15px;
+      border-radius:999px;
+      background:linear-gradient(135deg,rgba(255,255,255,.86),rgba(245,236,207,.58));
+      color:#26383d;
+      font-weight:950;
+      letter-spacing:.04em;
+      box-shadow:0 14px 32px rgba(51,75,66,.12), inset 0 1px 0 rgba(255,255,255,.72);
+      transition:transform .24s ease, box-shadow .24s ease, background .24s ease;
+    }
+    .menu-bubble-toggle:hover{transform:translateY(-1px);box-shadow:0 18px 40px rgba(51,75,66,.16), inset 0 1px 0 rgba(255,255,255,.82);}
+    .menu-bubble-toggle.open{background:linear-gradient(135deg,rgba(255,255,255,.96),rgba(247,225,158,.62));}
+    .menu-icon-lines{width:26px;height:20px;display:grid;align-content:center;gap:6px;}
+    .menu-line{display:block;height:2px;border-radius:999px;background:#26383d;transition:transform .24s ease, width .24s ease, opacity .2s ease;}
+    .menu-line.short{width:17px;justify-self:end;}
+    .menu-bubble-toggle.open .menu-line:first-child{transform:translateY(4px) rotate(42deg);}
+    .menu-bubble-toggle.open .menu-line.short{width:26px;transform:translateY(-4px) rotate(-42deg);}
+    .bubble-menu-items{
+      position:fixed;
+      top:126px;left:50%;transform:translateX(-50%);
+      width:min(1260px,calc(100% - 76px));
+      z-index:39;
+      display:none;
+      justify-content:center;
+      pointer-events:none;
+      background:transparent !important;
+      box-shadow:none !important;
+      border:none !important;
+      overflow:visible;
+    }
+    .bubble-menu-items.open,.bubble-menu-items.closing{display:flex;}
+    .bubble-menu-items.open{pointer-events:auto;}
+    .pill-list{
+      position:relative;
+      z-index:2;
+      list-style:none;margin:0;padding:0;
+      display:flex;flex-wrap:nowrap;gap:10px;justify-content:center;align-items:center;
+      border-radius:0;
+      border:none;
+      background:transparent;
+      backdrop-filter:none;
+      -webkit-backdrop-filter:none;
+      box-shadow:none;
+      perspective:900px;
+      white-space:nowrap;
+      overflow:visible;
+    }
+    .pill-col{display:flex;flex:0 0 auto;}
+    .pill-link{
+      --item-rot:0deg;
+      display:inline-flex;align-items:center;justify-content:center;
+      min-width:92px;
+      padding:12px 17px;
+      border-radius:999px;
+      color:var(--pill-color,#26383d);
+      background:linear-gradient(135deg,rgba(255,255,255,.88),rgba(246,248,238,.58));
+      border:1px solid rgba(255,255,255,.68);
+      font-size:13px;font-weight:760;letter-spacing:.055em;
+      font-family:"Noto Serif SC","Source Han Serif SC","Songti SC","STSong","Georgia","Times New Roman",serif;
+      box-shadow:0 14px 30px rgba(50,73,65,.12), inset 0 1px 0 rgba(255,255,255,.76);
+      transform:translateY(22px) scale(.25) rotate(0deg);
+      opacity:0;
+      transform-origin:50% 50%;
+      transition:background .2s ease,color .2s ease,box-shadow .2s ease,filter .2s ease,transform .18s ease;
+      overflow:visible;
+      line-height:1;
+    }
+    .staff-wave{
+      position:absolute;
+      z-index:1;
+      left:50%;top:50%;
+      width:min(1120px,100%);height:58px;
+      transform:translate(-50%,-49%);
+      pointer-events:none;
+      opacity:0;
+      clip-path:inset(0 100% 0 0);
+      filter:drop-shadow(0 8px 18px rgba(69,92,78,.12));
+      background-repeat:no-repeat;
+      background-size:100% 100%;
+      background-position:center;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1100 80' preserveAspectRatio='none'%3E%3Cg fill='none' stroke='%23d8b66f' stroke-width='1.15' stroke-linecap='round' opacity='.62'%3E%3Cpath d='M0 18 C170 0 260 38 420 20 S720 0 900 22 S1035 36 1100 18'/%3E%3Cpath d='M0 28 C170 10 260 48 420 30 S720 10 900 32 S1035 46 1100 28'/%3E%3Cpath d='M0 38 C170 20 260 58 420 40 S720 20 900 42 S1035 56 1100 38'/%3E%3Cpath d='M0 48 C170 30 260 68 420 50 S720 30 900 52 S1035 66 1100 48'/%3E%3Cpath d='M0 58 C170 40 260 78 420 60 S720 40 900 62 S1035 76 1100 58'/%3E%3C/g%3E%3C/svg%3E");
+      will-change:clip-path,opacity,transform;
+    }
+    .bubble-menu-items.open .staff-wave{
+      animation:staffLineIn 1.14s cubic-bezier(.17,1.02,.26,1) forwards, staffBreath 3.8s ease-in-out 1.14s infinite;
+    }
+    .bubble-menu-items.closing .staff-wave{
+      opacity:.58;
+      clip-path:inset(0 0 0 0);
+      animation:staffLineOut 1.02s cubic-bezier(.55,.05,.75,.18) forwards;
+    }
+    @keyframes staffLineIn{
+      0%{clip-path:inset(0 100% 0 0);}
+      100%{clip-path:inset(0 0 0 0);}
+    }
+    @keyframes staffLineOut{
+      0%{clip-path:inset(0 0 0 0);opacity:.58;}
+      100%{clip-path:inset(0 100% 0 0);opacity:0;}
+    }
+    @keyframes staffBreath{
+      0%,100%{opacity:.33;transform:translate(-50%,-49%) scaleX(.985) scaleY(.94);}
+      50%{opacity:.68;transform:translate(-50%,-52%) scaleX(1.015) scaleY(1.08);}
+    }
+    .bubble-menu-items.open .pill-link{
+      animation:bubblePillIn .54s cubic-bezier(.17,1.28,.42,1) forwards;
+      animation-delay:calc(var(--i,0) * .075s);
+    }
+    .bubble-menu-items.closing .pill-link{
+      animation:bubblePillOut .42s cubic-bezier(.55,.05,.75,.18) forwards;
+      animation-delay:calc((8 - var(--i,0)) * .075s);
+    }
+    .pill-link:hover{
+      background:var(--hover-bg,#f3e2a4);
+      color:var(--hover-color,#26383d);
+      filter:saturate(1.04);
+      box-shadow:0 18px 38px rgba(69,92,78,.16), 0 0 0 1px rgba(232,206,143,.26), inset 0 1px 0 rgba(255,255,255,.76);
+    }
+    .pill-label{
+      display:block;transform:translateY(16px);opacity:0;
+      font-variation-settings:'wght' 560,'opsz' 14;
+      text-shadow:0 1px 0 rgba(255,255,255,.72);
+    }
+    .vp-letter{
+      display:inline-block;
+      will-change:transform,font-variation-settings,letter-spacing,text-shadow;
+      transition:transform .08s linear, text-shadow .08s linear, color .08s linear;
+      transform-origin:50% 72%;
+    }
+    .bubble-menu-items.open .pill-label{
+      animation:bubbleLabelIn .42s cubic-bezier(.18,.9,.28,1) forwards;
+      animation-delay:calc(var(--i,0) * .075s + .10s);
+    }
+    .bubble-menu-items.closing .pill-label{
+      animation:bubbleLabelOut .28s cubic-bezier(.55,.05,.75,.18) forwards;
+      animation-delay:calc((8 - var(--i,0)) * .075s);
+    }
+    @keyframes bubblePillIn{
+      0%{transform:translateY(24px) scale(0) rotate(0deg);opacity:0;}
+      72%{transform:translateY(-4px) scale(1.06) rotate(var(--item-rot));opacity:1;}
+      100%{transform:translateY(0) scale(1) rotate(var(--item-rot));opacity:1;}
+    }
+    @keyframes bubblePillOut{
+      0%{transform:translateY(0) translateX(0) scale(1) rotate(var(--item-rot));opacity:1;}
+      100%{transform:translateY(18px) translateX(-22px) scale(0) rotate(0deg);opacity:0;}
+    }
+    @keyframes bubbleLabelIn{to{transform:translateY(0);opacity:1;}}
+    @keyframes bubbleLabelOut{to{transform:translateY(16px);opacity:0;}}
+
+
+    .note-burst{
+      position:fixed;
+      z-index:80;
+      pointer-events:none;
+      display:inline-flex;align-items:center;gap:5px;
+      padding:6px 10px;
+      border-radius:999px;
+      font-family:"Georgia","Times New Roman","Noto Serif SC",serif;
+      font-weight:900;
+      font-size:13px;
+      letter-spacing:.04em;
+      color:#7a5a20;
+      background:linear-gradient(135deg,rgba(255,255,255,.95),rgba(248,226,166,.68));
+      border:1px solid rgba(255,255,255,.75);
+      box-shadow:0 14px 28px rgba(67,93,70,.16), inset 0 1px 0 rgba(255,255,255,.82);
+      animation:noteRise .9s cubic-bezier(.18,.92,.28,1) forwards;
+    }
+    .note-burst i{font-style:normal;color:#b78c35;font-size:16px;line-height:1;}
+    @keyframes noteRise{
+      0%{opacity:0;transform:translate3d(-50%,6px,0) scale(.72) rotate(-4deg);}
+      18%{opacity:1;}
+      100%{opacity:0;transform:translate3d(-50%,-42px,0) scale(1.08) rotate(5deg);}
+    }
+
+    .volume-widget{
+      position:fixed;
+      top:126px;
+      right:var(--side-ui-right);
+      z-index:58;
+      width:var(--float-ui-width);
+      min-height:274px;
+      padding:10px 0 11px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.72);
+      background:
+        radial-gradient(circle at 50% 10%,rgba(255,255,255,.92),rgba(255,255,255,0) 35%),
+        linear-gradient(180deg,rgba(255,255,255,.56),rgba(246,240,216,.30));
+      backdrop-filter:blur(22px) saturate(1.12);
+      -webkit-backdrop-filter:blur(22px) saturate(1.12);
+      box-shadow:0 18px 42px rgba(43,66,58,.15), inset 0 1px 0 rgba(255,255,255,.72);
+      display:grid;
+      grid-template-rows:auto auto 1fr auto auto;
+      justify-items:center;
+      align-items:center;
+      gap:7px;
+      opacity:.88;
+      transform:translateZ(0) scale(var(--scale,1));
+      transition:opacity .24s ease, transform .24s ease, box-shadow .24s ease;
+      user-select:none;
+      overflow:visible;
+    }
+    .volume-widget::before{
+      content:"";
+      position:absolute;
+      left:50%;top:50%;transform:translate(-50%,-50%);
+      width:72%;height:88%;border-radius:999px;
+      background:radial-gradient(ellipse at center,rgba(43,62,53,.18) 0%,rgba(43,62,53,.08) 42%,rgba(43,62,53,0) 72%);
+      filter:blur(13px);
+      z-index:-1;
+      pointer-events:none;
+    }
+    .volume-widget:hover,.volume-widget.dragging{
+      opacity:1;
+      --scale:1.035;
+      box-shadow:0 22px 54px rgba(43,66,58,.20), inset 0 1px 0 rgba(255,255,255,.82);
+    }
+    .volume-title{
+      width:100%;
+      text-align:center;
+      font-size:9px;
+      letter-spacing:.18em;
+      color:#69796f;
+      font-weight:950;
+      writing-mode:horizontal-tb;
+      line-height:1;
+      white-space:nowrap;
+      transform:translateX(.08em);
+    }
+    .volume-icon{
+      width:32px;height:32px;border-radius:50%;
+      display:grid;place-items:center;
+      color:#8c753b;
+      background:radial-gradient(circle at 35% 28%,#fff 0 25%,#f8e9b5 26% 58%,rgba(255,255,255,.70) 100%);
+      border:1px solid rgba(255,255,255,.80);
+      box-shadow:0 8px 18px rgba(67,93,70,.12), inset 0 1px 0 rgba(255,255,255,.78);
+      transform:translateY(var(--iconShift,0px)) scale(var(--iconScale,1));
+      transition:transform .18s ease;
+      font-size:14px;
+    }
+    .volume-widget.dragging .volume-icon.top{--iconScale:1.10;}
+    .volume-shell{
+      position:relative;
+      width:var(--float-ui-width);
+      height:142px;
+      border-radius:999px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      touch-action:none;
+      cursor:grab;
+    }
+    .volume-shell:active{cursor:grabbing;}
+    .volume-track{
+      position:relative;
+      width:18px;
+      height:132px;
+      border-radius:999px;
+      background:linear-gradient(180deg,rgba(255,255,255,.46),rgba(202,224,214,.30));
+      box-shadow:inset 0 1px 5px rgba(60,78,70,.10), 0 0 0 1px rgba(255,255,255,.50);
+      transform-origin:50% 50%;
+      transform:scaleY(calc(1 + var(--overflow,0) * .004)) scaleX(calc(1 - var(--overflow,0) * .002));
+      transition:transform .18s cubic-bezier(.2,.8,.2,1);
+      overflow:visible;
+      isolation:isolate;
+    }
+    .volume-range{
+      position:absolute;
+      left:0;right:0;bottom:0;
+      height:calc(var(--vol,50) * 1%);
+      border-radius:999px;
+      background:linear-gradient(0deg,#9ed0e8 0%,#f3df9b 78%,#fff7d2 100%);
+      box-shadow:0 0 18px rgba(159,209,232,.38), inset 0 1px 0 rgba(255,255,255,.66);
+      transition:height .12s ease;
+      z-index:1;
+      overflow:hidden;
+    }
+    .volume-thumb{
+      position:absolute;
+      left:50%;
+      top:calc((100 - var(--vol,50)) * 1%);
+      width:36px;height:36px;
+      border-radius:50%;
+      transform:translate(-50%,-50%) scale(calc(1 + var(--overflow,0) * .004));
+      background:radial-gradient(circle at 35% 28%,#fff 0 24%,#f8e9b5 25% 56%,#a7d6e8 100%);
+      border:1px solid rgba(255,255,255,.86);
+      box-shadow:0 10px 24px rgba(41,64,58,.16), 0 0 0 5px rgba(255,255,255,.25), inset 0 1px 0 rgba(255,255,255,.82);
+      transition:top .12s ease, transform .14s ease;
+      z-index:3;
+      overflow:visible;
+    }
+    .volume-thumb::after{
+      content:"♪";
+      position:absolute;inset:0;
+      display:grid;place-items:center;
+      font-size:15px;
+      color:#8f783b;
+      font-weight:900;
+      z-index:4;
+    }
+    .volume-value{
+      width:38px;
+      min-width:38px;
+      padding:5px 0;
+      border-radius:999px;
+      background:rgba(255,255,255,.54);
+      border:1px solid rgba(255,255,255,.58);
+      font-size:11px;
+      color:#53665f;
+      text-align:center;
+      font-weight:950;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.52);
+    }
+
+    main{position:relative;z-index:2;}
+    section{width:min(1180px,calc(100% - 56px));margin:0 auto;}
+
+    .hero{
+      min-height:100vh;
+      display:grid;
+      grid-template-columns:1.02fr .98fr;
+      align-items:center;
+      gap:44px;
+      padding:118px 0 62px;
+    }
+    .eyebrow{
+      display:inline-flex;align-items:center;gap:9px;
+      padding:9px 14px;
+      border:1px solid rgba(255,255,255,.62);
+      background:rgba(255,255,255,.39);
+      border-radius:999px;
+      box-shadow:var(--soft-shadow);
+      font-size:13px;
+      color:#435450;
+      backdrop-filter:blur(14px);
+    }
+    .hero h1{
+      margin:22px 0 16px;
+      font-size:clamp(54px,7.4vw,108px);
+      line-height:.9;
+      letter-spacing:-.065em;
+      color:#13252d;
+      text-shadow:0 1px 0 rgba(255,255,255,.48), 0 22px 60px rgba(46,65,60,.18);
+    }
+    .hero h1 .small{
+      display:block;
+      margin:0 0 15px 5px;
+      font-size:.31em;
+      line-height:1.2;
+      letter-spacing:.32em;
+      color:#6e805d;
+      font-weight:800;
+    }
+    .hero h1 .en{
+      display:block;
+      margin-top:16px;
+      font-size:.25em;
+      line-height:1.35;
+      letter-spacing:.22em;
+      color:#49656c;
+      font-weight:800;
+    }
+    .lead{
+      width:min(660px,100%);
+      margin:0 0 24px;
+      font-size:18px;
+      line-height:2;
+      color:#34474c;
+      text-shadow:0 1px 0 rgba(255,255,255,.3);
+    }
+    .hero-actions{display:flex;gap:14px;flex-wrap:wrap;align-items:center;}
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;gap:10px;
+      padding:14px 21px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.64);
+      background:rgba(255,255,255,.54);
+      box-shadow:0 16px 42px rgba(39,61,55,.15);
+      font-weight:900;
+      transition:.25s ease;
+      cursor:pointer;
+    }
+    .btn:hover{transform:translateY(-2px);box-shadow:0 22px 54px rgba(38,62,54,.20);}
+    .btn.primary{background:linear-gradient(135deg,#fff,#f8e2a2);}
+    .btn.ghost{background:rgba(255,255,255,.36);}
+    .hero-card{
+      position:relative;
+      padding:16px;
+      border-radius:42px;
+      border:1px solid rgba(255,255,255,.66);
+      background:linear-gradient(135deg,rgba(255,255,255,.56),rgba(255,255,255,.16));
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(16px);
+      overflow:hidden;
+    }
+    .hero-card::before{
+      content:"";
+      position:absolute;inset:18px;
+      border-radius:32px;
+      pointer-events:none;
+      border:1px solid rgba(255,255,255,.48);
+      z-index:2;
+    }
+    .hero-card::after{
+      content:"";
+      position:absolute;
+      width:72%;height:44%;
+      right:-20%;top:-16%;
+      border-radius:50%;
+      background:radial-gradient(circle,rgba(255,255,255,.52),transparent 67%);
+      pointer-events:none;
+    }
+    .hero-card img{
+      display:block;width:100%;
+      aspect-ratio:4/5;
+      object-fit:cover;object-position:center top;
+      border-radius:32px;
+      box-shadow:0 24px 62px rgba(24,42,38,.22);
+    }
+    .caption{
+      position:absolute;left:34px;right:34px;bottom:34px;z-index:3;
+      padding:16px 18px;
+      border-radius:23px;
+      color:#fff;
+      background:linear-gradient(135deg,rgba(22,35,35,.58),rgba(255,255,255,.15));
+      border:1px solid rgba(255,255,255,.28);
+      backdrop-filter:blur(15px);
+    }
+    .caption strong{display:block;font-size:18px;letter-spacing:.08em;margin-bottom:6px;}
+    .caption span{display:block;font-size:13px;line-height:1.6;opacity:.88;}
+    .carousel-shell{position:relative;}
+    .inline-switcher .origin-carousel{height:clamp(420px,44vw,640px);}
+    .inline-switcher .origin-carousel-hint{top:16px;left:16px;font-size:11px;padding:8px 12px;}
+    .inline-switcher .origin-carousel-indicators{right:16px;top:16px;transform:none;grid-auto-flow:column;gap:10px;padding:8px 10px;}
+    .inline-switcher .origin-label strong{display:block;font-size:16px;margin-bottom:4px;letter-spacing:.04em;}
+
+    .audio-dock{
+      margin-top:22px;
+      padding:16px;
+      border-radius:28px;
+      border:1px solid rgba(255,255,255,.60);
+      background:rgba(255,255,255,.46);
+      backdrop-filter:blur(18px);
+      box-shadow:var(--soft-shadow);
+      scroll-margin-top:136px;
+      transition:box-shadow .32s ease, border-color .32s ease, transform .32s ease;
+    }
+    .audio-dock.jump-highlight{
+      border-color:rgba(232,206,143,.95);
+      box-shadow:0 22px 58px rgba(80,100,80,.18), 0 0 0 7px rgba(248,225,160,.18), inset 0 1px 0 rgba(255,255,255,.72);
+      transform:translateY(-2px);
+    }
+    .audio-top{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:12px;}
+    .audio-title{font-weight:900;letter-spacing:.08em;color:#314249;}
+    .status{font-size:13px;color:#5d6b65;}
+    .track-list{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;}
+    .track{
+      border:1px solid rgba(255,255,255,.58);
+      background:rgba(255,255,255,.40);
+      border-radius:19px;
+      padding:11px 12px;
+      cursor:pointer;
+      transition:.22s ease;
+      text-align:left;
+      color:#344246;
+    }
+    .track b{display:block;font-size:13px;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .track small{display:block;font-size:11px;color:#68766c;line-height:1.4;}
+    .track:hover,.track.active{transform:translateY(-2px);background:rgba(255,255,255,.68);border-color:rgba(237,206,130,.9);box-shadow:0 12px 28px rgba(82,100,70,.12);}
+
+    .panel{
+      position:relative;
+      margin:34px auto;
+      padding:34px;
+      border-radius:var(--radius);
+      border:1px solid rgba(255,255,255,.62);
+      background:linear-gradient(135deg,rgba(255,255,247,.70),rgba(255,255,247,.36));
+      backdrop-filter:blur(22px) saturate(1.06);
+      box-shadow:var(--soft-shadow);
+      overflow:hidden;
+    }
+    .panel::before{
+      content:"";
+      position:absolute;
+      width:300px;height:300px;
+      right:-110px;top:-150px;
+      border-radius:50%;
+      background:radial-gradient(circle,rgba(255,236,173,.42),transparent 68%);
+      pointer-events:none;
+    }
+    .section-title{display:flex;align-items:end;justify-content:space-between;gap:18px;margin-bottom:24px;position:relative;z-index:1;}
+    .section-title h2{font-size:clamp(28px,4vw,54px);line-height:.98;margin:0;letter-spacing:-.05em;color:#192a31;}
+    .section-title small{letter-spacing:.26em;text-transform:uppercase;color:#71806a;font-weight:800;}
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px;position:relative;z-index:1;}
+    .text-card,.quote-card,.relation,.name-item,.track-note{
+      padding:22px;
+      border-radius:25px;
+      border:1px solid rgba(255,255,255,.54);
+      background:rgba(255,255,255,.42);
+      box-shadow:0 14px 32px rgba(41,65,58,.08);
+    }
+    .text-card h3,.quote-card h3,.relation h3,.track-note h3{margin:0 0 10px;font-size:20px;color:#25383e;}
+    .text-card p,.quote-card p,.relation p,.track-note p{margin:0;color:#3d4f51;line-height:1.9;}
+    .quote-card{background:linear-gradient(135deg,rgba(255,255,255,.52),rgba(246,225,154,.26));}
+    .quote-card .big{font-size:24px;font-weight:900;color:#2b3b3c;line-height:1.55;margin-bottom:12px;}
+    .map-flow{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:18px;position:relative;z-index:1;}
+    .map-item{
+      min-height:132px;
+      padding:18px;
+      border-radius:24px;
+      border:1px solid rgba(255,255,255,.56);
+      background:rgba(255,255,255,.38);
+      box-shadow:0 12px 28px rgba(38,63,55,.08);
+    }
+    .map-item i{display:block;font-style:normal;font-size:25px;margin-bottom:10px;}
+    .map-item b{display:block;margin-bottom:8px;color:#26383d;}
+    .map-item span{font-size:13px;line-height:1.7;color:#526260;}
+
+    .origin-area{display:grid;grid-template-columns:.92fr 1.08fr;gap:22px;align-items:center;position:relative;z-index:1;}
+    .origin-photo{
+      position:relative;
+      padding:14px;
+      border-radius:32px;
+      border:1px solid rgba(255,255,255,.66);
+      background:rgba(255,255,255,.42);
+      box-shadow:0 18px 48px rgba(35,58,54,.13);
+      overflow:visible;
+    }
+    .origin-carousel{
+      --carousel-x:0px;
+      position:relative;
+      height:clamp(300px,32vw,430px);
+      border-radius:24px;
+      overflow:hidden;
+      perspective:1100px;
+      transform-style:preserve-3d;
+      touch-action:pan-y;
+      user-select:none;
+      background:linear-gradient(135deg,rgba(255,255,255,.22),rgba(232,242,237,.14));
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.28);
+    }
+    .origin-carousel.dragging{cursor:grabbing;}
+    .origin-carousel-track{position:absolute;inset:0;transform-style:preserve-3d;}
+    .origin-slide{
+      position:absolute;inset:0;
+      border-radius:24px;
+      overflow:hidden;
+      transform:translateX(0) rotateY(0deg) scale(1);
+      opacity:0;
+      filter:saturate(.9) blur(2px);
+      transition:transform .62s cubic-bezier(.22,.61,.36,1), opacity .45s ease, filter .45s ease;
+      box-shadow:0 22px 44px rgba(34,56,52,.18);
+      will-change:transform,opacity,filter;
+    }
+    .origin-slide img{display:block;width:100%;height:100%;object-fit:cover;object-position:center;filter:saturate(.96) brightness(1.02);pointer-events:none;}
+    .origin-slide.is-active{opacity:1;filter:saturate(.96) blur(0);}
+    .origin-label{
+      position:absolute;left:20px;right:20px;bottom:18px;
+      padding:12px 14px;
+      border-radius:18px;
+      color:#fff;
+      background:linear-gradient(135deg,rgba(19,31,31,.62),rgba(255,255,255,.12));
+      border:1px solid rgba(255,255,255,.28);
+      backdrop-filter:blur(13px);
+      -webkit-backdrop-filter:blur(13px);
+      font-size:13px;line-height:1.55;
+      box-shadow:0 12px 28px rgba(22,34,32,.18);
+    }
+    .origin-carousel-hint{
+      position:absolute;left:18px;top:18px;z-index:8;
+      padding:9px 13px;border-radius:999px;
+      background:rgba(255,255,255,.72);
+      border:1px solid rgba(255,255,255,.72);
+      color:#5c6b65;
+      font-size:12px;font-weight:900;letter-spacing:.04em;
+      box-shadow:0 10px 24px rgba(36,55,49,.1);
+      backdrop-filter:blur(12px);
+      -webkit-backdrop-filter:blur(12px);
+      pointer-events:none;
+    }
+    .origin-carousel-indicators{
+      position:absolute;right:16px;top:16px;transform:none;
+      z-index:9;
+      display:grid;grid-auto-flow:column;align-items:center;gap:10px;
+      padding:8px 10px;
+      border-radius:999px;
+      background:rgba(255,255,255,.18);
+      backdrop-filter:blur(8px);
+      -webkit-backdrop-filter:blur(8px);
+      box-shadow:0 8px 18px rgba(35,58,54,.08);
+    }
+    .origin-carousel-indicator{
+      width:12px;height:12px;border-radius:50%;border:0;cursor:pointer;
+      background:rgba(255,255,255,.78);
+      box-shadow:0 6px 12px rgba(43,62,53,.10), inset 0 0 0 1px rgba(255,255,255,.8);
+      transition:transform .22s ease, background .22s ease, box-shadow .22s ease;
+    }
+    .origin-carousel-indicator.active{
+      transform:scale(1.18);
+      background:linear-gradient(135deg,#fff,#f7de98);
+      box-shadow:0 10px 24px rgba(43,62,53,.18),0 0 0 6px rgba(255,255,255,.34);
+    }
+    .origin-carousel-indicator:hover{transform:scale(1.12);}
+    .origin-steps{display:grid;gap:12px;margin-top:16px;}
+    .origin-step{
+      display:grid;grid-template-columns:44px 1fr;gap:13px;align-items:start;
+      padding:15px;
+      border-radius:22px;
+      border:1px solid rgba(255,255,255,.54);
+      background:rgba(255,255,255,.38);
+    }
+    .origin-step i{font-style:normal;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#fff,#f7e2a5);box-shadow:0 10px 24px rgba(86,104,75,.12);}
+    .origin-step b{display:block;margin-bottom:4px;color:#25383d;}
+    .origin-step span{display:block;color:#526260;line-height:1.7;font-size:13px;}
+
+    .character-area{display:grid;grid-template-columns:.78fr 1.22fr;gap:24px;align-items:start;position:relative;z-index:1;}
+    .portrait{
+      position:relative;
+      padding:12px;
+      border-radius:31px;
+      border:1px solid rgba(255,255,255,.62);
+      background:rgba(255,255,255,.38);
+      box-shadow:0 18px 48px rgba(35,58,54,.14);
+      overflow:hidden;
+    }
+    .portrait img{display:block;width:100%;border-radius:23px;aspect-ratio:4/5;object-fit:cover;object-position:center top;}
+    .portrait .origin-carousel{height:clamp(420px,46vw,680px);border-radius:23px;}
+    .portrait .origin-slide{border-radius:23px;}
+    .portrait .origin-carousel-indicators{right:16px;top:16px;transform:none;grid-auto-flow:column;gap:10px;padding:8px 10px;}
+    .portrait .origin-carousel-hint{top:16px;left:16px;padding:8px 12px;font-size:11px;}
+    .clean-carousel-display .origin-carousel-hint,
+    .clean-carousel-display .origin-label,
+    .clean-carousel-display .origin-carousel-indicators{
+      display:none !important;
+    }
+    .clean-carousel-display .origin-carousel{
+      cursor:grab;
+    }
+    .clean-carousel-display .origin-carousel.dragging{
+      cursor:grabbing;
+    }
+    .nameplate{
+      position:absolute;left:26px;right:26px;bottom:26px;
+      padding:13px 15px;
+      border-radius:20px;
+      color:#fff;
+      background:linear-gradient(135deg,rgba(20,31,31,.58),rgba(255,255,255,.12));
+      border:1px solid rgba(255,255,255,.24);
+      backdrop-filter:blur(14px);
+    }
+    .nameplate b{display:block;font-size:20px;letter-spacing:.08em;}
+    .nameplate span{display:block;font-size:12px;opacity:.86;margin-top:4px;}
+    .tags{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px;}
+    .tag{
+      display:inline-flex;align-items:center;gap:6px;
+      padding:8px 11px;border-radius:999px;
+      background:rgba(255,255,255,.48);
+      border:1px solid rgba(255,255,255,.54);
+      font-size:13px;color:#455651;font-weight:700;
+    }
+    .relation-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;position:relative;z-index:1;}
+    .relation.featured{
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      min-height:278px;
+      background:
+        radial-gradient(circle at 18% 10%,rgba(255,255,255,.70),transparent 35%),
+        linear-gradient(145deg,rgba(255,255,255,.55),rgba(232,244,237,.32));
+      border-color:rgba(239,216,156,.68);
+    }
+    .relation-kicker{
+      display:inline-flex;align-items:center;gap:7px;
+      width:max-content;
+      margin-bottom:12px;
+      padding:7px 10px;
+      border-radius:999px;
+      background:rgba(255,255,255,.44);
+      border:1px solid rgba(255,255,255,.58);
+      color:#71806a;
+      font-size:11px;
+      font-weight:900;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+    }
+    .story-jump{
+      margin-top:16px;
+      display:inline-flex;align-items:center;justify-content:center;gap:8px;
+      width:100%;
+      padding:12px 14px;
+      border-radius:17px;
+      border:1px solid rgba(236,208,139,.72);
+      background:linear-gradient(135deg,rgba(255,255,255,.78),rgba(248,226,166,.34));
+      color:#35494b;
+      font-size:13px;
+      font-weight:900;
+      box-shadow:0 12px 26px rgba(67,93,70,.10);
+      transition:.24s ease;
+    }
+    .story-jump:hover{transform:translateY(-2px);box-shadow:0 18px 34px rgba(67,93,70,.14);}
+    .story-panel{scroll-margin-top:122px;}
+    .story-shell{
+      position:relative;z-index:1;
+      display:grid;
+      grid-template-columns:.86fr 1.14fr;
+      gap:20px;
+      align-items:stretch;
+    }
+    .story-intro-card{
+      position:relative;
+      overflow:hidden;
+      padding:26px;
+      border-radius:29px;
+      border:1px solid rgba(255,255,255,.58);
+      background:
+        radial-gradient(circle at 16% 9%,rgba(255,255,255,.68),transparent 35%),
+        linear-gradient(160deg,rgba(255,255,255,.48),rgba(224,241,234,.25));
+      box-shadow:0 18px 46px rgba(35,58,54,.10);
+    }
+    .story-intro-card::after{
+      content:"♪";
+      position:absolute;right:22px;bottom:8px;
+      font-size:100px;
+      line-height:1;
+      color:rgba(213,174,105,.16);
+      transform:rotate(-12deg);
+      pointer-events:none;
+    }
+    .story-intro-card h3,.story-stage h3{margin:0 0 12px;font-size:23px;color:#25383d;}
+    .story-intro-card p,.story-stage p{margin:0;color:#3d4f51;line-height:1.92;}
+    .story-intro-card .story-line{
+      margin-top:18px;
+      padding:17px 18px;
+      border-radius:21px;
+      background:rgba(255,255,255,.42);
+      border:1px solid rgba(255,255,255,.56);
+      font-weight:900;
+      color:#2d4246;
+      line-height:1.75;
+    }
+    .story-stage{
+      padding:20px;
+      border-radius:29px;
+      border:1px solid rgba(255,255,255,.58);
+      background:rgba(255,255,255,.36);
+      box-shadow:0 18px 46px rgba(35,58,54,.10);
+    }
+    .story-tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;}
+    .story-tab{
+      border:1px solid rgba(255,255,255,.58);
+      background:rgba(255,255,255,.42);
+      border-radius:999px;
+      padding:10px 14px;
+      cursor:pointer;
+      color:#53665f;
+      font-weight:900;
+      transition:.22s ease;
+    }
+    .story-tab:hover{transform:translateY(-1px);background:rgba(255,255,255,.65);}
+    .story-tab.active{
+      color:#26383d;
+      border-color:rgba(235,207,139,.86);
+      background:linear-gradient(135deg,rgba(255,255,255,.92),rgba(248,226,166,.42));
+      box-shadow:0 12px 24px rgba(67,93,70,.10);
+    }
+    .story-chapter{display:none;animation:storyFade .28s ease;}
+    .story-chapter.active{display:block;}
+    @keyframes storyFade{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+    .story-chapter blockquote{
+      margin:16px 0 0;
+      padding:18px 20px;
+      border-left:3px solid rgba(213,174,105,.72);
+      border-radius:18px;
+      background:rgba(255,255,255,.42);
+      color:#31484a;
+      line-height:1.9;
+      font-weight:800;
+    }
+    .story-timeline{
+      position:relative;z-index:1;
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:14px;
+      margin-top:18px;
+    }
+    .story-step{
+      padding:18px;
+      border-radius:23px;
+      border:1px solid rgba(255,255,255,.56);
+      background:rgba(255,255,255,.36);
+      box-shadow:0 12px 28px rgba(38,63,55,.08);
+      min-height:154px;
+    }
+    .story-step i{
+      font-style:normal;
+      display:grid;place-items:center;
+      width:38px;height:38px;margin-bottom:10px;
+      border-radius:50%;
+      background:linear-gradient(135deg,#fff,#f7e2a5);
+      box-shadow:0 10px 24px rgba(86,104,75,.12);
+      font-weight:900;color:#7b6732;
+    }
+    .story-step b{display:block;margin-bottom:7px;color:#26383d;}
+    .story-step span{display:block;font-size:13px;line-height:1.72;color:#526260;}
+    .name-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;position:relative;z-index:1;}
+    .name-item strong{display:block;font-size:18px;margin-bottom:8px;color:#25383d;}
+    .name-item span{font-size:13px;line-height:1.7;color:#526260;}
+
+    .ui-assets-grid{
+      position:relative;z-index:1;
+      display:grid;
+      grid-template-columns:1fr 1fr 1fr;
+      gap:18px;
+      align-items:stretch;
+    }
+    .ui-asset-card{
+      position:relative;
+      overflow:hidden;
+      border-radius:28px;
+      padding:18px;
+      border:1px solid rgba(255,255,255,.58);
+      background:linear-gradient(180deg,rgba(255,255,255,.46),rgba(255,255,255,.18));
+      box-shadow:0 18px 46px rgba(35,58,54,.12), inset 0 1px 0 rgba(255,255,255,.35);
+    }
+    .ui-asset-card::before{
+      content:"";
+      position:absolute;inset:0;
+      pointer-events:none;
+      background:radial-gradient(circle at 26% 18%,rgba(255,255,255,.55),transparent 34%), radial-gradient(circle at 78% 86%,rgba(205,232,214,.22),transparent 36%);
+    }
+    .ui-preview{
+      position:relative;z-index:1;
+      min-height:230px;
+      border-radius:22px;
+      display:flex;align-items:center;justify-content:center;
+      padding:20px;
+      overflow:hidden;
+      background:
+        linear-gradient(45deg,rgba(255,255,255,.34) 25%,transparent 25%),
+        linear-gradient(-45deg,rgba(255,255,255,.34) 25%,transparent 25%),
+        linear-gradient(45deg,transparent 75%,rgba(255,255,255,.34) 75%),
+        linear-gradient(-45deg,transparent 75%,rgba(255,255,255,.34) 75%),
+        linear-gradient(135deg,rgba(245,250,246,.52),rgba(229,241,237,.24));
+      background-size:24px 24px,24px 24px,24px 24px,24px 24px,100% 100%;
+      background-position:0 0,0 12px,12px -12px,-12px 0,0 0;
+      border:1px solid rgba(255,255,255,.55);
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.22);
+    }
+    .ui-preview img{
+      display:block;
+      max-width:100%;
+      max-height:210px;
+      object-fit:contain;
+      pointer-events:none;
+      user-select:none;
+      -webkit-user-drag:none;
+      filter:drop-shadow(0 18px 24px rgba(49,69,62,.18));
+    }
+    .ui-preview.logo-preview img{max-height:170px;}
+    .ui-preview.nav-preview img{max-height:260px;}
+    .ui-asset-info{position:relative;z-index:1;padding:16px 2px 2px;}
+    .ui-asset-info h3{margin:0 0 8px;font-size:21px;color:#25383d;letter-spacing:-.02em;}
+    .ui-asset-info p{margin:0 0 12px;font-size:14px;line-height:1.85;color:#526260;}
+    .ui-meta{display:grid;gap:8px;margin-top:12px;}
+    .ui-meta span{
+      display:flex;justify-content:space-between;gap:12px;
+      padding:9px 11px;border-radius:14px;
+      background:rgba(255,255,255,.38);
+      border:1px solid rgba(255,255,255,.38);
+      font-size:12px;color:#526260;
+    }
+    .ui-meta b{color:#314449;white-space:nowrap;}
+    .ui-note{
+      position:relative;z-index:1;
+      margin-top:18px;
+      padding:18px 20px;
+      border-radius:24px;
+      border:1px solid rgba(255,255,255,.56);
+      background:rgba(255,255,255,.32);
+      color:#4f615b;
+      line-height:1.9;
+      font-size:14px;
+    }
+    .product-grid{
+      position:relative;z-index:1;
+      display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:start;
+    }
+    .product-card{
+      position:relative;overflow:hidden;border-radius:30px;padding:18px;
+      border:1px solid rgba(255,255,255,.58);
+      background:linear-gradient(180deg,rgba(255,255,255,.50),rgba(255,255,255,.22));
+      box-shadow:0 18px 44px rgba(35,58,54,.12), inset 0 1px 0 rgba(255,255,255,.38);
+    }
+    .product-card::before{
+      content:"";position:absolute;inset:0;pointer-events:none;
+      background:radial-gradient(circle at 18% 14%, rgba(255,255,255,.45), transparent 24%), radial-gradient(circle at 82% 84%, rgba(231,241,236,.26), transparent 34%);
+    }
+    .product-image{position:relative;z-index:1;border-radius:24px;overflow:hidden;border:1px solid rgba(255,255,255,.54);background:rgba(255,255,255,.46);}
+    .product-image img{display:block;width:100%;height:auto;}
+    .product-card.wide-product{grid-column:1 / -1;}
+    .product-card.wide-product .product-image{background:linear-gradient(180deg,rgba(255,255,255,.64),rgba(255,255,255,.34));}
+    .product-card.wide-product .product-image img{max-height:720px;object-fit:contain;background:#fff;}
+    .turnaround-card{
+      display:grid;
+      grid-template-columns:minmax(0,1.15fr) minmax(320px,.85fr);
+      gap:22px;
+      align-items:center;
+    }
+    .turnaround-card .product-image{align-self:stretch;display:grid;place-items:center;padding:14px;}
+    .turnaround-card .product-image img{
+      width:100%;
+      max-height:520px;
+      object-fit:contain;
+      background:transparent;
+    }
+    .turnaround-card .product-info{padding:4px 4px 4px;}
+    .turnaround-card .product-info h3{font-size:28px;}
+    .product-info{position:relative;z-index:1;padding:18px 4px 4px;}
+    .product-info h3{margin:0 0 8px;font-size:24px;color:#25383d;letter-spacing:-.02em;}
+    .product-info p{margin:0 0 12px;font-size:14px;line-height:1.9;color:#526260;}
+    .product-points{display:grid;gap:8px;margin-top:12px;}
+    .product-points span{display:flex;justify-content:space-between;gap:12px;padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.40);border:1px solid rgba(255,255,255,.36);font-size:12px;color:#526260;}
+    .product-points b{color:#314449;white-space:nowrap;}
+
+    .voice-grid{
+      position:relative;z-index:1;
+      display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:stretch;
+    }
+    .voice-card{
+      position:relative;overflow:hidden;border-radius:28px;padding:22px 22px 18px;
+      border:1px solid rgba(255,255,255,.58);
+      background:linear-gradient(160deg,rgba(255,255,255,.50),rgba(244,249,245,.24));
+      box-shadow:0 18px 42px rgba(35,58,54,.10), inset 0 1px 0 rgba(255,255,255,.36);
+    }
+    .voice-card::before{
+      content:"";position:absolute;inset:0;pointer-events:none;
+      background:radial-gradient(circle at 14% 12%, rgba(255,255,255,.46), transparent 24%), radial-gradient(circle at 82% 88%, rgba(236,243,231,.24), transparent 36%);
+    }
+    .voice-head{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;}
+    .voice-index{
+      display:inline-flex;align-items:center;justify-content:center;
+      width:40px;height:40px;border-radius:50%;font-weight:900;color:#7b6732;
+      background:linear-gradient(135deg,#fff,#f7e2a5);box-shadow:0 10px 22px rgba(82,96,67,.12);
+      flex-shrink:0;
+    }
+    .voice-title{font-size:20px;font-weight:900;color:#25383d;letter-spacing:-.02em;}
+    .voice-play{
+      position:relative;z-index:1;border:none;cursor:pointer;border-radius:999px;padding:10px 16px;
+      background:linear-gradient(135deg,rgba(255,255,255,.92),rgba(248,226,166,.48));
+      color:#25383d;font-weight:900;box-shadow:0 12px 22px rgba(57,78,70,.10);transition:.22s ease;
+    }
+    .voice-play:hover{transform:translateY(-1px);filter:saturate(1.03);}    
+    .voice-cn,.voice-en{position:relative;z-index:1;line-height:1.9;}
+    .voice-cn{margin:0 0 10px;font-size:15px;color:#314449;font-weight:700;}
+    .voice-en{margin:0;font-size:14px;color:#667772;}
+    .voice-card.playing{box-shadow:0 0 0 1px rgba(234,204,138,.72), 0 20px 48px rgba(213,174,105,.18), inset 0 1px 0 rgba(255,255,255,.36);}    
+    .personal-grid{
+      position:relative;z-index:1;
+      display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;align-items:start;
+    }
+    .personal-card{
+      position:relative;overflow:hidden;border-radius:28px;padding:16px;
+      border:1px solid rgba(255,255,255,.58);
+      background:linear-gradient(180deg,rgba(255,255,255,.52),rgba(255,255,255,.22));
+      box-shadow:0 18px 44px rgba(35,58,54,.10), inset 0 1px 0 rgba(255,255,255,.38);
+      height:100%;
+    }
+    .personal-card::before{
+      content:"";position:absolute;inset:0;pointer-events:none;
+      background:radial-gradient(circle at 18% 14%, rgba(255,255,255,.45), transparent 24%), radial-gradient(circle at 82% 84%, rgba(231,241,236,.26), transparent 34%);
+    }
+    .personal-card.wide{grid-column:1 / -1;}
+    .personal-image{position:relative;z-index:1;border-radius:22px;overflow:hidden;border:1px solid rgba(255,255,255,.54);background:rgba(255,255,255,.42);}
+    .personal-image img{display:block;width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;}
+    .personal-info{position:relative;z-index:1;padding:14px 2px 2px;}
+    .personal-info h3{margin:0 0 8px;font-size:20px;line-height:1.35;color:#25383d;letter-spacing:-.02em;}
+    .personal-info p{margin:0 0 10px;font-size:13px;line-height:1.8;color:#526260;}
+    .personal-quote{margin-top:10px;padding:11px 12px;border-radius:15px;background:rgba(255,255,255,.38);border:1px solid rgba(255,255,255,.34);color:#324649;font-weight:800;line-height:1.75;font-size:12px;}
+    .cursor-fluff{position:fixed;inset:0;pointer-events:none;z-index:12;overflow:hidden;}
+    .dandelion-seed{
+      position:fixed;width:18px;height:18px;pointer-events:none;will-change:transform,opacity;opacity:.92;
+      animation:seedFloat var(--seedDur,2.8s) ease-out forwards;
+      filter:drop-shadow(0 8px 16px rgba(46,69,61,.16));
+    }
+    .dandelion-seed::before{
+      content:"";position:absolute;left:50%;top:50%;width:2px;height:2px;border-radius:50%;background:rgba(255,255,255,.95);transform:translate(-50%,-50%);
+      box-shadow:
+        0 -7px 0 0 rgba(255,255,255,.88),
+        5px -5px 0 0 rgba(255,255,255,.88),
+        7px 0 0 0 rgba(255,255,255,.88),
+        5px 5px 0 0 rgba(255,255,255,.88),
+        0 7px 0 0 rgba(255,255,255,.88),
+        -5px 5px 0 0 rgba(255,255,255,.88),
+        -7px 0 0 0 rgba(255,255,255,.88),
+        -5px -5px 0 0 rgba(255,255,255,.88);
+    }
+    .dandelion-seed::after{
+      content:"";position:absolute;left:50%;top:52%;width:1.4px;height:14px;border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.82),rgba(210,230,219,.10));transform:translateX(-50%) rotate(var(--seedRot,18deg));transform-origin:top center;
+    }
+    @keyframes seedFloat{
+      0%{transform:translate3d(0,0,0) scale(.88) rotate(0deg);opacity:0;}
+      10%{opacity:.95;}
+      100%{transform:translate3d(var(--seedX,58px),var(--seedY,-120px),0) scale(1.08) rotate(var(--seedSpin,28deg));opacity:0;}
+    }
+    .concept-screen{
+      position:relative;z-index:1;
+      min-height:360px;
+      border-radius:30px;
+      padding:28px;
+      border:1px solid rgba(255,255,255,.56);
+      background:
+        linear-gradient(180deg,rgba(255,255,255,.25),rgba(255,255,255,.06)),
+        url("assets/tidewind_pasture_bg_watermarked.png") center/cover no-repeat;
+      overflow:hidden;
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.14), 0 18px 46px rgba(30,52,50,.12);
+    }
+    .concept-screen::before{
+      content:"";position:absolute;inset:0;
+      background:linear-gradient(90deg,rgba(21,37,38,.52),rgba(255,255,255,.08));
+    }
+    .concept-content{position:relative;z-index:1;width:min(560px,100%);color:#fff;text-shadow:0 8px 25px rgba(0,0,0,.32);}
+    .concept-content h3{font-size:34px;margin:38px 0 12px;letter-spacing:-.04em;}
+    .concept-content p{font-size:16px;line-height:1.9;margin:0 0 12px;color:rgba(255,255,255,.9);}
+    .ui-dots{position:absolute;z-index:2;top:22px;left:22px;display:flex;gap:8px;}
+    .ui-dots i{display:block;width:11px;height:11px;border-radius:50%;background:rgba(255,255,255,.72);box-shadow:0 0 16px rgba(255,255,255,.45);}
+    .ending{
+      text-align:center;
+      padding:88px 0 110px;
+      color:#fff;
+      text-shadow:0 12px 28px rgba(36,59,54,.22);
+    }
+    .ending h2{font-size:clamp(36px,5vw,70px);margin:0 0 14px;letter-spacing:-.05em;}
+    .ending p{margin:0;line-height:1.9;color:rgba(255,255,255,.86);font-weight:700;}
+    .float-tools{position:fixed;right:var(--side-ui-right);bottom:24px;z-index:60;display:grid;gap:8px;width:var(--float-ui-width);justify-items:end;}
+    .float-tools button{
+      position:relative;
+      width:var(--float-ui-width);height:auto;aspect-ratio:432/1111;padding:0;border:none;background:transparent;box-shadow:none;cursor:pointer;
+      display:block;transition:transform .22s ease,filter .22s ease;
+    }
+    .float-tools button:nth-child(2){aspect-ratio:440/1086;}
+    .float-tools button::before{
+      content:"";
+      position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+      width:68%;height:86%;border-radius:999px;
+      background:radial-gradient(ellipse at center,rgba(43,62,53,.24) 0%,rgba(43,62,53,.12) 42%,rgba(43,62,53,0) 72%);
+      filter:blur(12px);
+      z-index:0;pointer-events:none;
+    }
+    .float-tools button img{position:relative;z-index:1;display:block;width:100%;height:auto;object-fit:contain;filter:drop-shadow(0 8px 14px rgba(46,69,61,.22)) drop-shadow(0 2px 6px rgba(255,255,255,.20));}
+    .float-tools button:hover{transform:translateY(-3px) scale(1.025);filter:saturate(1.03);}
+    @media (max-width:980px){
+      header{position:absolute;border-radius:24px;align-items:flex-start;padding:12px 14px;}
+      .brand-mark{width:48px;height:48px;min-width:48px;border-radius:16px;}
+      .brand-mark img{border-radius:15px;}
+      .brand-copy strong{font-size:18px;}
+      .brand-copy em{font-size:10px;letter-spacing:.16em;}
+      nav{display:none;}
+      header .bubble-menu{display:flex !important;}
+      .menu-bubble-toggle{min-width:108px;padding:9px 12px;font-size:12px;}
+      .bubble-menu-items{top:112px;width:calc(100% - 28px);overflow-x:auto;justify-content:flex-start;padding:0 10px;}
+      .pill-list{padding:0;border-radius:0;gap:8px;flex-wrap:nowrap;justify-content:flex-start;background:transparent;border:none;box-shadow:none;}
+      .pill-link{min-width:82px;padding:11px 13px;font-size:12px;}
+      .hero{grid-template-columns:1fr;min-height:auto;padding-top:120px;}
+      .track-list,.grid-2,.origin-area,.character-area,.relation-grid,.name-grid,.map-flow,.ui-assets-grid,.voice-grid{grid-template-columns:1fr;}
+      .product-grid{grid-template-columns:1fr;}
+      .personal-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+      .turnaround-card{grid-template-columns:1fr;}
+      .turnaround-card .product-image img{max-height:440px;}
+      .origin-carousel-indicators{right:18px;top:18px;bottom:auto;transform:none;grid-auto-flow:column; padding:8px 10px; gap:8px;}
+      .origin-carousel{height:min(360px,72vw);}
+      .inline-switcher .origin-carousel{height:min(460px,88vw);}
+      .hero-card{max-width:520px;margin:0 auto;}
+      body::before{background-position:center top;}
+    }
+    @media (max-width:620px){
+      section{width:min(100% - 28px,1180px);}
+      header{width:calc(100% - 24px);}
+      :root{--side-ui-right:14px;--side-ui-width:46px;--float-ui-width:46px;--side-ui-align-width:46px;}
+      .float-tools{bottom:18px;gap:6px;}
+      .volume-widget{top:108px;}
+      .personal-grid{grid-template-columns:1fr;}
+      .personal-info h3{font-size:18px;}
+      .turnaround-card .product-image img{max-height:320px;}
+
+    }
+  </style>
+</head>
+<body>
+  <div class="veil"></div>
+  <div class="noise"></div>
+  <div class="sky-lines"></div>
+  <div class="stars" id="stars"></div>
+  <div class="petals" id="petals"></div>
+  <div class="cursor-fluff" id="cursorFluff"></div>
+  <div class="grass-ribbon"></div>
+
+  <header>
+    <a class="brand" href="#top" aria-label="返回顶部">
+      <span class="brand-mark"><img src="assets/wynn_header_ui_watermarked.png" alt="白昼先生 Wynn 页面徽章" /></span>
+      <span class="brand-copy">
+        <strong>浅岸星滩 · 潮风牧场</strong>
+        <em>Shallowstar Cove · Tidewind Pasture</em>
+      </span>
+    </a>
+    <nav class="bubble-menu" aria-label="主导航">
+      <button class="menu-bubble-toggle" id="bubbleMenuToggle" type="button" aria-label="打开项目菜单" aria-expanded="false">
+        <span>项目菜单</span>
+        <span class="menu-icon-lines" aria-hidden="true"><span class="menu-line"></span><span class="menu-line short"></span></span>
+      </button>
+    </nav>
+  </header>
+
+  <div class="bubble-menu-items" id="bubbleMenuItems" aria-hidden="true">
+    <div class="staff-wave" aria-hidden="true"></div>
+    <ul class="pill-list" role="menu" aria-label="项目导航选项">
+      <li class="pill-col" role="none"><a class="pill-link" role="menuitem" href="#world" style="--i:0;--item-rot:-4deg;--pill-bg:rgba(255,255,255,.86);--pill-color:#26383d;--hover-bg:#d9f1ff;--hover-color:#173341;" data-note="Do" data-scale-index="0"><span class="pill-label">世界观</span></a></li>
+      <li class="pill-col" role="none"><a class="pill-link" role="menuitem" href="#origin" style="--i:1;--item-rot:4deg;--pill-bg:rgba(255,255,255,.86);--pill-color:#26383d;--hover-bg:#edf4d8;--hover-color:#2e4b35;" data-note="Re" data-scale-index="1"><span class="pill-label">灵感来源</span></a></li>
+      <li class="pill-col" role="none"><a class="pill-link" role="menuitem" href="#wynn" style="--i:2;--item-rot:-4deg;--pill-bg:rgba(255,255,255,.86);--pill-color:#26383d;--hover-bg:#f8e2a6;--hover-color:#4a3514;" data-note="Mi" data-scale-index="2"><span class="pill-label">白昼先生 Wynn</span></a></li>
+      <li class="pill-col" role="none"><a class="pill-link" role="menuitem" href="#music" style="--i:3;--item-rot:4deg;--pill-bg:rgba(255,255,255,.86);--pill-color:#26383d;--hover-bg:#e7f4ff;--hover-color:#1f4050;" data-note="Fa" data-scale-index="3"><span class="pill-label">音乐试听</span></a></li>
+      <li class="pill-col" role="none"><a class="pill-link" role="menuitem" href="#voice-lines" style="--i:4;--item-rot:-4deg;--pill-bg:rgba(255,255,255,.86);--pill-color:#26383d;--hover-bg:#fff0c8;--hover-color:#4a3514;" data-note="Sol" data-scale-index="4"><span class="pill-label">角色台词</span></a></li>
+      <li class="pill-col" role="none"><a class="pill-link" role="menuitem" href="#product-design" style="--i:5;--item-rot:4deg;--pill-bg:rgba(255,255,255,.86);--pill-color:#26383d;--hover-bg:#eef1df;--hover-color:#405033;" data-note="La" data-scale-index="5"><span class="pill-label">延展设计</span></a></li>
+      <li class="pill-col" role="none"><a class="pill-link" role="menuitem" href="#personal-items" style="--i:6;--item-rot:-4deg;--pill-bg:rgba(255,255,255,.86);--pill-color:#26383d;--hover-bg:#f2f6dd;--hover-color:#405033;" data-note="Si" data-scale-index="6"><span class="pill-label">随身物品</span></a></li>
+      <li class="pill-col" role="none"><a class="pill-link" role="menuitem" href="#relation" style="--i:7;--item-rot:-4deg;--pill-bg:rgba(255,255,255,.86);--pill-color:#26383d;--hover-bg:#f7eee1;--hover-color:#4b3c24;" data-note="Do↑" data-scale-index="7"><span class="pill-label">角色关系</span></a></li>
+      <li class="pill-col" role="none"><a class="pill-link" role="menuitem" href="#interaction" style="--i:8;--item-rot:4deg;--pill-bg:rgba(255,255,255,.86);--pill-color:#26383d;--hover-bg:#e6f5ef;--hover-color:#26463e;" data-note="Re↑" data-scale-index="8"><span class="pill-label">交互设想</span></a></li>
+    </ul>
+  </div>
+
+  <div class="volume-widget" id="volumeWidget" aria-label="背景音乐音量调节">
+    <div class="volume-title">VOLUME</div>
+    <div class="volume-icon top" aria-hidden="true">♪</div>
+    <div class="volume-shell" id="volumeShell" role="slider" aria-label="背景音乐音量" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" tabindex="0">
+      <div class="volume-track" id="volumeTrack">
+        <div class="volume-range" id="volumeRange"></div>
+        <div class="volume-thumb" id="volumeThumb"></div>
+      </div>
+    </div>
+    <div class="volume-icon bottom" aria-hidden="true">♩</div>
+    <div class="volume-value" id="volumeValue">50</div>
+  </div>
+
+
+  <main id="top">
+    <section class="hero">
+      <div>
+        <div class="eyebrow">🌾 Shallowstar Cove Outer Map · Tidewind Pasture</div>
+        <h1><span class="small">白昼先生 Wynn</span>潮风牧场<span class="en">DAYLIGHT VIOLINIST · WIND OVER THE COAST</span></h1>
+        <p class="lead">「潮风牧场」是浅岸星滩大世界中的外缘边界地貌。这里由海风、草浪、白昼光线与小提琴声共同构成，也承载 Wynn 作为英伦伦敦近郊庄园出身的混血白马绅士的个人故事：他向往自由、远行与风，在草原上奔跑，也在海风抵达的地方拉响小提琴。</p>
+        <div class="hero-actions">
+          <a class="btn primary" href="#wynn">进入 Wynn 设定</a>
+          <a class="btn ghost" href="#music">试听三版 BGM</a>
+          <a class="btn ghost" href="../story-ruanruan-wynn-v5/story-ruanruan-wynn.html">阅读软软故事</a>
+          <a class="btn ghost" href="../zhuye.html">返回浅岸星滩主页</a>
+        </div>
+
+        <div class="audio-dock" id="music">
+          <div class="audio-top">
+            <div>
+              <div class="audio-title">Wynn 专属背景音乐</div>
+              <div class="status" id="audioStatus">页面已收录三版 Wynn 专属背景音乐，可选择不同版本进行试听。</div>
+            </div>
+            <button class="btn primary" id="playToggle">▶ 播放</button>
+          </div>
+          <div class="track-list" id="trackList">
+            <button class="track active" data-src="assets/music/Covewind Gentleman.mp3" data-title="Covewind Gentleman"><b>Covewind Gentleman</b><small>海湾风 / 绅士感 / 白昼主题</small></button>
+            <button class="track" data-src="assets/music/Genteel Windhorse (1).mp3" data-title="Genteel Windhorse (1)"><b>Genteel Windhorse ①</b><small>风马意象 / 草原感更强</small></button>
+            <button class="track" data-src="assets/music/Genteel Windhorse.mp3" data-title="Genteel Windhorse"><b>Genteel Windhorse ②</b><small>成熟克制 / 角色页备用版</small></button>
+          </div>
+          <audio id="bgm" preload="auto" loop src="assets/music/Covewind Gentleman.mp3"></audio>
+        </div>
+      </div>
+
+      <div class="hero-card">
+        <div class="carousel-shell inline-switcher js-carousel-group" data-autoplay="2000">
+          <div class="origin-carousel" aria-label="Wynn 首页形态切换">
+            <div class="origin-carousel-hint">拖拽、点击圆点或等待 2 秒自动切换</div>
+            <div class="origin-carousel-track">
+              <article class="origin-slide is-active" data-index="0">
+                <img src="assets/wynn_daylight_violinist_watermarked.png" alt="白昼先生 Wynn 拟人形态" draggable="false" />
+                <div class="origin-label"><strong>拟人形态 · 白昼先生 Wynn</strong>白发背头、金丝眼镜、细长眼、黑皮鞋与白马尾构成其核心视觉特征。Wynn 是三十多岁的伦敦腔白马绅士，低沉、老成、克制，却始终向往风、旅行与辽阔草原。</div>
+              </article>
+              <article class="origin-slide" data-index="1">
+                <img src="assets/wynn_white_horse_form_watermarked.png" alt="白昼先生 Wynn 白马形态" draggable="false" />
+                <div class="origin-label"><strong>白马形态 · 潮风牧场中的本相</strong>这是 Wynn 更贴近灵感源头的一种存在方式：不再依赖人形设定，只凭白鬃、白昼光线、草浪与静默站姿，就能独立成立为潮风牧场的守望者形象。</div>
+              </article>
+            </div>
+          </div>
+          <div class="origin-carousel-indicators" aria-label="首页形态切换">
+            <button class="origin-carousel-indicator active" type="button" data-index="0" aria-label="查看拟人形态"></button>
+            <button class="origin-carousel-indicator" type="button" data-index="1" aria-label="查看白马形态"></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="world" class="panel">
+      <div class="section-title">
+        <h2>浅岸星滩的大世界</h2>
+        <small>World Extension</small>
+      </div>
+      <div class="grid-2">
+        <article class="text-card">
+          <h3>边界地貌的世界观延展</h3>
+          <p>「潮风牧场」不是与浅岸星滩割裂的独立主题，而是其大世界结构中的边界地貌。该区域以草浪、海风、白色花絮与远处的小提琴声构成空间识别，让原本以海岸为核心的治愈叙事获得更广阔的延展方向。</p>
+        </article>
+        <article class="quote-card">
+          <div class="big">“在浅岸星滩的大世界外缘，海风与草浪交汇成一片明亮而安静的边界地貌。”</div>
+          <p>这里延续了浅岸星滩的治愈气质，却以草原、白昼、风与弦乐作为新的视觉语言。该区域被命名为「潮风牧场」。</p>
+        </article>
+      </div>
+      <div class="map-flow">
+        <div class="map-item"><i>🌊</i><b>浅岸海湾</b><span>主角团生活的核心区域，承载寄居蟹、潮汐、月光与疗愈叙事。</span></div>
+        <div class="map-item"><i>🌌</i><b>星辰画廊</b><span>用于展示插画、视觉延展与世界观碎片的内容区域。</span></div>
+        <div class="map-item"><i>🍄</i><b>雨后菌林</b><span>莓莓相关的探索支线区域，强调雨后、好奇与生命力。</span></div>
+        <div class="map-item"><i>🌾</i><b>潮风牧场</b><span>Wynn 所在的边界地貌，融合海风、草浪、小提琴与远行意象。</span></div>
+      </div>
+    </section>
+
+    <section id="origin" class="panel">
+      <div class="section-title">
+        <h2>灵感来源</h2>
+        <small>Inspiration Origin</small>
+      </div>
+      <div class="origin-area">
+        <div class="origin-photo js-carousel-group" data-autoplay="2000">
+          <div class="origin-carousel" id="originCarousel" aria-label="Wynn 灵感来源图片旋转木马">
+            <div class="origin-carousel-hint">拖拽、点击圆点或等待 2 秒自动切换灵感图</div>
+            <div class="origin-carousel-track" id="originCarouselTrack">
+              <article class="origin-slide is-active" data-index="0">
+                <img src="assets/original_horse_reference_watermarked.png" alt="灵感图一：草原上的白马短视频截图" draggable="false" />
+                <div class="origin-label">灵感图一：草原短视频中的白马截图，是 Wynn 角色设定最初的灵感来源。</div>
+              </article>
+              <article class="origin-slide" data-index="1">
+                <img src="assets/inspiration_violin_horse_watermarked.png" alt="灵感图二：评论区 AI 白马拉小提琴图像" draggable="false" />
+                <div class="origin-label">灵感图二：评论区出现的 AI「白马拉小提琴」图像，推动角色形象与音乐意象结合。</div>
+              </article>
+            </div>
+          </div>
+          <div class="origin-carousel-indicators" aria-label="灵感图切换">
+            <button class="origin-carousel-indicator active" type="button" data-index="0" aria-label="查看灵感图一"></button>
+            <button class="origin-carousel-indicator" type="button" data-index="1" aria-label="查看灵感图二"></button>
+          </div>
+        </div>
+        <div>
+          <article class="text-card">
+            <h3>从趣味影像中提炼角色原型</h3>
+            <p>Wynn 的灵感源自创作者在短视频平台上看到的一段白马影像：草原上的白马正在做出带有喜剧感的挠痒动作。画面本身具有轻松的荒诞感，但白色马鬃、尾巴、草原环境与背影轮廓同时呈现出清晰的角色化潜力。</p>
+          </article>
+          <div class="origin-steps">
+            <div class="origin-step"><i>01</i><div><b>短视频中的偶然触发</b><span>白马在草原上的滑稽动作形成了强烈反差，使这一形象同时具备趣味性与鲜明的视觉记忆点。</span></div></div>
+            <div class="origin-step"><i>02</i><div><b>评论区图像带来的二次联想</b><span>随后，评论区中出现的 AI「白马拉小提琴」图像，将白马、弦乐与草原三个元素连接在一起，进一步推动了角色设定的形成。</span></div></div>
+            <div class="origin-step"><i>03</i><div><b>转化为浅岸星滩的边界角色</b><span>最终，这一灵感被提炼为「白昼先生 Wynn」：创作重点由趣味影像转向角色叙事与空间设定，并进一步转化为浅岸星滩大世界中的边界地貌、边界区域与支线角色。</span></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="wynn" class="panel">
+      <div class="section-title">
+        <h2>白昼先生 Wynn</h2>
+        <small>Character Setting</small>
+      </div>
+      <div class="character-area">
+        <div class="portrait clean-carousel-display">
+          <div class="carousel-shell inline-switcher js-carousel-group" data-autoplay="2000">
+            <div class="origin-carousel" aria-label="Wynn 设定形态切换">
+              <div class="origin-carousel-hint">拖拽、点击圆点或等待 2 秒自动切换</div>
+              <div class="origin-carousel-track">
+                <article class="origin-slide is-active" data-index="0">
+                  <img src="assets/wynn_daylight_violinist_watermarked.png" alt="白昼先生 Wynn 拟人设定图" draggable="false" />
+                  <div class="origin-label"><strong>拟人形态设定</strong>拟人形态更强调他作为“白昼绅士”的一面：整洁、克制、风度感强，适合作为潮风牧场的人格化引导者。</div>
+                </article>
+                <article class="origin-slide" data-index="1">
+                  <img src="assets/wynn_white_horse_form_watermarked.png" alt="白昼先生 Wynn 白马形态设定图" draggable="false" />
+                  <div class="origin-label"><strong>白马形态设定</strong>白马形态保留了 Wynn 最初的灵感根源，更像潮风、草浪与日光共同塑造出的象征性存在，也让角色世界观更完整。</div>
+                </article>
+              </div>
+            </div>
+            <div class="origin-carousel-indicators" aria-label="设定形态切换">
+              <button class="origin-carousel-indicator active" type="button" data-index="0" aria-label="查看拟人设定"></button>
+              <button class="origin-carousel-indicator" type="button" data-index="1" aria-label="查看白马设定"></button>
+            </div>
+          </div>
+        </div>
+        <div>
+          <article class="text-card">
+            <h3>角色定位</h3>
+            <p>Wynn 是「潮风牧场」的守望者，也是浅岸星滩边界地貌中出现的小提琴手。他出生于英国伦敦近郊庄园，设定为英伦混血白马，带有英国纯血马的修长体态与优雅步幅。三十多岁的他并非主角团成员，而是承担空间引导与情绪转场功能的支线角色：他向往自由、远行与风，常在草原上奔跑，也会在海风抵达的傍晚拉响小提琴。</p>
+            <div class="tags">
+              <span class="tag">英国伦敦腔</span><span class="tag">混血白马</span><span class="tag">金丝眼镜</span><span class="tag">白发背头</span><span class="tag">细长眼</span><span class="tag">小提琴</span><span class="tag">熟男老钱感</span><span class="tag">向往自由与风</span><span class="tag">草原旅行者</span>
+            </div>
+          </article>
+          <div style="height:16px"></div>
+          <article class="quote-card">
+            <h3>他的声音与琴声</h3>
+            <p>Wynn 的说话声是低沉成熟的英伦男中音，带有克制、老钱感的伦敦腔；他的琴声则比语言更自由。软软的竖琴代表海水、月光与安抚，Wynn 的小提琴代表风、白昼与远行。二者共同构成“水与风”的情绪对照：前者指向停留与休息，后者指向整理状态后的再次出发。</p>
+          </article>
+          <div style="height:16px"></div>
+          <article class="text-card">
+            <h3>白马形态补充</h3>
+            <p>如果说拟人形态是 Wynn 作为“角色”与你对视的样子，那么白马形态更像他作为“意象”留在潮风牧场里的样子。它不需要开口，也不需要复杂配饰，只靠白鬃、光线、草浪与静默站姿，就能把这个角色的来源、气质与边界感完整地说出来。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="voice-lines" class="panel">
+      <div class="section-title">
+        <h2>角色台词</h2>
+        <small>Voice Lines · CN / EN</small>
+      </div>
+      <div class="voice-grid">
+        <article class="voice-card" data-voice-card>
+          <div class="voice-head">
+            <div style="display:flex;align-items:center;gap:12px;"><span class="voice-index">01</span><span class="voice-title">风会先替你开路</span></div>
+            <button class="voice-play" type="button" data-voice-src="assets/voice/wynn/1.mp3">▶ 播放</button>
+          </div>
+          <p class="voice-cn">风总是先替人开路。你只要往前走就好。</p>
+          <p class="voice-en">The wind always clears the way first. You only need to keep walking.</p>
+        </article>
+        <article class="voice-card" data-voice-card>
+          <div class="voice-head">
+            <div style="display:flex;align-items:center;gap:12px;"><span class="voice-index">02</span><span class="voice-title">他喜欢风的理由</span></div>
+            <button class="voice-play" type="button" data-voice-src="assets/voice/wynn/2.mp3">▶ 播放</button>
+          </div>
+          <p class="voice-cn">我喜欢风。它不用解释自己要到哪里去，却总是能到达该抵达的地方。</p>
+          <p class="voice-en">I like the wind. It never explains where it is going, yet it always reaches where it belongs.</p>
+        </article>
+        <article class="voice-card" data-voice-card>
+          <div class="voice-head">
+            <div style="display:flex;align-items:center;gap:12px;"><span class="voice-index">03</span><span class="voice-title">留给人的停靠点</span></div>
+            <button class="voice-play" type="button" data-voice-src="assets/voice/wynn/3.mp3">▶ 播放</button>
+          </div>
+          <p class="voice-cn">如果累了，就先在这里坐一会儿吧。我会替你把傍晚的琴声留住。</p>
+          <p class="voice-en">If you're tired, sit here for a while. I'll keep the evening violin here for you.</p>
+        </article>
+        <article class="voice-card" data-voice-card>
+          <div class="voice-head">
+            <div style="display:flex;align-items:center;gap:12px;"><span class="voice-index">04</span><span class="voice-title">准备好了再出发</span></div>
+            <button class="voice-play" type="button" data-voice-src="assets/voice/wynn/4.mp3">▶ 播放</button>
+          </div>
+          <p class="voice-cn">等你准备好了，再继续出发。路不会消失，白昼也会陪着你。</p>
+          <p class="voice-en">When you're ready, set out again. The road will not disappear, and daylight will stay with you.</p>
+        </article>
+      </div>
+      <div class="ui-note">本栏位加入 Wynn 的四句角色台词，保留中文与英文两种文字版本，并支持点击播放对应语音。台词整体围绕风、远行、停靠与再次出发四个情绪关键词展开，用来强化他“温柔克制的引导者”这一角色气质。</div>
+    </section>
+
+    <section id="ui-assets" class="panel">
+      <div class="section-title">
+        <h2>UI 图片设计图</h2>
+        <small>UI Asset Showcase</small>
+      </div>
+      <div class="ui-assets-grid">
+        <article class="ui-asset-card">
+          <div class="ui-preview logo-preview">
+            <img src="assets/wynn_header_ui_watermarked.png" alt="白昼先生 Wynn 顶部徽章 UI" draggable="false" />
+          </div>
+          <div class="ui-asset-info">
+            <h3>顶部徽章 UI</h3>
+            <p>用于页面顶部导航栏左侧的识别图形。图像以白马、小提琴、白昼太阳与风感弧线为核心元素，建立「白昼先生 Wynn」与「潮风牧场」的第一视觉入口。</p>
+            <div class="ui-meta">
+              <span><b>使用位置</b>顶部栏 / 页面身份标识</span>
+              <span><b>图像类型</b>透明底 PNG 图层</span>
+              <span><b>视觉关键词</b>白马、日光、弦乐、草原风</span>
+            </div>
+          </div>
+        </article>
+        <article class="ui-asset-card">
+          <div class="ui-preview nav-preview">
+            <img src="assets/button_top_ui_watermarked.png" alt="返回顶部 UI 按钮" draggable="false" />
+          </div>
+          <div class="ui-asset-info">
+            <h3>返回顶部按钮</h3>
+            <p>用于页面右侧悬浮导航，承担快速回到页面顶部的交互功能。整体采用竖向铭牌造型，以珍珠白玻璃质感、浅金边框、日光与海风装饰强化页面的幻想系 UI 风格。</p>
+            <div class="ui-meta">
+              <span><b>使用位置</b>右侧悬浮导航 / TOP</span>
+              <span><b>图像类型</b>透明底 PNG 图层</span>
+              <span><b>视觉关键词</b>玻璃感、金边、上升箭头、日光</span>
+            </div>
+          </div>
+        </article>
+        <article class="ui-asset-card">
+          <div class="ui-preview nav-preview">
+            <img src="assets/button_end_ui_watermarked.png" alt="返回底部 UI 按钮" draggable="false" />
+          </div>
+          <div class="ui-asset-info">
+            <h3>返回底部按钮</h3>
+            <p>用于页面右侧悬浮导航，承担快速前往页面底部的交互功能。设计延续同组铭牌语言，并加入 Wynn 字样、牧场草叶与向下箭头，形成与顶部按钮成套的视觉系统。</p>
+            <div class="ui-meta">
+              <span><b>使用位置</b>右侧悬浮导航 / END</span>
+              <span><b>图像类型</b>透明底 PNG 图层</span>
+              <span><b>视觉关键词</b>草叶、风纹、向下箭头、成套按钮</span>
+            </div>
+          </div>
+        </article>
+      </div>
+      <div class="ui-note">本栏目用于展示「潮风牧场」页面中已应用的关键 UI 图层。图片仅作为设计图展示，不设置点击放大或跳转；实际页面交互由顶部导航、BGM 菜单与右侧悬浮按钮承担。</div>
+    </section>
+
+    <section id="product-design" class="panel">
+      <div class="section-title">
+        <h2>角色延展设计</h2>
+        <small>Accessory & Fashion Extension</small>
+      </div>
+      <div class="product-grid">
+        <article class="product-card">
+          <div class="product-image">
+            <img src="assets/wynn_boots_design_watermarked.png" alt="白昼先生 Wynn 马丁靴设计图" draggable="false" />
+          </div>
+          <div class="product-info">
+            <h3>马丁靴设计</h3>
+            <p>这一版马丁靴延续了 Wynn 的白昼绅士气质，整体以米白皮革、浅金金属与风吹草浪的纹样为基础。鞋侧融入小提琴卷头的弧线装饰，让「伦敦绅士、自由远行、风与草原」从角色立绘继续延展到服饰系统之中。</p>
+            <div class="product-points">
+              <span><b>设计定位</b>角色服饰延展 / 概念鞋履设计</span>
+              <span><b>核心元素</b>金属琴头纹、草浪纹样、白昼徽记、海风曲线</span>
+              <span><b>风格表达</b>成熟绅士感与边界旅途感并存，细节精致克制</span>
+            </div>
+          </div>
+        </article>
+        <article class="product-card">
+          <div class="product-image">
+            <img src="assets/wynn_glasses_design_watermarked.png" alt="白昼先生 Wynn 金丝眼镜设计图" draggable="false" />
+          </div>
+          <div class="product-info">
+            <h3>金丝眼镜设计</h3>
+            <p>该款金丝眼镜作为 Wynn 的识别性配件设定，围绕「白昼、海风、弦乐」展开。镜腿与鼻托细节融入海浪、星光与琴弦元素，使配饰本身也具备角色叙事感，强化其伦敦老钱绅士般的成熟、克制与距离感。</p>
+            <div class="product-points">
+              <span><b>设计定位</b>角色识别配饰 / 视觉延展单品</span>
+              <span><b>核心元素</b>星光纹章、潮风纹饰、琴弦细节、浅金镜框</span>
+              <span><b>风格表达</b>轻奢、温柔、白昼感明显，具有成熟角色辨识度</span>
+            </div>
+          </div>
+        </article>
+        <article class="product-card">
+          <div class="product-image">
+            <img src="assets/wynn_grass_cake_watermarked.png" alt="白昼先生 Wynn 最爱吃的草饼设计图" draggable="false" />
+          </div>
+          <div class="product-info">
+            <h3>草饼设计</h3>
+            <p>这是 Wynn 最喜欢的潮风牧场草饼。草料来自牧场边缘的柔草、白色小花、三叶草与晒过太阳的香草碎，口感被设定成清淡、干净、带一点草原甜香。它不是夸张的魔法食物，更像白昼先生在远行前会安静带走的一份小点心。</p>
+            <div class="product-points">
+              <span><b>设计定位</b>角色食物 / 潮风牧场特产</span>
+              <span><b>核心元素</b>牧场柔草、白花、三叶草、草原香气</span>
+              <span><b>设定用途</b>补充 Wynn 的生活感，也让潮风牧场更像真实存在的地方</span>
+            </div>
+          </div>
+        </article>
+        <article class="product-card">
+          <div class="product-image">
+            <img src="assets/wynn_horseshoe_design_watermarked.png" alt="白昼先生 Wynn 马蹄设计图" draggable="false" />
+          </div>
+          <div class="product-info">
+            <h3>马蹄设计</h3>
+            <p>马蹄设计把“旅行、幸运、音乐与白昼”放在同一个符号里。主体使用浅金金属与白色珐琅质感，加入日光徽记、草叶纹样、小提琴弧线和绿色宝石，让它既像 Wynn 的随身护符，也像潮风牧场赠给远行者的祝福。</p>
+            <div class="product-points">
+              <span><b>设计定位</b>角色道具 / 幸运护符 / 展板设定图</span>
+              <span><b>核心元素</b>日光、海风、草原、旅行、小提琴、白马</span>
+              <span><b>情绪表达</b>愿白昼与海风陪伴每一次出发</span>
+            </div>
+          </div>
+        </article>
+        <article class="product-card wide-product turnaround-card">
+          <div class="product-image">
+            <img src="assets/wynn_turnaround_design_watermarked.png" alt="白昼先生 Wynn 角色三视图" draggable="false" />
+          </div>
+          <div class="product-info">
+            <h3>角色三视图</h3>
+            <p>三视图用于整理 Wynn 拟人形态的正面、侧面与背面设定。白色长外套、马耳、金丝眼镜、马尾、黑色西裤与皮鞋共同构成角色识别点；背面视图则补足长发、尾巴与外套结构，方便后续绘制插画、建模或继续拓展服饰道具。</p>
+            <div class="product-points">
+              <span><b>设计定位</b>角色标准设定 / 绘制参考</span>
+              <span><b>核心元素</b>白色长外套、马耳、长发、白马尾、金丝眼镜</span>
+              <span><b>适用方向</b>插画延展、周边建模、后续页面与文创统一参考</span>
+            </div>
+          </div>
+        </article>
+      </div>
+      <div class="ui-note">本栏目用于补充展示 Wynn 在角色视觉之外继续生长出的设计方向：服饰、配饰、食物、道具与角色标准设定共同构成潮风牧场的视觉资料库，可作为后续文创、设定展示或衍生产品企划的参考内容。</div>
+    </section>
+
+    <section id="personal-items" class="panel">
+      <div class="section-title">
+        <h2>随身物品</h2>
+        <small>Personal Keepsakes</small>
+      </div>
+      <div class="personal-grid">
+        <article class="personal-card">
+          <div class="personal-image"><img src="assets/wynn_item_dandelion_specimen_watermarked.png" alt="夹在书页里的蒲公英标本" draggable="false" /></div>
+          <div class="personal-info">
+            <h3>夹在书页里的蒲公英标本</h3>
+            <p>Wynn 会把偶然拾到的蒲公英夹进正在读的书页里。不是为了纪念某一天，而是想把风短暂停下来时留下的形状，悄悄留在自己身边。</p>
+            <div class="personal-quote">有些礼物很轻，却会在翻开书页的那一刻，安静地提醒人：风曾经来过。</div>
+          </div>
+        </article>
+        <article class="personal-card">
+          <div class="personal-image"><img src="assets/wynn_item_dandelion_bookmark_watermarked.png" alt="放在琴盒里的白色蒲絮书签" draggable="false" /></div>
+          <div class="personal-info">
+            <h3>放在琴盒里的白色蒲絮书签</h3>
+            <p>比起夸张的饰品，他更喜欢这种几乎没有重量的小东西。白色蒲絮夹在谱纸与琴盒之间，像一口没有说出口的心事，也像他总会随手带走的一点风。</p>
+            <div class="personal-quote">它不需要被特别展示，只要安静地待在琴盒里，就已经很像 Wynn 本人的性格了。</div>
+          </div>
+        </article>
+        <article class="personal-card">
+          <div class="personal-image"><img src="assets/wynn_item_dandelion_brooch_watermarked.png" alt="偶尔别在衣襟上的胸针" draggable="false" /></div>
+          <div class="personal-info">
+            <h3>偶尔别在衣襟上的胸针</h3>
+            <p>这一枚小胸针属于“只有靠近时才会注意到”的那类细节。它不会破坏他的克制感，反而像在白昼西装上留下了一点柔软的风，让整个角色更有私人物件的温度。</p>
+            <div class="personal-quote">不是每天都会佩戴，但当他真的别上它时，往往说明那一天的心情比平时更柔和一些。</div>
+          </div>
+        </article>
+        <article class="personal-card">
+          <div class="personal-image"><img src="assets/wynn_item_dandelion_bottle_watermarked.png" alt="收在玻璃小瓶里的风干蒲絮" draggable="false" /></div>
+          <div class="personal-info">
+            <h3>收在玻璃小瓶里的风干蒲絮</h3>
+            <p>他会收下这样的礼物，因为那像风留下来的形状。小小的玻璃瓶里装着晒干的蒲絮、日光与草野气息，像是一件不需要解释就能成立的温柔纪念物。</p>
+            <div class="personal-quote">“他会收下这样的礼物，因为那像风留下来的形状。”</div>
+          </div>
+        </article>
+      </div>
+      <div class="ui-note">这一组“随身物品”从 Wynn 喜欢风的设定继续延伸，把蒲公英发展成更私人的物件线索：它可以是夹在书页里的标本、放在琴盒里的书签、偶尔佩戴的胸针，也可以是一只装着风与草香的玻璃小瓶。相比大件服饰设计，这些小物更像能真正被角色随手带着走的东西。</div>
+    </section>
+
+
+    <section id="relation" class="panel">
+      <div class="section-title">
+        <h2>他和大家的相处方式</h2>
+        <small>Character Bond</small>
+      </div>
+      <div class="relation-grid">
+        <article class="relation featured">
+          <div>
+            <div class="relation-kicker">Main Story Line</div>
+            <h3>软软</h3>
+            <p>软软第一次认识 Wynn，不是因为见到他，而是因为听见了他的琴声。夜晚的海边，她在弹竖琴时偶然听见远方传来的小提琴；那段旋律像从草原尽头吹来的白昼，让她第一次意识到：浅岸星滩之外，还有被风照亮的辽阔原野。</p>
+          </div>
+        </article>
+        <article class="relation"><h3>卡菈</h3><p>卡菈大概会先问他有没有吃饭。Wynn 不太擅长热闹回应，但会认真收下她递来的椰子饮料。临走前，他会把一束晒过太阳的草花放在厨房窗台边。</p></article>
+        <article class="relation"><h3>阿隐</h3><p>阿隐不会马上靠近他，但会记住那段琴声的节拍。Wynn 的温柔不是追问，也不是靠近，而是站在刚刚好的距离外，让风先替他说话。</p></article>
+        <article class="relation"><h3>莓莓</h3><p>莓莓肯定会绕着他转好几圈，追问白马尾能不能编辫子。Wynn 表面上装作没听见，最后还是会弯下腰，让她摸一下那撮被风吹乱的马鬃。</p></article>
+      </div>
+    </section>
+
+    <section id="interaction" class="panel">
+      <div class="section-title">
+        <h2>网站叙事与交互设计</h2>
+        <small>Interaction Concept</small>
+      </div>
+      <div class="concept-screen">
+        <div class="ui-dots"><i></i><i></i><i></i></div>
+        <div class="concept-content">
+          <h3>交互入口：远处琴声</h3>
+          <p>当观众在浅岸星滩主页停留时，背景音乐可逐渐叠入一段远处的小提琴声。观众触发白色音符后，页面由海岸视觉过渡至草浪视觉，形成进入「潮风牧场」的沉浸式转场。</p>
+          <p>软软支线可作为页面叙事入口：先听见远处小提琴，再进入「昼光与夜潮的初遇」选项卡。进入该区域后，页面底部以草浪替代海浪，鼠标移动时生成细微白色音轨，模拟琴弓划过空气的视觉效果。</p>
+        </div>
+      </div>
+    </section>
+
+
+    <section id="music-style" class="panel">
+      <div class="section-title">
+        <h2>专属音乐风格</h2>
+        <small>Music Atmosphere</small>
+      </div>
+      <div class="grid-2">
+        <article class="track-note">
+          <h3>主题音色</h3>
+          <p>Wynn 的专属背景音乐以小提琴为核心识别音色。旋律处理应保持清晰、克制与流动感，避免过强节奏或厚重编曲，以突出英伦白马、草原、白昼与风的角色意象。</p>
+        </article>
+        <article class="track-note">
+          <h3>空间氛围与声线</h3>
+          <p>音乐整体适合作为网页背景循环播放，风格定位为治愈系动画角色主题曲。若后续加入语音，Wynn 应使用低沉成熟的英伦男中音，偏伦敦腔与老钱绅士感：语速慢、发音清楚、情绪克制，温和但有重量。</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="ending">
+      <h2>风会记得来路</h2>
+      <p>浅岸星滩 · Shallowstar Cove<br/>边界地貌设定页：潮风牧场 / 白昼先生 Wynn / 创作者：白kar</p>
+    </section>
+  </main>
+
+  <div class="float-tools" aria-label="页面快速滚动按钮">
+    <button onclick="window.scrollTo({top:0,behavior:'smooth'})" title="返回顶部" aria-label="返回顶部"><img src="assets/button_top_ui_watermarked.png" alt="返回顶部" /></button>
+    <button onclick="window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'})" title="去到底部" aria-label="去到底部"><img src="assets/button_end_ui_watermarked.png" alt="返回底部" /></button>
+  </div>
+
+  <script>
+    const stars = document.getElementById('stars');
+    const petals = document.getElementById('petals');
+    const bgm = document.getElementById('bgm');
+    const playToggle = document.getElementById('playToggle');
+    const audioStatus = document.getElementById('audioStatus');
+    const tracks = Array.from(document.querySelectorAll('.track'));
+
+    const volumeWidget = document.getElementById('volumeWidget');
+    const volumeShell = document.getElementById('volumeShell');
+    const volumeTrack = document.getElementById('volumeTrack');
+    const volumeValue = document.getElementById('volumeValue');
+    let volumeLevel = 50;
+    let volumePointerActive = false;
+    let currentTitle = 'Covewind Gentleman';
+
+
+    function clampVolume(v){ return Math.max(0, Math.min(100, v)); }
+    function volumeDecay(value, max){
+      if(max === 0) return 0;
+      const entry = value / max;
+      const sigmoid = 2 * (1 / (1 + Math.exp(-entry)) - 0.5);
+      return sigmoid * max;
+    }
+    function setVolume(level, overflow = 0){
+      volumeLevel = clampVolume(level);
+      bgm.volume = volumeLevel / 100;
+      document.documentElement.style.setProperty('--vol', volumeLevel.toFixed(1));
+      document.documentElement.style.setProperty('--overflow', Math.max(0, overflow).toFixed(1));
+      volumeValue.textContent = Math.round(volumeLevel);
+      volumeShell.setAttribute('aria-valuenow', String(Math.round(volumeLevel)));
+    }
+    function updateVolumeFromPointer(clientY){
+      const rect = volumeTrack.getBoundingClientRect();
+      const raw = ((rect.bottom - clientY) / rect.height) * 100;
+      let overflow = 0;
+      if(clientY < rect.top){ overflow = volumeDecay(rect.top - clientY, 50); }
+      if(clientY > rect.bottom){ overflow = volumeDecay(clientY - rect.bottom, 50); }
+      setVolume(raw, overflow);
+    }
+    function releaseVolume(){
+      volumePointerActive = false;
+      volumeWidget.classList.remove('dragging');
+      document.documentElement.style.setProperty('--overflow','0');
+    }
+    setVolume(volumeLevel, 0);
+
+    volumeShell.addEventListener('pointerdown', (e)=>{
+      volumePointerActive = true;
+      volumeWidget.classList.add('dragging');
+      volumeShell.setPointerCapture(e.pointerId);
+      updateVolumeFromPointer(e.clientY);
+    });
+    volumeShell.addEventListener('pointermove', (e)=>{
+      if(!volumePointerActive) return;
+      updateVolumeFromPointer(e.clientY);
+    });
+    ['pointerup','pointercancel','lostpointercapture'].forEach(evt => volumeShell.addEventListener(evt, releaseVolume));
+    volumeShell.addEventListener('keydown', (e)=>{
+      if(e.key === 'ArrowUp' || e.key === 'ArrowRight'){
+        e.preventDefault();
+        setVolume(volumeLevel + 5, 0);
+      }
+      if(e.key === 'ArrowDown' || e.key === 'ArrowLeft'){
+        e.preventDefault();
+        setVolume(volumeLevel - 5, 0);
+      }
+    });
+
+    for(let i=0;i<112;i++){
+      const s=document.createElement('i');
+      s.className='star';
+      s.style.left=Math.random()*100+'%';
+      s.style.top=Math.random()*58+'%';
+      s.style.setProperty('--dur',(2.2+Math.random()*4.8)+'s');
+      s.style.animationDelay=(-Math.random()*7)+'s';
+      stars.appendChild(s);
+    }
+
+    function makePetal(){
+      const n=document.createElement('span');
+      n.className='petal';
+      n.textContent=['♪','♫','♩','♬','❧','✦'][Math.floor(Math.random()*6)];
+      n.style.left=(4+Math.random()*92)+'%';
+      n.style.bottom='-40px';
+      n.style.setProperty('--x',(-90+Math.random()*180)+'px');
+      n.style.setProperty('--dur',(9+Math.random()*8)+'s');
+      petals.appendChild(n);
+      setTimeout(()=>n.remove(),17500);
+    }
+    setInterval(makePetal,820);
+
+    function setTrack(btn, autoPlay){
+      tracks.forEach(t=>t.classList.remove('active'));
+      btn.classList.add('active');
+      currentTitle = btn.dataset.title;
+      const wasPlaying = !bgm.paused;
+      bgm.src = btn.dataset.src;
+      bgm.load();
+      bgm.volume = volumeLevel / 100;
+      audioStatus.textContent = `当前音轨：${currentTitle}`;
+      if(autoPlay || wasPlaying){ playMusic(); }
+    }
+
+    async function playMusic(){
+      try{
+        await bgm.play();
+        playToggle.textContent = '⏸ 暂停';
+        audioStatus.textContent = `正在播放：${currentTitle}`;
+      }catch(err){
+        audioStatus.textContent = '播放受浏览器策略限制，请再次点击播放按钮。';
+      }
+    }
+    function pauseMusic(){
+      bgm.pause();
+      playToggle.textContent = '▶ 播放';
+      audioStatus.textContent = `已暂停：${currentTitle}`;
+    }
+    playToggle.addEventListener('click',()=> bgm.paused ? playMusic() : pauseMusic());
+    tracks.forEach(btn=>btn.addEventListener('click',()=>setTrack(btn,true)));
+    window.addEventListener('load',()=>setTimeout(()=>playMusic(true),300));
+    ['pointerdown','keydown','touchstart'].forEach(evt=> window.addEventListener(evt, ()=>{ if(bgm.paused) playMusic(true); }, {once:true}));
+
+    function scrollToMusicPanel(){
+      const target = document.getElementById('music');
+      if(!target) return;
+      const header = document.querySelector('header');
+      const headerH = header ? header.getBoundingClientRect().height : 96;
+      const y = target.getBoundingClientRect().top + window.scrollY - headerH - 24;
+      window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+      target.classList.remove('jump-highlight');
+      void target.offsetWidth;
+      target.classList.add('jump-highlight');
+      setTimeout(()=>target.classList.remove('jump-highlight'), 1300);
+    }
+
+    document.querySelectorAll('a[href="#music"]').forEach(link=>{
+      link.addEventListener('click', (event)=>{
+        event.preventDefault();
+        scrollToMusicPanel();
+        history.replaceState(null, '', '#music');
+      });
+    });
+
+    const bubbleMenuToggle = document.getElementById('bubbleMenuToggle');
+    const bubbleMenuItems = document.getElementById('bubbleMenuItems');
+    function openBubbleMenu(){
+      if(!bubbleMenuToggle || !bubbleMenuItems) return;
+      bubbleMenuItems.classList.remove('closing');
+      bubbleMenuItems.classList.add('open');
+      bubbleMenuItems.setAttribute('aria-hidden','false');
+      bubbleMenuToggle.classList.add('open');
+      bubbleMenuToggle.setAttribute('aria-expanded','true');
+    }
+    function closeBubbleMenu(){
+      if(!bubbleMenuToggle || !bubbleMenuItems || !bubbleMenuItems.classList.contains('open')) return;
+      bubbleMenuItems.classList.remove('open');
+      bubbleMenuItems.classList.add('closing');
+      bubbleMenuItems.setAttribute('aria-hidden','true');
+      bubbleMenuToggle.classList.remove('open');
+      bubbleMenuToggle.setAttribute('aria-expanded','false');
+      setTimeout(()=>bubbleMenuItems.classList.remove('closing'), 1240);
+    }
+    bubbleMenuToggle?.addEventListener('click',(event)=>{
+      event.stopPropagation();
+      if(bubbleMenuItems?.classList.contains('open')) closeBubbleMenu();
+      else openBubbleMenu();
+    });
+    bubbleMenuItems?.addEventListener('click',(event)=>{
+      const link = event.target.closest('a');
+      if(link) closeBubbleMenu();
+    });
+    function initVariableProximityMenu(){
+      const menu = document.getElementById('bubbleMenuItems');
+      if(!menu) return;
+      const labels = Array.from(menu.querySelectorAll('.pill-label'));
+      labels.forEach(label=>{
+        if(label.dataset.vpReady === 'true') return;
+        const text = label.textContent || '';
+        label.textContent = '';
+        Array.from(text).forEach(char=>{
+          const span = document.createElement('span');
+          span.className = 'vp-letter';
+          span.textContent = char === ' ' ? ' ' : char;
+          span.style.fontVariationSettings = "'wght' 560, 'opsz' 14";
+          label.appendChild(span);
+        });
+        label.dataset.vpReady = 'true';
+      });
+
+      let mouse = {x:-9999,y:-9999};
+      let ticking = false;
+      const radius = 78;
+      function resetLetters(){
+        menu.querySelectorAll('.vp-letter').forEach(letter=>{
+          letter.style.fontVariationSettings = "'wght' 560, 'opsz' 14";
+          letter.style.transform = 'translateY(0) scale(1)';
+          letter.style.letterSpacing = '0em';
+          letter.style.textShadow = '0 1px 0 rgba(255,255,255,.72)';
+        });
+      }
+      function animateLetters(){
+        ticking = false;
+        menu.querySelectorAll('.vp-letter').forEach(letter=>{
+          const rect = letter.getBoundingClientRect();
+          const cx = rect.left + rect.width / 2;
+          const cy = rect.top + rect.height / 2;
+          const dx = mouse.x - cx;
+          const dy = mouse.y - cy;
+          const distance = Math.sqrt(dx*dx + dy*dy);
+          const t = Math.max(0, Math.min(1, 1 - distance / radius));
+          const eased = t * t;
+          const weight = Math.round(560 + 340 * eased);
+          const opsz = (14 + 12 * eased).toFixed(1);
+          const lift = (-5 * eased).toFixed(2);
+          const scale = (1 + .16 * eased).toFixed(3);
+          letter.style.fontVariationSettings = `'wght' ${weight}, 'opsz' ${opsz}`;
+          letter.style.transform = `translateY(${lift}px) scale(${scale})`;
+          letter.style.letterSpacing = `${0.018 * eased}em`;
+          letter.style.textShadow = eased > 0.02 ? `0 ${2+8*eased}px ${8+18*eased}px rgba(157,122,54,${0.10+0.24*eased}), 0 1px 0 rgba(255,255,255,.92)` : '0 1px 0 rgba(255,255,255,.72)';
+        });
+      }
+      menu.addEventListener('mousemove',(event)=>{
+        mouse = {x:event.clientX,y:event.clientY};
+        if(!ticking){
+          ticking = true;
+          requestAnimationFrame(animateLetters);
+        }
+      });
+      menu.addEventListener('mouseleave', resetLetters);
+      resetLetters();
+    }
+    initVariableProximityMenu();
+
+    const solfegeNotes = [
+      {name:'Do', freq:261.63, symbol:'♪'},
+      {name:'Re', freq:293.66, symbol:'♩'},
+      {name:'Mi', freq:329.63, symbol:'♫'},
+      {name:'Fa', freq:349.23, symbol:'♬'},
+      {name:'Sol', freq:392.00, symbol:'♪'},
+      {name:'La', freq:440.00, symbol:'♩'},
+      {name:'Si', freq:493.88, symbol:'♫'},
+      {name:'Do↑', freq:523.25, symbol:'♬'},
+      {name:'Re↑', freq:587.33, symbol:'♪'},
+      {name:'Mi↑', freq:659.25, symbol:'♩'}
+    ];
+    let violinAudioCtx = null;
+    function playViolinScaleNote(index){
+      const note = solfegeNotes[index % solfegeNotes.length];
+      try{
+        violinAudioCtx = violinAudioCtx || new (window.AudioContext || window.webkitAudioContext)();
+        const ctx = violinAudioCtx;
+        if(ctx.state === 'suspended') ctx.resume();
+        const now = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        const osc2 = ctx.createOscillator();
+        const gain = ctx.createGain();
+        const filter = ctx.createBiquadFilter();
+        const vibrato = ctx.createOscillator();
+        const vibratoGain = ctx.createGain();
+        osc.type = 'sawtooth';
+        osc2.type = 'triangle';
+        osc.frequency.setValueAtTime(note.freq, now);
+        osc2.frequency.setValueAtTime(note.freq * 2.005, now);
+        vibrato.type = 'sine';
+        vibrato.frequency.setValueAtTime(5.6, now);
+        vibratoGain.gain.setValueAtTime(2.8, now);
+        vibrato.connect(vibratoGain);
+        vibratoGain.connect(osc.frequency);
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(1450, now);
+        filter.Q.setValueAtTime(7, now);
+        gain.gain.setValueAtTime(0.0001, now);
+        gain.gain.exponentialRampToValueAtTime(0.055, now + 0.035);
+        gain.gain.exponentialRampToValueAtTime(0.018, now + 0.22);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.48);
+        osc.connect(filter);
+        osc2.connect(filter);
+        filter.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now); osc2.start(now); vibrato.start(now);
+        osc.stop(now + 0.52); osc2.stop(now + 0.52); vibrato.stop(now + 0.52);
+      }catch(err){}
+      return note;
+    }
+    function showNoteBurst(link, note){
+      const rect = link.getBoundingClientRect();
+      const burst = document.createElement('span');
+      burst.className = 'note-burst';
+      burst.innerHTML = `<i>${note.symbol}</i>${note.name}`;
+      burst.style.left = (rect.left + rect.width / 2) + 'px';
+      burst.style.top = (rect.top - 8) + 'px';
+      document.body.appendChild(burst);
+      setTimeout(()=>burst.remove(), 980);
+    }
+    document.querySelectorAll('#bubbleMenuItems .pill-link').forEach((link,index)=>{
+      let lastHover = 0;
+      link.addEventListener('mouseenter',()=>{
+        const now = Date.now();
+        if(now - lastHover < 240) return;
+        lastHover = now;
+        const scaleIndex = Number(link.dataset.scaleIndex || index);
+        const note = playViolinScaleNote(scaleIndex);
+        showNoteBurst(link, note);
+      });
+    });
+
+    document.addEventListener('click',(event)=>{
+      if(!bubbleMenuItems?.classList.contains('open')) return;
+      if(event.target.closest('#bubbleMenuItems') || event.target.closest('#bubbleMenuToggle')) return;
+      closeBubbleMenu();
+    });
+    document.addEventListener('keydown',(event)=>{
+      if(event.key === 'Escape') closeBubbleMenu();
+    });
+
+    function initCarouselGroup(group){
+      const carousel = group.querySelector('.origin-carousel');
+      const slides = Array.from(group.querySelectorAll('.origin-slide'));
+      const dots = Array.from(group.querySelectorAll('.origin-carousel-indicator'));
+      if(!carousel || slides.length === 0) return;
+
+      let activeIndex = 0;
+      let dragStartX = 0;
+      let dragging = false;
+      let dragOffset = 0;
+      const autoplayDelay = Number(group.dataset.autoplay || 0);
+      let autoplayTimer = null;
+
+      function getCarouselDiff(index){
+        const total = slides.length;
+        let diff = index - activeIndex;
+        if(total > 1){
+          if(diff > total / 2) diff -= total;
+          if(diff < -total / 2) diff += total;
+        }
+        return diff;
+      }
+
+      function renderCarousel(offset = 0){
+        slides.forEach((slide, index)=>{
+          const diff = getCarouselDiff(index);
+          const isActive = diff === 0;
+          const dragInfluence = isActive ? offset * 0.42 : offset * 0.12;
+          const translate = diff * 76 + dragInfluence;
+          const rotate = diff * -58 + offset * -0.08;
+          const scale = isActive ? 1 : 0.82;
+          slide.classList.toggle('is-active', isActive);
+          slide.style.zIndex = String(10 - Math.abs(diff));
+          slide.style.opacity = isActive ? '1' : '0.38';
+          slide.style.filter = isActive ? 'saturate(.96) blur(0)' : 'saturate(.86) blur(1.5px)';
+          slide.style.transform = `translateX(${translate}%) rotateY(${rotate}deg) scale(${scale})`;
+        });
+        dots.forEach((dot, index)=>{
+          dot.classList.toggle('active', index === activeIndex);
+          dot.setAttribute('aria-current', index === activeIndex ? 'true' : 'false');
+        });
+      }
+
+      function stopAuto(){
+        if(autoplayTimer){
+          clearInterval(autoplayTimer);
+          autoplayTimer = null;
+        }
+      }
+
+      function startAuto(){
+        stopAuto();
+        if(autoplayDelay > 0 && slides.length > 1){
+          autoplayTimer = setInterval(()=> setSlide(activeIndex + 1, false), autoplayDelay);
+        }
+      }
+
+      function setSlide(nextIndex, restartAuto = true){
+        const total = slides.length;
+        activeIndex = (nextIndex + total) % total;
+        dragOffset = 0;
+        renderCarousel(0);
+        if(restartAuto) startAuto();
+      }
+
+      dots.forEach(dot=>dot.addEventListener('click',()=> setSlide(Number(dot.dataset.index), true)));
+
+      carousel.addEventListener('pointerdown',(e)=>{
+        if(slides.length <= 1) return;
+        dragging = true;
+        dragStartX = e.clientX;
+        carousel.classList.add('dragging');
+        carousel.setPointerCapture(e.pointerId);
+        stopAuto();
+      });
+
+      carousel.addEventListener('pointermove',(e)=>{
+        if(!dragging) return;
+        dragOffset = e.clientX - dragStartX;
+        renderCarousel(dragOffset / 5);
+      });
+
+      function endDrag(){
+        if(!dragging) return;
+        dragging = false;
+        carousel.classList.remove('dragging');
+        if(dragOffset < -46){ setSlide(activeIndex + 1, true); }
+        else if(dragOffset > 46){ setSlide(activeIndex - 1, true); }
+        else { renderCarousel(0); startAuto(); }
+        dragOffset = 0;
+      }
+
+      carousel.addEventListener('pointerup', endDrag);
+      carousel.addEventListener('pointercancel', endDrag);
+      carousel.addEventListener('lostpointercapture', endDrag);
+      group.addEventListener('mouseenter', stopAuto);
+      group.addEventListener('mouseleave', startAuto);
+
+      renderCarousel(0);
+      startAuto();
+    }
+
+    document.querySelectorAll('.js-carousel-group').forEach(initCarouselGroup);
+
+    const voiceButtons = Array.from(document.querySelectorAll('.voice-play'));
+    const voiceCards = Array.from(document.querySelectorAll('[data-voice-card]'));
+    const voicePlayer = new Audio();
+    let activeVoiceButton = null;
+    function resetVoiceButtons(){
+      voiceButtons.forEach(btn=>btn.textContent='▶ 播放');
+      voiceCards.forEach(card=>card.classList.remove('playing'));
+    }
+    voiceButtons.forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        const src = btn.dataset.voiceSrc;
+        const card = btn.closest('[data-voice-card]');
+        if(activeVoiceButton === btn && !voicePlayer.paused){
+          voicePlayer.pause();
+          voicePlayer.currentTime = 0;
+          activeVoiceButton = null;
+          resetVoiceButtons();
+          return;
+        }
+        voicePlayer.pause();
+        voicePlayer.currentTime = 0;
+        activeVoiceButton = btn;
+        resetVoiceButtons();
+        btn.textContent='⏸ 播放中';
+        if(card) card.classList.add('playing');
+        voicePlayer.src = src;
+        voicePlayer.play().catch(()=>{
+          btn.textContent='▶ 播放';
+          if(card) card.classList.remove('playing');
+        });
+      });
+    });
+    voicePlayer.addEventListener('ended',()=>{ activeVoiceButton = null; resetVoiceButtons(); });
+    voicePlayer.addEventListener('pause',()=>{ if(voicePlayer.currentTime===0 || voicePlayer.ended){ resetVoiceButtons(); } });
+
+    const cursorFluff = document.getElementById('cursorFluff');
+    let lastFluffTime = 0;
+    document.addEventListener('mousemove',(e)=>{
+      if(Math.random()>.88){
+        const n=document.createElement('span');
+        n.className='petal';
+        n.textContent=Math.random()>.45?'♪':'✦';
+        n.style.left=e.clientX+'px';
+        n.style.top=e.clientY+'px';
+        n.style.bottom='auto';
+        n.style.setProperty('--x',(-35+Math.random()*70)+'px');
+        n.style.setProperty('--dur','2.8s');
+        petals.appendChild(n);
+        setTimeout(()=>n.remove(),3100);
+      }
+      const now = Date.now();
+      if(now - lastFluffTime < 85 || !cursorFluff) return;
+      lastFluffTime = now;
+      const seed = document.createElement('span');
+      seed.className = 'dandelion-seed';
+      seed.style.left = (e.clientX - 6 + Math.random()*12) + 'px';
+      seed.style.top = (e.clientY - 6 + Math.random()*12) + 'px';
+      seed.style.setProperty('--seedX',(-40 + Math.random()*90) + 'px');
+      seed.style.setProperty('--seedY',(-60 - Math.random()*90) + 'px');
+      seed.style.setProperty('--seedDur',(2.1 + Math.random()*1.3) + 's');
+      seed.style.setProperty('--seedRot',(-28 + Math.random()*56) + 'deg');
+      seed.style.setProperty('--seedSpin',(-36 + Math.random()*72) + 'deg');
+      cursorFluff.appendChild(seed);
+      setTimeout(()=>seed.remove(), 3600);
+    });
+
+    const storyTabs = Array.from(document.querySelectorAll('.story-tab'));
+    const storyPanels = Array.from(document.querySelectorAll('.story-chapter'));
+    storyTabs.forEach(tab=>{
+      tab.addEventListener('click',()=>{
+        const key = tab.dataset.story;
+        storyTabs.forEach(item=>item.classList.toggle('active', item === tab));
+        storyPanels.forEach(panel=>panel.classList.toggle('active', panel.dataset.storyPanel === key));
+      });
+    });
+
+    document.addEventListener('contextmenu', e => e.preventDefault());
+  </script>
+</body>
+</html>

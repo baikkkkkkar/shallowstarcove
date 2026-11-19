@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>创作手记 · 浅岸星滩</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-touch-callout: none;
+            user-select: none;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: 'Segoe UI', 'Roboto', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            overflow-x: hidden;
+            color: #2c4a3b;
+            position: relative;
+        }
+
+        /* 背景与海浪（复用首页样式） */
+        .sky-sand {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: linear-gradient(165deg, #b3e0f5 0%, #d9f0fa 40%, #fef7e0 70%, #f5e6c4 100%);
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60%;
+            z-index: -1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .star {
+            position: absolute;
+            background-color: #fff9e0;
+            border-radius: 50%;
+            box-shadow: 0 0 4px 1px rgba(255,255,200,0.8);
+            opacity: 0;
+            animation: twinkle 3s infinite alternate;
+        }
+        @keyframes twinkle {
+            0% { opacity: 0; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1.2); }
+        }
+        .wave-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 150px;
+            z-index: 1;
+            pointer-events: none;
+            overflow: hidden;
+            filter: drop-shadow(0 -8px 18px rgba(66, 166, 208, .16));
+        }
+        .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 150px;
+            background-repeat: repeat-x;
+            background-size: 2400px 150px;
+            background-position-y: bottom;
+            mix-blend-mode: soft-light;
+            will-change: background-position;
+        }
+        .wave1 {
+            bottom: -8px;
+            opacity: .96;
+            background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%202400%20150%22%20preserveAspectRatio%3D%22none%22%3E%0A%3Cdefs%3E%0A%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%0A%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23f7fdff%22%20stop-opacity%3D%220.82%22/%3E%0A%3Cstop%20offset%3D%2255%25%22%20stop-color%3D%22%238fd8f2%22%20stop-opacity%3D%220.48%22/%3E%0A%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%232f9cc7%22%20stop-opacity%3D%220.10%22/%3E%0A%3C/linearGradient%3E%0A%3Cfilter%20id%3D%22softGlow%22%20x%3D%22-10%25%22%20y%3D%22-30%25%22%20width%3D%22120%25%22%20height%3D%22160%25%22%3E%0A%3CfeGaussianBlur%20stdDeviation%3D%222.2%22%20result%3D%22blur%22/%3E%0A%3CfeMerge%3E%3CfeMergeNode%20in%3D%22blur%22/%3E%3CfeMergeNode%20in%3D%22SourceGraphic%22/%3E%3C/feMerge%3E%0A%3C/filter%3E%0A%3C/defs%3E%0A%3Cpath%20fill%3D%22url%28%23g%29%22%20d%3D%22M0%2C64%20C150%2C18%20450%2C18%20600%2C64%20C750%2C110%201050%2C110%201200%2C64%20C1350%2C18%201650%2C18%201800%2C64%20C1950%2C110%202250%2C110%202400%2C64%20L2400%2C150%20L0%2C150%20Z%22/%3E%0A%3Cpath%20d%3D%22M0%2C64%20C150%2C18%20450%2C18%20600%2C64%20C750%2C110%201050%2C110%201200%2C64%20C1350%2C18%201650%2C18%201800%2C64%20C1950%2C110%202250%2C110%202400%2C64%22%20fill%3D%22none%22%20stroke%3D%22%23ffffff%22%20stroke-opacity%3D%220.88%22%20stroke-width%3D%228%22%20stroke-linecap%3D%22round%22%20filter%3D%22url%28%23softGlow%29%22/%3E%0A%3Cpath%20d%3D%22M0%2C64%20C150%2C18%20450%2C18%20600%2C64%20C750%2C110%201050%2C110%201200%2C64%20C1350%2C18%201650%2C18%201800%2C64%20C1950%2C110%202250%2C110%202400%2C64%22%20fill%3D%22none%22%20stroke%3D%22%23bcefff%22%20stroke-opacity%3D%220.45%22%20stroke-width%3D%224%22%20stroke-linecap%3D%22round%22/%3E%0A%3C/svg%3E");
+            animation: waveMove 22s linear infinite;
+        }
+        .wave2 {
+            bottom: -18px;
+            opacity: .82;
+            background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%202400%20150%22%20preserveAspectRatio%3D%22none%22%3E%0A%3Cdefs%3E%0A%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%0A%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23c9f1ff%22%20stop-opacity%3D%220.56%22/%3E%0A%3Cstop%20offset%3D%2255%25%22%20stop-color%3D%22%235fbde2%22%20stop-opacity%3D%220.30%22/%3E%0A%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23147ea8%22%20stop-opacity%3D%220.06%22/%3E%0A%3C/linearGradient%3E%0A%3Cfilter%20id%3D%22softGlow%22%20x%3D%22-10%25%22%20y%3D%22-30%25%22%20width%3D%22120%25%22%20height%3D%22160%25%22%3E%0A%3CfeGaussianBlur%20stdDeviation%3D%222.2%22%20result%3D%22blur%22/%3E%0A%3CfeMerge%3E%3CfeMergeNode%20in%3D%22blur%22/%3E%3CfeMergeNode%20in%3D%22SourceGraphic%22/%3E%3C/feMerge%3E%0A%3C/filter%3E%0A%3C/defs%3E%0A%3Cpath%20fill%3D%22url%28%23g%29%22%20d%3D%22M0%2C82%20C150%2C38%20450%2C38%20600%2C82%20C750%2C126%201050%2C126%201200%2C82%20C1350%2C38%201650%2C38%201800%2C82%20C1950%2C126%202250%2C126%202400%2C82%20L2400%2C150%20L0%2C150%20Z%22/%3E%0A%3Cpath%20d%3D%22M0%2C82%20C150%2C38%20450%2C38%20600%2C82%20C750%2C126%201050%2C126%201200%2C82%20C1350%2C38%201650%2C38%201800%2C82%20C1950%2C126%202250%2C126%202400%2C82%22%20fill%3D%22none%22%20stroke%3D%22%23f2fdff%22%20stroke-opacity%3D%220.42%22%20stroke-width%3D%225%22%20stroke-linecap%3D%22round%22%20filter%3D%22url%28%23softGlow%29%22/%3E%0A%3Cpath%20d%3D%22M0%2C82%20C150%2C38%20450%2C38%20600%2C82%20C750%2C126%201050%2C126%201200%2C82%20C1350%2C38%201650%2C38%201800%2C82%20C1950%2C126%202250%2C126%202400%2C82%22%20fill%3D%22none%22%20stroke%3D%22%238bdcf5%22%20stroke-opacity%3D%220.22%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22/%3E%0A%3C/svg%3E");
+            animation: waveMove 30s linear infinite reverse;
+        }
+        .wave3 {
+            bottom: -26px;
+            opacity: .72;
+            background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%202400%20150%22%20preserveAspectRatio%3D%22none%22%3E%0A%3Cdefs%3E%0A%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%0A%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%237fd2ee%22%20stop-opacity%3D%220.42%22/%3E%0A%3Cstop%20offset%3D%2255%25%22%20stop-color%3D%22%232f9bc9%22%20stop-opacity%3D%220.24%22/%3E%0A%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23075f86%22%20stop-opacity%3D%220.05%22/%3E%0A%3C/linearGradient%3E%0A%3Cfilter%20id%3D%22softGlow%22%20x%3D%22-10%25%22%20y%3D%22-30%25%22%20width%3D%22120%25%22%20height%3D%22160%25%22%3E%0A%3CfeGaussianBlur%20stdDeviation%3D%222.2%22%20result%3D%22blur%22/%3E%0A%3CfeMerge%3E%3CfeMergeNode%20in%3D%22blur%22/%3E%3CfeMergeNode%20in%3D%22SourceGraphic%22/%3E%3C/feMerge%3E%0A%3C/filter%3E%0A%3C/defs%3E%0A%3Cpath%20fill%3D%22url%28%23g%29%22%20d%3D%22M0%2C96%20C150%2C56%20450%2C56%20600%2C96%20C750%2C136%201050%2C136%201200%2C96%20C1350%2C56%201650%2C56%201800%2C96%20C1950%2C136%202250%2C136%202400%2C96%20L2400%2C150%20L0%2C150%20Z%22/%3E%0A%3Cpath%20d%3D%22M0%2C96%20C150%2C56%20450%2C56%20600%2C96%20C750%2C136%201050%2C136%201200%2C96%20C1350%2C56%201650%2C56%201800%2C96%20C1950%2C136%202250%2C136%202400%2C96%22%20fill%3D%22none%22%20stroke%3D%22%23e8fbff%22%20stroke-opacity%3D%220.26%22%20stroke-width%3D%224%22%20stroke-linecap%3D%22round%22%20filter%3D%22url%28%23softGlow%29%22/%3E%0A%3Cpath%20d%3D%22M0%2C96%20C150%2C56%20450%2C56%20600%2C96%20C750%2C136%201050%2C136%201200%2C96%20C1350%2C56%201650%2C56%201800%2C96%20C1950%2C136%202250%2C136%202400%2C96%22%20fill%3D%22none%22%20stroke%3D%22%236ed0ee%22%20stroke-opacity%3D%220.13%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22/%3E%0A%3C/svg%3E");
+            animation: waveMove 40s linear infinite;
+        }
+        @keyframes waveMove {
+            0% { background-position-x: 0; }
+            100% { background-position-x: 2400px; }
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 1.5rem 1.5rem 3rem;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            background: rgba(255, 248, 225, 0.55);
+            backdrop-filter: blur(8px);
+            border-radius: 60px;
+            padding: 0.5rem 2rem;
+            border: 1px solid rgba(255, 245, 200, 0.8);
+        }
+        .back-home {
+            text-decoration: none;
+            font-weight: 500;
+            color: #2a6b4a;
+            background: rgba(255, 250, 220, 0.7);
+            padding: 0.4rem 1.2rem;
+            border-radius: 40px;
+            transition: 0.2s;
+        }
+        .back-home:hover {
+            background: #fff1cc;
+            transform: translateY(-2px);
+        }
+        .title {
+            font-size: 1.6rem;
+            font-weight: 400;
+            color: #2b5a3b;
+        }
+
+        .about-card {
+            background: rgba(255, 250, 235, 0.5);
+            backdrop-filter: blur(12px);
+            border-radius: 48px;
+            padding: 2rem 2rem;
+            border: 1px solid rgba(255, 245, 200, 0.8);
+            box-shadow: 0 20px 35px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+            line-height: 1.7;
+        }
+        .about-card h2 {
+            font-size: 1.6rem;
+            margin-bottom: 1rem;
+            color: #3a6b4a;
+            border-left: 5px solid #9ac2c9;
+            padding-left: 1rem;
+        }
+        .about-card h3 {
+            font-size: 1.2rem;
+            margin: 1.5rem 0 0.8rem;
+            color: #4f775a;
+        }
+        .about-card p {
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+        .about-card .quote {
+            font-style: italic;
+            background: rgba(200, 220, 190, 0.3);
+            padding: 1rem;
+            border-radius: 30px;
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+        hr {
+            margin: 1.5rem 0;
+            border: 0;
+            height: 1px;
+            background: linear-gradient(to right, transparent, #cbd5b5, transparent);
+        }
+        footer {
+            text-align: center;
+            font-size: 0.7rem;
+            padding: 1rem;
+            color: #6e8f6a;
+        }
+        @media (max-width: 640px) {
+            .container { padding: 1rem; }
+            .about-card { padding: 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="sky-sand"></div>
+<div class="stars" id="starsContainer"></div>
+<div class="wave-container" aria-hidden="true">
+    <div class="wave wave1"></div>
+    <div class="wave wave2"></div>
+    <div class="wave wave3"></div>
+</div>
+<audio id="homeWhiteNoise" preload="auto" loop>
+    <source src="audio/white-noise.mp3" type="audio/mpeg">
+</audio>
+
+
+<div class="container">
+    <div class="header">
+        <span class="title">🌙 创作手记</span>
+        <a href="zhuye.html" class="back-home">🌊 返回浅岸星滩</a>
+    </div>
+
+    <div class="about-card">
+ <h2>关于「浅岸星滩」</h2>
+<p>「浅岸星滩」不是星座项目，也不是简单的治愈系IP。它是我对高敏感人格（HSP）的视觉化表达。</p>
+<p>我借用了巨蟹座的符号——因为它的标签（敏感、念旧、缺乏安全感）与高敏感特质高度重合，不需要额外解释。但我不信星座，我只是拿这个现成的壳，往里面装真实的人的感受。</p>
+<p>为什么会使用寄居蟹这一生物？因为寄居蟹的生物特征就是天生依赖外壳，对环境敏感，试探很久才敢探出头——这正是高敏感者的状态。而椰子蟹成年后不再背壳，自己长出了铠甲。这也是一种很有象征意味的暗喻：壳是暂时的，真正的安全感是可以靠自己长出来。</p>
+
+<h3>✨ 灵感来源</h3>
+<p>灵感不是来自书本，是来自我自己。</p>
+<p>我对自己要求特别高。大学期间，在稳定学业的同时，一直保持着我的爱好，两边同步进展。听起来挺厉害的，但代价是长期处于高度紧张、高度压力、高度专注的状态里。时间久了，我发现自己的精神状态开始出现一些异常：莫名焦躁、控制不住情绪、容易被环境影响。环境里的噪音会让我很难受，我也会过度观察周围的人和事，想很多。后来我经历了一段低谷期，读了一些心理学的书（弗洛伊德什么的都翻过），开始研究人性和心理疗愈。</p>
+<p>慢慢我意识到：我天生比较敏感。容易神经质、过度推测、把恐惧放大。其实事情没那么危险，但我的脑子会自动往坏处想。后来看了很多研究，才知道这叫高敏感人格（HSP）。而且，有这种感受的人不止我一个。</p>
+<p>于是我把这种感觉做成了六只寄居蟹角色，对应不同的情绪侧面。</p>
+
+<h3>🎨 关于我</h3>
+<p>我的cn叫四叶，专业是视觉传达设计。一个常年混在网上的二次元宅女：爱看动漫、打游戏、跑漫展、跳宅舞，爱好比较杂，算是多才多艺。</p>
+<p>这个IP里的每一个角色，都有我自己的影子——阿隐的退缩、软软的共情、阿默的冷静、莓莓的好奇、刺团的防御，以及卡菈的成长愿望。这些性格都是我，这些样子都是我。</p>
+<p>敏感的人确实会感受到双倍的情绪压力，但反过来，我们也能感知到更多的幸福和快乐。生活中那些微小的善意、被忽略的温暖，我们会第一个注意到。敏感不是弱点，也不是缺点。凡事都有两面性。</p>
+<p>我其实是一个很温柔的人，心里很细腻，只是有时候会把它藏起来。如果你和我一样：你不是孤单一个人。我们不需要排斥任何一个自己。接纳身上这些不同的特质，对自己温柔一点。</p>
+<div class="quote">“所有敏感的样子，都是完整的自己。”</div>
+
+<h3>🙏 致谢</h3>
+<p>感谢我的家人和朋友，在我焦虑和自我怀疑的时候始终支持我。也感谢每一位愿意驻足这个网站的你，是你们的关注让这片浅滩有了回响。</p>
+<p>特别感谢那些在网络上分享高敏感话题的研究者和伙伴们，让我知道我不是一个人。</p>
+<hr>
+        <p style="text-align: right;">—— 2026年4月，于海边小城</p>
+    </div>
+    <footer>🌊 愿你的每一份敏感，都能找到安放之处 🌊</footer>
+</div>
+
+<script>
+    function generateStars() {
+        const starsContainer = document.getElementById('starsContainer');
+        if (!starsContainer) return;
+        const starCount = 100;
+        for (let i = 0; i < starCount; i++) {
+            const star = document.createElement('div');
+            star.classList.add('star');
+            const size = Math.random() * 3 + 1;
+            star.style.width = size + 'px';
+            star.style.height = size + 'px';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 60 + '%';
+            star.style.animationDuration = (Math.random() * 3 + 1.5) + 's';
+            star.style.animationDelay = (Math.random() * 5) + 's';
+            starsContainer.appendChild(star);
+        }
+    }
+    generateStars();
+</script>
+
+<script>
+    // 首页白噪音：自动尝试播放；若浏览器拦截，会在第一次点击/滚动/按键时启动
+    (function initHomeWhiteNoise() {
+        const whiteNoise = document.getElementById('homeWhiteNoise');
+        if (!whiteNoise) return;
+
+        whiteNoise.volume = 0.24;
+        whiteNoise.loop = true;
+
+        function playWhiteNoise() {
+            if (!whiteNoise || !whiteNoise.paused) return;
+            whiteNoise.play().catch(() => {
+                // 浏览器可能拦截自动播放，等待用户第一次交互后再启动
+            });
+        }
+
+        window.addEventListener('load', playWhiteNoise);
+        ['pointerdown', 'click', 'wheel', 'keydown', 'touchstart'].forEach(eventName => {
+            document.addEventListener(eventName, playWhiteNoise, { once: true, passive: true });
+        });
+    })();
+</script>
+</body>
+</html>

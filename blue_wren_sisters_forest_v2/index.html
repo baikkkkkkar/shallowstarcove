@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>澜羽与绒蓝｜森林生灵图鉴</title>
+<style>
+:root{
+  --ink:#20314a;
+  --muted:#5c7189;
+  --deep:#16243a;
+  --blue:#3ea7ff;
+  --cobalt:#2568d9;
+  --ice:#8eeaff;
+  --leaf:#7ab887;
+  --cream:#fff9ee;
+  --panel:rgba(255,255,255,.52);
+  --panel2:rgba(255,255,255,.32);
+  --line:rgba(128,215,255,.42);
+  --shadow:0 28px 80px rgba(42,96,138,.22);
+  --r:30px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  min-height:100vh;
+  font-family:"Noto Serif SC","Microsoft YaHei",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  color:var(--ink);
+  background:
+    radial-gradient(circle at 18% 12%,rgba(143,226,255,.68),transparent 26%),
+    radial-gradient(circle at 84% 18%,rgba(176,177,255,.48),transparent 28%),
+    radial-gradient(circle at 72% 82%,rgba(129,207,151,.38),transparent 30%),
+    linear-gradient(135deg,#effcff 0%,#f8f4ff 45%,#f1fbef 100%);
+  overflow-x:hidden;
+}
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:-2;
+  background:
+    linear-gradient(115deg,rgba(255,255,255,.42),transparent 34%,rgba(76,176,255,.13) 66%,transparent),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.72' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)' opacity='.18'/%3E%3C/svg%3E");
+  mix-blend-mode:soft-light;
+}
+body::after{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:-1;
+  background:
+    radial-gradient(circle at 20% 30%,rgba(255,255,255,.72) 0 1px,transparent 2px),
+    radial-gradient(circle at 70% 70%,rgba(87,189,255,.22) 0 1.5px,transparent 3px);
+  background-size:68px 68px,96px 96px;
+  animation:starDrift 12s linear infinite;
+}
+@keyframes starDrift{to{background-position:68px 68px,-96px 96px}}
+a{color:inherit}
+img{max-width:100%;display:block}
+.wrap{width:min(1180px,calc(100% - 40px));margin:auto;padding:26px 0 120px}
+.nav{
+  position:sticky;top:16px;z-index:99;
+  display:flex;justify-content:space-between;align-items:center;gap:14px;
+  padding:12px 16px;
+  border-radius:999px;
+  background:rgba(255,255,255,.5);
+  border:1px solid rgba(255,255,255,.75);
+  backdrop-filter:blur(18px);
+  box-shadow:0 16px 50px rgba(73,129,169,.15);
+}
+.brand{display:flex;align-items:center;gap:10px;font-weight:900;letter-spacing:.06em;color:#173a5f}
+.logo{
+  width:36px;height:36px;border-radius:50%;
+  background:
+    radial-gradient(circle at 34% 34%,#fff 0 17%,transparent 18%),
+    conic-gradient(from 20deg,#163f92,#47c6ff,#eaffff,#2859cc,#163f92);
+  box-shadow:0 0 28px rgba(62,167,255,.5), inset 0 0 14px rgba(255,255,255,.8);
+}
+.navlinks{display:flex;gap:3px;flex-wrap:wrap;justify-content:flex-end}
+.navlinks a{
+  text-decoration:none;
+  font-size:13px;
+  color:#40617e;
+  padding:8px 10px;
+  border-radius:999px;
+  transition:.25s;
+}
+.navlinks a:hover{background:rgba(94,195,255,.16);color:#164b77}
+.hero{
+  display:grid;
+  grid-template-columns:.9fr 1.1fr;
+  gap:34px;
+  align-items:center;
+  min-height:720px;
+  padding:62px 0 34px;
+}
+.kicker{
+  display:inline-flex;align-items:center;gap:9px;
+  padding:8px 14px;border-radius:999px;
+  border:1px solid rgba(111,207,255,.5);
+  background:rgba(255,255,255,.48);
+  color:#2b6d95;font-size:13px;font-weight:800;letter-spacing:.13em;
+}
+.hero h1{
+  margin-top:22px;
+  font-size:clamp(48px,7vw,92px);
+  line-height:1.02;
+  color:#19314c;
+  letter-spacing:.05em;
+  text-shadow:0 14px 34px rgba(72,146,210,.22);
+}
+.hero h1 span{
+  display:block;
+  background:linear-gradient(90deg,#1d448d,#3fa8ff,#8df4ff,#275bd3);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.hero p{margin-top:22px;color:#425b75;font-size:18px;line-height:2;max-width:620px}
+.pills{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+.pill{
+  padding:8px 12px;border-radius:999px;
+  background:rgba(255,255,255,.48);
+  border:1px solid rgba(255,255,255,.72);
+  color:#275675;font-size:13px;font-weight:800;
+}
+.ctas{display:flex;gap:13px;flex-wrap:wrap;margin-top:32px}
+.btn{
+  text-decoration:none;display:inline-flex;align-items:center;gap:8px;
+  padding:13px 19px;border-radius:999px;
+  color:#183956;font-weight:900;letter-spacing:.04em;
+  background:rgba(255,255,255,.58);
+  border:1px solid rgba(255,255,255,.78);
+  box-shadow:0 13px 32px rgba(68,126,171,.16);
+  transition:.25s;
+}
+.btn.primary{color:white;background:linear-gradient(135deg,#2862da,#3dbbff 55%,#8bf0ff);box-shadow:0 18px 44px rgba(45,130,229,.28)}
+.btn:hover{transform:translateY(-3px);box-shadow:0 22px 50px rgba(68,126,171,.25)}
+.hero-card{
+  position:relative;
+  border-radius:46px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.78);
+  background:rgba(255,255,255,.42);
+  box-shadow:var(--shadow);
+  min-height:620px;
+}
+.hero-card img{width:100%;height:620px;object-fit:cover}
+.hero-card .caption{
+  position:absolute;left:22px;right:22px;bottom:22px;
+  padding:18px 20px;
+  border-radius:24px;
+  background:rgba(255,255,255,.55);
+  border:1px solid rgba(255,255,255,.68);
+  backdrop-filter:blur(18px);
+  color:#294d6b;
+  line-height:1.8;
+  box-shadow:0 18px 46px rgba(32,82,122,.2);
+}
+section{
+  margin:46px 0;
+  padding:34px;
+  border-radius:var(--r);
+  border:1px solid rgba(255,255,255,.68);
+  background:rgba(255,255,255,.38);
+  backdrop-filter:blur(20px);
+  box-shadow:var(--shadow);
+  position:relative;
+  overflow:hidden;
+}
+section::before{
+  content:"";
+  position:absolute;inset:14px;
+  border-radius:calc(var(--r) - 12px);
+  border:1px solid rgba(126,214,255,.28);
+  pointer-events:none;
+}
+.section-head{position:relative;z-index:1;margin-bottom:22px}
+h2{
+  color:#173b61;
+  font-size:clamp(30px,4.6vw,48px);
+  line-height:1.15;
+  letter-spacing:.08em;
+  margin-bottom:14px;
+}
+.lead{color:#486176;line-height:2;font-size:17px;max-width:930px}
+.glow{
+  background:linear-gradient(90deg,#214ca5,#3fa8ff,#8df4ff,#315fd2);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.card{
+  position:relative;z-index:1;
+  padding:25px;
+  border-radius:26px;
+  background:rgba(255,255,255,.48);
+  border:1px solid rgba(255,255,255,.72);
+  box-shadow:0 18px 44px rgba(70,126,166,.12);
+  overflow:hidden;
+}
+.card h3{color:#1d4d78;font-size:24px;margin-bottom:10px}
+.card h4{color:#1d4d78;font-size:18px;margin-bottom:8px}
+.card p{color:#4a6075;line-height:1.95;font-size:15.5px}
+.small{font-size:13px;color:#6e8aa5;letter-spacing:.18em;text-transform:uppercase;font-weight:800}
+.tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.tag{font-size:12px;padding:6px 10px;border-radius:999px;color:#245175;background:rgba(106,211,255,.14);border:1px solid rgba(106,211,255,.36);font-weight:700}
+.species-layout{position:relative;z-index:1;display:grid;grid-template-columns:.9fr 1.1fr;gap:26px;align-items:center}
+.round-photo{
+  width:min(430px,100%);
+  aspect-ratio:1/1;
+  border-radius:50%;
+  overflow:hidden;
+  margin:auto;
+  border:8px solid rgba(255,255,255,.74);
+  box-shadow:0 24px 68px rgba(49,107,150,.22),0 0 50px rgba(78,191,255,.22);
+  background:#fff;
+}
+.round-photo img{width:100%;height:100%;object-fit:cover}
+.meta-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.meta{padding:16px;border-radius:20px;background:rgba(255,255,255,.48);border:1px solid rgba(255,255,255,.72)}
+.meta b{display:block;color:#1b4e79;margin-bottom:6px}
+.meta span{color:#536b80;line-height:1.75;font-size:14px}
+.showcase{
+  position:relative;z-index:1;
+  display:grid;grid-template-columns:1.08fr .92fr;gap:26px;align-items:center;
+}
+.showcase-img{border-radius:32px;overflow:hidden;border:1px solid rgba(255,255,255,.75);box-shadow:0 22px 56px rgba(48,103,145,.2)}
+.showcase-img img{width:100%;aspect-ratio:4/5;object-fit:cover}
+.quote{
+  margin-top:18px;
+  padding:20px 22px;
+  border-radius:20px;
+  border-left:4px solid #63cfff;
+  background:rgba(255,255,255,.45);
+  color:#31536e;
+  line-height:1.95;
+  font-weight:800;
+}
+.steps{position:relative;z-index:1;display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:22px}
+.step{padding:24px;border-radius:24px;background:linear-gradient(150deg,rgba(255,255,255,.55),rgba(220,247,255,.28));border:1px solid rgba(255,255,255,.72)}
+.num{display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#2862da,#8bf0ff);color:#fff;font-weight:900;margin-bottom:14px}
+.compare{display:grid;grid-template-columns:1fr auto 1fr;gap:18px;align-items:center;margin-top:22px}
+.arrow{font-size:34px;color:#3ea7ff;text-align:center;font-weight:900}
+.profile{display:grid;grid-template-columns:130px 1fr;gap:20px;align-items:center}
+.avatar{
+  width:130px;aspect-ratio:1/1;border-radius:50%;
+  overflow:hidden;border:5px solid rgba(255,255,255,.84);
+  box-shadow:0 18px 40px rgba(62,119,160,.2);
+}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.relation{
+  position:relative;z-index:1;display:grid;grid-template-columns:1fr .88fr;gap:24px;align-items:center;
+}
+.relation-img{border-radius:32px;overflow:hidden;border:1px solid rgba(255,255,255,.74);box-shadow:0 24px 60px rgba(48,103,145,.22)}
+.relation-img img{width:100%;aspect-ratio:4/5;object-fit:cover}
+.design-grid{position:relative;z-index:1;display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-top:20px}
+.design{padding:18px;border-radius:22px;text-align:center;background:rgba(255,255,255,.48);border:1px solid rgba(255,255,255,.72)}
+.design .icon{font-size:28px;margin-bottom:8px}
+.design b{display:block;color:#1b4e79;margin-bottom:8px}
+.design p{font-size:13px;line-height:1.75;color:#5b7288}
+.palette{display:flex;gap:12px;flex-wrap:wrap;margin-top:20px;position:relative;z-index:1}
+.swatch{width:56px;height:56px;border-radius:18px;border:2px solid rgba(255,255,255,.9);box-shadow:0 12px 26px rgba(61,117,158,.18)}
+.gallery{position:relative;z-index:1;display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-top:24px}
+.item{
+  border-radius:28px;overflow:hidden;
+  background:rgba(255,255,255,.48);
+  border:1px solid rgba(255,255,255,.76);
+  box-shadow:0 18px 44px rgba(70,126,166,.13);
+}
+.item img{width:100%;aspect-ratio:4/5;object-fit:cover}
+.item figcaption{padding:18px 20px 21px;background:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,.78))}
+.item h3{color:#1b4e79;font-size:21px;margin-bottom:8px}
+.item p{color:#4a6075;line-height:1.9;font-size:14px}
+.item.wide{grid-column:1/-1}
+.item.wide img{max-height:1050px;object-fit:cover}
+.world{
+  position:relative;z-index:1;
+  display:grid;grid-template-columns:1fr 1fr;gap:20px;
+}
+.end{
+  text-align:center;
+  padding:70px 34px;
+}
+.end p{max-width:760px;margin:0 auto 26px;color:#416079;line-height:2;font-size:18px}
+.footer{text-align:center;color:#66839a;font-size:13px;letter-spacing:.08em;padding:36px 0 16px}
+.float{
+  position:fixed;right:24px;bottom:24px;z-index:120;
+  display:flex;flex-direction:column;gap:10px;
+}
+.float a{
+  width:46px;height:46px;display:grid;place-items:center;
+  border-radius:50%;
+  color:#1b4b74;text-decoration:none;font-weight:900;
+  background:rgba(255,255,255,.64);
+  border:1px solid rgba(255,255,255,.86);
+  box-shadow:0 12px 32px rgba(65,118,160,.2);
+  backdrop-filter:blur(14px);
+  transition:.25s;
+}
+.float a:hover{transform:translateY(-3px);background:#fff}
+.reveal{opacity:0;transform:translateY(24px)}
+@media(max-width:980px){
+  .hero,.species-layout,.showcase,.relation,.world{grid-template-columns:1fr}
+  .grid2,.grid3,.steps,.gallery,.design-grid{grid-template-columns:1fr}
+  .compare{grid-template-columns:1fr}
+  .arrow{transform:rotate(90deg)}
+  .hero-card,.hero-card img{min-height:auto;height:auto}
+  .hero-card img{aspect-ratio:4/5}
+}
+@media(max-width:640px){
+  .wrap{width:min(100% - 24px,1180px);padding-top:16px}
+  .nav{align-items:flex-start;border-radius:24px;flex-direction:column}
+  .hero{padding-top:44px;min-height:auto}
+  .hero h1{font-size:44px}
+  section{padding:24px 18px}
+  .profile{grid-template-columns:1fr}
+  .meta-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="float">
+  <a href="#top" title="返回顶部">↑</a>
+  <a href="#gallery" title="插画画廊">羽</a>
+</div>
+
+<main class="wrap" id="top">
+  <nav class="nav">
+    <div class="brand"><span class="logo"></span>澜羽与绒蓝｜森林生灵图鉴</div>
+    <div class="navlinks">
+      <a href="#species">原型</a>
+      <a href="#animal">动物</a>
+      <a href="#translate">转译</a>
+      <a href="#roles">角色</a>
+      <a href="#bond">梳羽</a>
+      <a href="#design">拆解</a>
+      <a href="#gallery">画廊</a>
+      <a href="#world">接入</a>
+    </div>
+  </nav>
+
+  <!-- 01 Hero -->
+  <header class="hero reveal">
+    <div>
+      <div class="kicker">FOREST CREATURE ARCHIVE · 蓝灵鸟姐妹</div>
+      <h1>澜羽与<br><span>绒蓝</span></h1>
+      <p>
+        从林间小鸟到治愈系姐妹精灵的设定档案。页面以“自然观察 → 动物形态 → 拟人转译 → 插画故事集”的顺序展开，
+        让这对蓝灵鸟姐妹自然接入浅岸星滩的森林板块。
+      </p>
+      <div class="pills">
+        <span class="pill">森林生灵</span><span class="pill">辉蓝细尾鹩莺</span><span class="pill">互相梳羽</span><span class="pill">蓝箔灵纹</span>
+      </div>
+      <div class="ctas">
+        <a class="btn primary" href="#species">进入图鉴 ✦</a>
+        <a class="btn" href="#gallery">查看插画</a>
+        <a class="btn" href="#world">世界观接入</a>
+      </div>
+    </div>
+    <figure class="hero-card">
+      <img src="assets/animal_version_watermarked.png" alt="蓝灵鸟姐妹动物形态插画">
+      <figcaption class="caption">枝影轻晃时，两只小鸟互相靠近，用梳理羽毛的方式确认彼此还在身边。</figcaption>
+    </figure>
+  </header>
+
+  <!-- 02 Species -->
+  <section id="species" class="reveal">
+    <div class="section-head">
+      <h2>01｜森林生物原型</h2>
+      <p class="lead">
+        这对蓝灵鸟姐妹的动物原型设定为 <b class="glow">辉蓝细尾鹩莺</b>（Superb Fairywren）。
+        它们体型小、羽色清透，最有辨识度的是脸颊、头顶与翼上的亮蓝色羽斑。
+      </p>
+    </div>
+    <div class="species-layout">
+      <div class="round-photo">
+        <img src="assets/animal_version_watermarked.png" alt="辉蓝细尾鹩莺圆形图鉴头像">
+      </div>
+      <div>
+        <div class="meta-grid">
+          <div class="meta"><b>中文名</b><span>辉蓝细尾鹩莺</span></div>
+          <div class="meta"><b>英文名</b><span>Superb Fairywren</span></div>
+          <div class="meta"><b>学名</b><span>Malurus cyaneus</span></div>
+          <div class="meta"><b>别称</b><span>蓝精灵、小仙莺（昵称向称呼）</span></div>
+          <div class="meta"><b>栖息环境</b><span>灌木丛、林地边缘、花园、低矮植被区域</span></div>
+          <div class="meta"><b>设计关键词</b><span>小型鸣禽、蓝色羽斑、白绒胸口、互相梳羽</span></div>
+        </div>
+        <div class="quote">
+          这里的写法更像“森林观察记录”，不是硬百科。它负责告诉访客：澜羽与绒蓝不是凭空出现的角色，而是从自然生灵观察中延展出来的原创IP设定。
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 Animal -->
+  <section id="animal" class="reveal">
+    <div class="section-head">
+      <h2>02｜动物形态展示</h2>
+      <p class="lead">先让人爱上这两只鸟，再进入拟人角色。动物版适合作为“森林板块”的入口图，也可以放进“森林生灵图鉴 / 林间观察”。</p>
+    </div>
+    <div class="showcase">
+      <div class="showcase-img">
+        <img src="assets/animal_version_watermarked.png" alt="林间的蓝灵小鸟">
+      </div>
+      <div class="card">
+        <div class="small">ANIMAL FORM</div>
+        <h3>林间的蓝灵小鸟</h3>
+        <p>
+          它们停在枝头，圆圆的白绒胸口贴在一起，脸颊与翼上的蓝色羽斑像阳光下的蓝箔碎片。
+          互相整理羽毛，是它们确认亲密与安全的方式。
+        </p>
+        <div class="tags">
+          <span class="tag">白绒胸口</span><span class="tag">灰黑羽背</span><span class="tag">钴蓝羽斑</span><span class="tag">林间微光</span>
+        </div>
+        <div class="quote">这一张图可以直接作为森林板块里的“偶遇小生灵”视觉入口。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 Translation -->
+  <section id="translate" class="reveal">
+    <div class="section-head">
+      <h2>03｜从动物到拟人的设计转译</h2>
+      <p class="lead">这个板块用于展示设计思路：观察自然特征，再把它们转化成角色服饰、材质、情绪与关系动作。</p>
+    </div>
+    <div class="steps">
+      <div class="step"><span class="num">1</span><h3>动物特征</h3><p>灰黑羽背、白色绒腹、蓝色脸颊羽、细长尾羽、互相梳羽的亲密行为。</p></div>
+      <div class="step"><span class="num">2</span><h3>视觉转译</h3><p>蓝色羽斑转为蓝箔灵纹；白绒胸口转为白绒披肩；灰黑羽背转为羽毛披风。</p></div>
+      <div class="step"><span class="num">3</span><h3>角色诞生</h3><p>澜羽与绒蓝成为一对治愈系蓝灵鸟姐妹，保留小动物式敏感与互相安抚的关系。</p></div>
+    </div>
+    <div class="compare">
+      <figure class="item">
+        <img src="assets/animal_version_watermarked.png" alt="动物原型">
+        <figcaption><h3>原型｜森林小鸟</h3><p>圆润、柔软、蓝羽斑、枝头贴贴。</p></figcaption>
+      </figure>
+      <div class="arrow">→</div>
+      <figure class="item">
+        <img src="assets/cover_main_watermarked.png" alt="拟人主视觉">
+        <figcaption><h3>转译｜蓝灵鸟姐妹</h3><p>白绒披肩、羽毛衣装、蓝箔灵纹、姐妹依偎。</p></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 05 Roles -->
+  <section id="roles" class="reveal">
+    <div class="section-head">
+      <h2>04｜姐妹角色设定</h2>
+      <p class="lead">正式进入拟人角色。澜羽偏深、长、稳；绒蓝偏亮、圆、软。两人一静一软，形成很明确的姐妹层次。</p>
+    </div>
+    <div class="grid2">
+      <article class="card profile">
+        <div class="avatar"><img src="assets/cover_main_watermarked.png" alt="澜羽头像"></div>
+        <div>
+          <div class="small">ELDER SISTER · LAN YU</div>
+          <h3>澜羽</h3>
+          <p>姐姐。深钴蓝，安静、保护、温柔、可靠。她拥有灰黑长发、深蓝灵纹、长尾羽，习惯帮妹妹整理脸颊边的蓝羽。</p>
+          <div class="tags"><span class="tag">沉静</span><span class="tag">守护</span><span class="tag">深钴蓝</span><span class="tag">长尾羽</span></div>
+        </div>
+      </article>
+      <article class="card profile">
+        <div class="avatar"><img src="assets/grooming_main_watermarked.png" alt="绒蓝头像"></div>
+        <div>
+          <div class="small">YOUNGER SISTER · RONG LAN</div>
+          <h3>绒蓝</h3>
+          <p>妹妹。亮蓝、天蓝，软萌、依赖、好奇、容易炸毛。她有蓬短发、白绒斗篷、小尾羽，也想笨拙地照顾姐姐。</p>
+          <div class="tags"><span class="tag">软萌</span><span class="tag">黏姐姐</span><span class="tag">亮蓝羽斑</span><span class="tag">小绒球</span></div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- 06 Bond -->
+  <section id="bond" class="reveal">
+    <div class="section-head">
+      <h2>05｜关系核心：互相整理羽毛</h2>
+      <p class="lead">这是她们最有记忆点的设定。不是单向保护，而是两只敏感小鸟之间的互相安抚。</p>
+    </div>
+    <div class="relation">
+      <div class="relation-img">
+        <img src="assets/grooming_main_watermarked.png" alt="互相整理羽毛关系主视觉">
+      </div>
+      <div class="card">
+        <div class="small">SIGNATURE INTERACTION</div>
+        <h3>她们用整理羽毛的方式，说“我在”。</h3>
+        <p>
+          澜羽会替绒蓝理顺脸颊边乱掉的蓝羽。绒蓝也会踮起脚，认真地替姐姐整理耳侧羽饰。
+          这个动作不是摆拍，而是她们确认安全、回应爱意、抚平不安的日常仪式。
+        </p>
+        <div class="quote">姐姐给妹妹安全感，妹妹给姐姐柔软感。她们彼此照顾，也彼此被照顾。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 Design -->
+  <section id="design" class="reveal">
+    <div class="section-head">
+      <h2>06｜外观设计拆解</h2>
+      <p class="lead">这一块偏作品集展示，突出“观察能力、视觉转译能力、IP角色扩展能力”。</p>
+    </div>
+    <div class="design-grid">
+      <div class="design"><div class="icon">💙</div><b>脸颊蓝羽</b><p>原型鸟最重要的识别点，转为脸侧羽瓣与耳饰。</p></div>
+      <div class="design"><div class="icon">🤍</div><b>白色绒胸</b><p>转为白绒领、毛绒披肩与柔软胸腹感。</p></div>
+      <div class="design"><div class="icon">🪶</div><b>灰黑羽背</b><p>转为灰黑羽披、羽袖，稳定整体画面层次。</p></div>
+      <div class="design"><div class="icon">✨</div><b>蓝箔灵纹</b><p>像蓝箔、螺钿、蝶翼结构色，不是普通蓝色。</p></div>
+      <div class="design"><div class="icon">🌙</div><b>细长尾羽</b><p>强化鸟类拟人身份，避免变成普通羽毛少女。</p></div>
+    </div>
+    <div class="palette">
+      <div class="swatch" style="background:#202a37" title="灰黑羽色"></div>
+      <div class="swatch" style="background:#f8fdff" title="白色绒腹"></div>
+      <div class="swatch" style="background:#2568d9" title="钴蓝灵纹"></div>
+      <div class="swatch" style="background:#79dcff" title="亮蓝羽斑"></div>
+      <div class="swatch" style="background:#b8b8ff" title="雾紫蓝眼睛"></div>
+      <div class="swatch" style="background:#f2d99b" title="细金属点缀"></div>
+    </div>
+  </section>
+
+  <!-- 08 Gallery -->
+  <section id="gallery" class="reveal">
+    <div class="section-head">
+      <h2>07｜插画画廊</h2>
+      <p class="lead">画廊不再平均堆图，而是按“原型 → 转译 → 关系核心 → 日常故事 → 情绪收束”的顺序排。</p>
+    </div>
+    <div class="gallery">
+      <figure class="item">
+        <img src="assets/animal_version_watermarked.png" alt="森林里的蓝灵小鸟">
+        <figcaption><h3>森林里的蓝灵小鸟</h3><p>动物原型入口。先看到自然形态，再理解后续拟人设定。</p></figcaption>
+      </figure>
+      <figure class="item">
+        <img src="assets/cover_main_watermarked.png" alt="澜羽与绒蓝拟人主视觉">
+        <figcaption><h3>澜羽与绒蓝</h3><p>拟人主视觉，确立灰黑羽背、白色绒腹、钴蓝灵纹的整体造型。</p></figcaption>
+      </figure>
+      <figure class="item wide">
+        <img src="assets/grooming_main_watermarked.png" alt="互相整理羽毛">
+        <figcaption><h3>关系主视觉｜互相整理羽毛</h3><p>核心图。澜羽与绒蓝通过梳羽表达亲密、安抚与彼此照顾。</p></figcaption>
+      </figure>
+      <figure class="item">
+        <img src="assets/morning_watermarked.png" alt="醒来的小绒球">
+        <figcaption><h3>《醒来的小绒球》</h3><p>清晨日常。妹妹睡醒炸毛，姐姐替她顺毛。</p></figcaption>
+      </figure>
+      <figure class="item">
+        <img src="assets/adjusting_watermarked.png" alt="我也会照顾你">
+        <figcaption><h3>《我也会照顾你》</h3><p>妹妹努力回礼，认真替姐姐整理耳侧羽饰。</p></figcaption>
+      </figure>
+      <figure class="item">
+        <img src="assets/rain_watermarked.png" alt="雨滴落在灵纹上">
+        <figcaption><h3>《雨滴落在灵纹上》</h3><p>雨后保护场景，湿润光线让蓝箔灵纹更通透。</p></figcaption>
+      </figure>
+      <figure class="item">
+        <img src="assets/sunset_watermarked.png" alt="落下一片蓝羽">
+        <figcaption><h3>《落下一片蓝羽》</h3><p>黄昏剧情感结尾，暖金与冷蓝形成故事收束。</p></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 09 World -->
+  <section id="world" class="reveal">
+    <div class="section-head">
+      <h2>08｜接入浅岸星滩森林板块</h2>
+      <p class="lead">它们不需要作为主线角色出现，更适合作为森林板块中的“林间生灵”。这样不会突兀，还能增强世界观的生态感。</p>
+    </div>
+    <div class="world">
+      <article class="card">
+        <h3>它们属于哪里？</h3>
+        <p>
+          蓝灵鸟姐妹栖息在浅岸星滩边缘的林地与灌木之间。玩家或访客在进入森林观察、采菌、散步时，
+          可能偶然看见蓝色羽光从枝叶间闪过。
+        </p>
+      </article>
+      <article class="card">
+        <h3>页面入口建议</h3>
+        <p>
+          可以放入“森林生灵图鉴 / 林间观察 / 雨林采菌支线”的下级页面。先展示动物版本，再引导到拟人姐妹设定，
+          页面逻辑会更完整，也更像一个真实的IP生态扩展。
+        </p>
+      </article>
+    </div>
+  </section>
+
+  <!-- 10 Ending -->
+  <section class="end reveal">
+    <h2>在枝叶轻晃的地方</h2>
+    <p>
+      蓝色羽光一闪而过。那是澜羽和绒蓝，正在替彼此理好羽毛。
+      她们不急着说话，只是在林间微光里，用最轻的动作告诉对方：我在。
+    </p>
+    <div class="ctas" style="justify-content:center">
+      <a class="btn primary" href="#top">返回顶部</a>
+      <a class="btn" href="#gallery">回到画廊</a>
+      <a class="btn" href="#species">查看图鉴</a>
+    </div>
+  </section>
+
+  <footer class="footer">© 浅岸星滩・Shallowstar Cove｜森林生灵图鉴｜创作者：白kar</footer>
+</main>
+
+<script>
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach((entry)=>{
+    if(entry.isIntersecting){
+      entry.target.animate([
+        {opacity:0, transform:'translateY(24px)'},
+        {opacity:1, transform:'translateY(0)'}
+      ],{duration:760,easing:'cubic-bezier(.2,.8,.2,1)',fill:'both'});
+      entry.target.classList.remove('reveal');
+      io.unobserve(entry.target);
+    }
+  })
+},{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+document.querySelectorAll('.item,.card,.hero-card').forEach(el=>{
+  el.addEventListener('pointermove',(e)=>{
+    const r = el.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width - .5;
+    const y = (e.clientY - r.top) / r.height - .5;
+    el.style.transform = `perspective(900px) rotateY(${x*2.4}deg) rotateX(${-y*2.4}deg) translateY(-2px)`;
+  });
+  el.addEventListener('pointerleave',()=>{
+    el.style.transform = '';
+  });
+});
+</script>
+</body>
+</html>

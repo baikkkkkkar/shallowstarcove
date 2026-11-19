@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>雨后菌林 · 浅岸星滩</title>
+<style>
+  :root{
+    --ink:#eafcff;
+    --muted:#a9d7d5;
+    --aqua:#7cf4e4;
+    --blue:#72aefc;
+    --violet:#c7a6ff;
+    --glass:rgba(8, 25, 34, .48);
+    --glass2:rgba(153, 235, 228, .12);
+    --line:rgba(184, 255, 247, .32);
+    --deep:#071217;
+    --danger:#d5bcff;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#061014;color:var(--ink);font-family:"Microsoft YaHei","PingFang SC","Noto Sans SC",system-ui,sans-serif;}
+  body::before{
+    content:""; position:fixed; inset:-20%; pointer-events:none; z-index:-2;
+    background:
+      radial-gradient(circle at 28% 12%, rgba(115,229,218,.28), transparent 32%),
+      radial-gradient(circle at 82% 80%, rgba(112,153,255,.18), transparent 38%),
+      linear-gradient(135deg,#031013 0%,#0b2024 48%,#061017 100%);
+    filter:saturate(1.05);
+  }
+  .app{position:relative;width:100vw;height:100vh;display:flex;align-items:center;justify-content:center;padding:22px;}
+  .scene-shell{
+    position:relative; width:min(1500px, calc(100vw - 44px)); aspect-ratio: 2048 / 1137; max-height:calc(100vh - 44px);
+    border-radius:34px; overflow:hidden; background:#0c2225;
+    box-shadow:0 30px 90px rgba(0,0,0,.48), inset 0 0 0 1px rgba(215,255,252,.17), 0 0 90px rgba(71,222,213,.11);
+    isolation:isolate; cursor:default;
+  }
+  .scene-shell::after{
+    content:""; position:absolute; inset:0; pointer-events:none; z-index:25;
+    background:
+      radial-gradient(circle at 50% 42%, transparent 40%, rgba(0,8,12,.24) 76%, rgba(0,0,0,.62) 100%),
+      linear-gradient(to bottom, rgba(195,255,250,.08), transparent 25%, transparent 65%, rgba(6,13,16,.28));
+    mix-blend-mode:multiply;
+  }
+  .parallax{position:absolute; inset:0; transform-style:preserve-3d; will-change:transform; transition:transform .12s linear;}
+  .bg{position:absolute; inset:-4%; z-index:1; background:url('assets/bg_rainforest.webp') center/cover no-repeat; transform:translate3d(var(--px-bg,0), var(--py-bg,0),0) scale(1.055); filter:saturate(.96) contrast(.97) brightness(.92);}
+  .blue-haze{position:absolute; inset:-8%; z-index:3; pointer-events:none; opacity:.68; mix-blend-mode:screen; transform:translate3d(var(--px-fog,0), var(--py-fog,0),0);
+    background:
+      radial-gradient(ellipse at 52% 26%, rgba(154,248,255,.26), transparent 27%),
+      radial-gradient(ellipse at 18% 70%, rgba(116,239,201,.16), transparent 28%),
+      radial-gradient(ellipse at 87% 62%, rgba(194,169,255,.10), transparent 25%);
+    filter:blur(8px);
+  }
+  .mist{position:absolute; inset:-12%; z-index:5; pointer-events:none; opacity:.55; transform:translate3d(var(--px-mist,0), var(--py-mist,0),0); background:linear-gradient(90deg, transparent 0%, rgba(202,255,249,.11) 18%, transparent 40%, rgba(215,239,255,.12) 70%, transparent 100%); filter:blur(18px); animation:mistMove 16s ease-in-out infinite alternate;}
+  @keyframes mistMove{from{translate:-3% 0}to{translate:4% 1%}}
+  .rain, .rain2{position:absolute; inset:-20%; z-index:14; pointer-events:none; opacity:.38; transform:translate3d(var(--px-rain,0), var(--py-rain,0),0) rotate(9deg); background-image:repeating-linear-gradient(90deg, rgba(218,255,255,.34) 0 1px, transparent 1px 53px); animation:rainFall .75s linear infinite; mix-blend-mode:screen;}
+  .rain2{z-index:15; opacity:.18; background-image:repeating-linear-gradient(90deg, rgba(255,255,255,.28) 0 1px, transparent 1px 82px); animation-duration:1.16s; filter:blur(.5px)}
+  @keyframes rainFall{from{background-position:0 0}to{background-position:0 110px}}
+  .foreground{position:absolute; inset:0; z-index:8; pointer-events:none; transform:translate3d(var(--px-front,0), var(--py-front,0),0);}
+  .foreground::before{content:""; position:absolute; left:-4%; right:-4%; bottom:-10%; height:34%; background:linear-gradient(to top, rgba(5,23,20,.75), rgba(8,41,35,.22) 48%, transparent); filter:blur(4px);}
+  .fireflies{position:absolute; inset:0; z-index:13; pointer-events:none; overflow:hidden;}
+  .firefly{position:absolute; width:4px; height:4px; border-radius:50%; background:rgba(149,255,230,.95); box-shadow:0 0 12px rgba(117,255,238,.95); animation:floaty var(--dur) ease-in-out infinite alternate; opacity:.75;}
+  @keyframes floaty{from{transform:translate(0,0) scale(.8);opacity:.25}50%{opacity:.9}to{transform:translate(var(--dx), var(--dy)) scale(1.15);opacity:.55}}
+  .mushroom-layer{position:absolute; inset:0; z-index:18; transform:translate3d(var(--px-mush,0), var(--py-mush,0),0); pointer-events:none;}
+  .mushroom{
+    position:absolute; width:var(--w); left:var(--x); top:var(--y); transform:translate(-50%,-50%) scale(var(--s,1));
+    border:0; background:transparent; padding:0; pointer-events:auto; cursor:pointer; transform-origin:50% 86%; filter:drop-shadow(0 22px 18px rgba(0,0,0,.36)) drop-shadow(0 0 18px var(--glow)); transition:transform .28s cubic-bezier(.18,1.35,.3,1), filter .28s, opacity .35s;
+  }
+  .mushroom img{display:block;width:100%; height:auto; pointer-events:none; user-select:none; -webkit-user-drag:none;}
+  .mushroom::before{content:""; position:absolute; left:50%; bottom:2%; width:62%; height:14%; transform:translateX(-50%); background:radial-gradient(ellipse, var(--glow), transparent 68%); filter:blur(8px); opacity:.85; z-index:-1; animation:pulse 2.7s ease-in-out infinite;}
+  .mushroom::after{content:""; position:absolute; inset:12% 8%; border-radius:50%; background:radial-gradient(circle at 50% 42%, rgba(255,255,255,.55), transparent 8%, transparent 43%, var(--glow) 75%, transparent 77%); opacity:.0; transition:opacity .22s; mix-blend-mode:screen;}
+  .mushroom:hover{transform:translate(-50%,-50%) scale(calc(var(--s,1) * 1.13)); filter:drop-shadow(0 25px 18px rgba(0,0,0,.42)) drop-shadow(0 0 28px var(--glow)) saturate(1.12) brightness(1.06);}
+  .mushroom:hover::after{opacity:.32;}
+  .mushroom.collected{pointer-events:none; animation:collect .62s ease forwards;}
+  @keyframes pulse{0%,100%{opacity:.45; transform:translateX(-50%) scale(.88)}50%{opacity:1; transform:translateX(-50%) scale(1.12)}}
+  @keyframes collect{0%{opacity:1; transform:translate(-50%,-50%) scale(var(--s,1))}55%{opacity:1; transform:translate(-50%,-76%) scale(calc(var(--s,1)*.72)); filter:drop-shadow(0 0 32px var(--glow)) brightness(1.25)}100%{opacity:0; transform:translate(-50%,-112%) scale(.18); filter:drop-shadow(0 0 8px var(--glow));}}
+  .topbar{position:absolute; z-index:30; top:24px; left:26px; right:26px; display:flex; align-items:flex-start; justify-content:space-between; gap:18px; pointer-events:none;}
+  .title-card{max-width:520px; padding:16px 18px 15px; border-radius:22px; background:linear-gradient(135deg, rgba(5,28,32,.62), rgba(21,59,65,.34)); border:1px solid var(--line); box-shadow:0 16px 48px rgba(0,0,0,.22), inset 0 1px 0 rgba(255,255,255,.10); backdrop-filter: blur(14px);}
+  .eyebrow{font-size:12px; letter-spacing:.22em; color:#9df8ed; opacity:.9; margin-bottom:5px;}
+  h1{margin:0; font-size:clamp(24px,3vw,44px); line-height:1.05; font-weight:800; letter-spacing:.04em; text-shadow:0 0 24px rgba(98,235,221,.32);}
+  .subtitle{margin:8px 0 0; font-size:13px; color:rgba(224,255,250,.78); line-height:1.7;}
+  .basket{min-width:190px; padding:14px 16px; border-radius:20px; background:rgba(8,27,33,.55); border:1px solid rgba(178,255,245,.28); backdrop-filter: blur(14px); box-shadow:0 16px 44px rgba(0,0,0,.22); pointer-events:auto;}
+  .basket-title{display:flex;align-items:center;justify-content:space-between;gap:12px;color:#b5fff4;font-size:13px;letter-spacing:.08em;}
+  .count{font-size:24px;font-weight:900;color:#fff;text-shadow:0 0 16px rgba(134,255,239,.65)}
+  .mini-list{margin-top:10px;display:flex;flex-wrap:wrap;gap:6px;max-width:240px;}
+  .pill{font-size:11px;padding:5px 8px;border-radius:999px;background:rgba(188,255,247,.12);border:1px solid rgba(188,255,247,.20);color:rgba(232,255,252,.86);}
+  .bottom-ui{position:absolute; z-index:31; left:26px; right:26px; bottom:24px; display:grid; grid-template-columns:minmax(260px, 410px) 1fr minmax(260px, 390px); gap:18px; align-items:end; pointer-events:none;}
+  .dialogue, .codex, .companion{pointer-events:auto; background:linear-gradient(135deg, rgba(5,26,31,.62), rgba(17,53,58,.38)); border:1px solid rgba(188,255,247,.25); border-radius:24px; backdrop-filter: blur(16px); box-shadow:0 18px 55px rgba(0,0,0,.30), inset 0 1px 0 rgba(255,255,255,.10);}
+  .dialogue{padding:16px 18px; min-height:110px; position:relative; overflow:hidden;}
+  .dialogue::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 14% 12%,rgba(125,255,234,.17),transparent 34%);pointer-events:none;}
+  .speaker{font-size:13px;color:#9effef;letter-spacing:.18em;margin-bottom:8px;}
+  .line{font-size:15px;line-height:1.75;color:rgba(237,255,253,.92); text-wrap:balance;}
+  .codex{padding:16px 17px; min-height:154px; opacity:0; transform:translateY(10px); transition:.35s ease;}
+  .codex.show{opacity:1; transform:translateY(0);}
+  .codex-name{font-size:22px;font-weight:900;letter-spacing:.08em;margin-bottom:8px;color:white;text-shadow:0 0 18px var(--cardGlow, rgba(124,244,228,.5));}
+  .codex-meta{font-size:12px; letter-spacing:.16em; color:#9bf8ed; opacity:.88; margin-bottom:8px;}
+  .codex-desc{font-size:13px; line-height:1.72; color:rgba(232,255,252,.78);}
+  .companion{padding:16px 18px; min-height:134px; position:relative; overflow:hidden;}
+  .companion::after{content:""; position:absolute; right:-40px; bottom:-58px; width:180px;height:180px;border-radius:50%; background:radial-gradient(circle, rgba(120,221,255,.22), transparent 62%); pointer-events:none;}
+  .companion-tag{font-size:12px;color:#b1fff5;letter-spacing:.2em;margin-bottom:8px;}
+  .companion-name{font-size:24px;font-weight:900;margin-bottom:8px;}
+  .hint{font-size:13px; line-height:1.75; color:rgba(232,255,252,.75);}
+  .start{position:absolute; inset:0; z-index:80; display:flex; align-items:center; justify-content:center; background:radial-gradient(circle at 50% 35%, rgba(41,105,109,.44), rgba(4,12,15,.92) 72%); backdrop-filter: blur(8px); transition:opacity .55s, visibility .55s;}
+  .start.hide{opacity:0; visibility:hidden; pointer-events:none;}
+  .start-card{width:min(560px, calc(100% - 42px)); padding:34px 32px; border-radius:32px; text-align:center; background:linear-gradient(135deg, rgba(8,30,36,.72), rgba(25,70,73,.38)); border:1px solid rgba(199,255,248,.26); box-shadow:0 30px 90px rgba(0,0,0,.48), inset 0 1px 0 rgba(255,255,255,.12);}
+  .start-card .mark{font-size:36px; margin-bottom:10px; filter:drop-shadow(0 0 16px rgba(126,255,241,.65));}
+  .start-card h2{margin:0 0 10px;font-size:34px;letter-spacing:.06em;}
+  .start-card p{margin:0 auto 22px;max-width:420px;line-height:1.75;color:rgba(236,255,253,.78);font-size:14px;}
+  .btn{appearance:none;border:0;border-radius:999px;padding:12px 22px;background:linear-gradient(135deg, rgba(116,248,231,.95), rgba(133,164,255,.92));color:#082027;font-weight:900;letter-spacing:.12em;box-shadow:0 10px 32px rgba(112,249,234,.28);cursor:pointer;transition:.2s;}
+  .btn:hover{transform:translateY(-2px);filter:brightness(1.06)}
+  .home-link{position:absolute;z-index:95;top:22px;right:24px;text-decoration:none;border:1px solid rgba(188,255,247,.32);border-radius:999px;padding:10px 16px;background:rgba(8,27,33,.58);color:#eafcff;font-size:13px;font-weight:800;letter-spacing:.08em;backdrop-filter:blur(12px);box-shadow:0 12px 34px rgba(0,0,0,.24);transition:.22s ease;}
+  .home-link:hover{transform:translateY(-2px);background:rgba(188,255,247,.18);}
+  .toast{position:absolute; z-index:70; left:50%; top:48%; transform:translate(-50%,-50%) scale(.92); opacity:0; pointer-events:none; padding:13px 18px; border-radius:999px; background:rgba(224,255,251,.92); color:#063033; font-weight:900; letter-spacing:.08em; box-shadow:0 14px 40px rgba(0,0,0,.26),0 0 28px rgba(126,255,236,.5); transition:.28s ease;}
+  .toast.show{opacity:1; transform:translate(-50%,-50%) scale(1);}
+  .finish{position:absolute; inset:0; z-index:75; display:none; align-items:center; justify-content:center; background:rgba(3,12,15,.48); backdrop-filter:blur(6px);}
+  .finish.show{display:flex;}
+  .finish-card{width:min(560px, calc(100% - 42px)); padding:28px; border-radius:30px; background:linear-gradient(135deg,rgba(6,30,35,.84),rgba(27,72,75,.62)); border:1px solid rgba(188,255,247,.32); box-shadow:0 28px 90px rgba(0,0,0,.55); text-align:center;}
+  .finish-card h2{margin:0 0 12px; font-size:30px;}
+  .finish-card p{margin:0 0 18px; line-height:1.75; color:rgba(236,255,253,.82)}
+  .finish-list{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:20px;}
+  @media (max-width: 860px){
+    .app{padding:0}.scene-shell{width:100vw;height:100vh;max-height:none;border-radius:0;aspect-ratio:auto}.topbar{top:14px;left:14px;right:14px}.title-card{padding:12px 14px}.subtitle{display:none}.basket{min-width:130px;padding:10px 12px}.bottom-ui{left:12px;right:12px;bottom:12px;display:flex;flex-direction:column;gap:10px}.codex,.companion,.dialogue{width:100%;min-height:auto}.companion{display:none}.mushroom{width:calc(var(--w) * .78)}
+  }
+</style>
+
+<!-- FOREST-MINIMAL-LINKS-STYLE-START -->
+<style>
+.fm-links{
+  position:fixed;
+  z-index:99999;
+  right:22px;
+  top:22px;
+  display:flex;
+  gap:10px;
+  font-family:"Microsoft YaHei",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+.fm-links a{
+  text-decoration:none;
+  padding:10px 14px;
+  border-radius:999px;
+  color:#17405f;
+  font-size:13px;
+  font-weight:900;
+  background:rgba(255,255,255,.64);
+  border:1px solid rgba(255,255,255,.86);
+  box-shadow:0 12px 30px rgba(54,112,156,.20);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+  transition:.22s ease;
+}
+.fm-links a:hover{
+  transform:translateY(-2px);
+  background:#fff;
+}
+@media(max-width:640px){
+  .fm-links{right:12px;top:12px;gap:7px;}
+  .fm-links a{font-size:12px;padding:9px 11px;}
+}
+</style>
+<!-- FOREST-MINIMAL-LINKS-STYLE-END -->
+
+</head>
+<body>
+
+<!-- FOREST-MINIMAL-LINKS-START -->
+<div class="fm-links">
+  <a href="forest.html">返回森林区</a>
+  <a href="../zhuye.html">返回主页</a>
+</div>
+<!-- FOREST-MINIMAL-LINKS-END -->
+
+  <main class="app">
+    <section class="scene-shell" id="scene">
+      <a class="home-link" href="../zhuye.html">返回浅岸星滩</a>
+      <div class="parallax bg" id="bg"></div>
+      <div class="parallax blue-haze"></div>
+      <div class="parallax mist"></div>
+      <div class="fireflies" id="fireflies"></div>
+      <div class="parallax foreground"></div>
+      <div class="rain"></div><div class="rain2"></div>
+
+      <div class="topbar">
+        <div class="title-card">
+          <div class="eyebrow">SHALLOWSTAR COVE · RAIN ROUTE</div>
+          <h1>雨后菌林</h1>
+          <p class="subtitle">雨声落下来以后，森林会长出一些不会说话的安慰。点击发光菌子，把它们收进今日采集篮。</p>
+        </div>
+        <div class="basket">
+          <div class="basket-title"><span>今日采集篮</span><span class="count"><b id="count">0</b>/6</span></div>
+          <div class="mini-list" id="miniList"><span class="pill">等待发现</span></div>
+        </div>
+      </div>
+
+      <div class="mushroom-layer parallax" id="mushroomLayer">
+        <button class="mushroom" data-id="lanchao" style="--x:14.5%;--y:72%;--w:112px;--s:.96;--glow:rgba(87,255,232,.72)"><img src="assets/mushroom_lanchao.webp" alt="蓝潮隐菌"></button>
+        <button class="mushroom" data-id="yuedi" style="--x:55%;--y:73%;--w:104px;--s:.92;--glow:rgba(196,224,255,.72)"><img src="assets/mushroom_yuedi.webp" alt="月滴菌"></button>
+        <button class="mushroom" data-id="huiwu" style="--x:37%;--y:58%;--w:104px;--s:.73;--glow:rgba(190,219,229,.58)"><img src="assets/mushroom_huiwu.webp" alt="灰雾菌"></button>
+        <button class="mushroom" data-id="meiguo" style="--x:78%;--y:63%;--w:118px;--s:.75;--glow:rgba(255,188,179,.70)"><img src="assets/mushroom_meiguo.webp" alt="莓果糖菌"></button>
+        <button class="mushroom" data-id="yehou" style="--x:86%;--y:75%;--w:118px;--s:.78;--glow:rgba(255,213,136,.70)"><img src="assets/mushroom_yehou.webp" alt="椰厚伞菌"></button>
+        <button class="mushroom" data-id="cisan" style="--x:25%;--y:79%;--w:112px;--s:.82;--glow:rgba(206,170,255,.75)"><img src="assets/mushroom_cisan.webp" alt="刺伞菌"></button>
+      </div>
+
+      <div class="bottom-ui">
+        <div class="dialogue">
+          <div class="speaker" id="speaker">阿隐</div>
+          <div class="line" id="line">这里很安静。如果你不想说话，也没关系。我们可以只听雨，然后找一点发光的东西。</div>
+        </div>
+        <div class="codex" id="codex">
+          <div class="codex-meta">MUSHROOM CODEX</div>
+          <div class="codex-name" id="codexName">等待发现</div>
+          <div class="codex-desc" id="codexDesc">点击画面里微微发光的菌子，图鉴会在这里展开。</div>
+        </div>
+        <div class="companion">
+          <div class="companion-tag">COMPANION</div>
+          <div class="companion-name">阿隐 · 雨后路线</div>
+          <div class="hint">鼠标轻轻移动，森林会有 2.5D 视差。音效是网页实时生成的：白噪、细雨、滴答、采摘声。</div>
+        </div>
+      </div>
+
+      <div class="toast" id="toast">采集成功</div>
+      <div class="finish" id="finish">
+        <div class="finish-card">
+          <h2>今日采集完成</h2>
+          <p>雨还在下，但你已经找到六朵会发光的小东西。今天的森林，没有催你赶路。</p>
+          <div class="finish-list" id="finishList"></div>
+          <button class="btn" id="restartBtn">重新散步</button>
+        </div>
+      </div>
+      <div class="start" id="start">
+        <div class="start-card">
+          <div class="mark">🌧️🍄</div>
+          <h2>雨后菌林</h2>
+          <p>撑伞进入后，白噪音与雨声会一起响起。请慢慢移动鼠标，点击那些在草丛里发光的菌子。</p>
+          <button class="btn" id="startBtn">撑伞进入</button>
+        </div>
+      </div>
+    </section>
+  </main>
+<script>
+const scene = document.getElementById('scene');
+const start = document.getElementById('start');
+const startBtn = document.getElementById('startBtn');
+const line = document.getElementById('line');
+const countEl = document.getElementById('count');
+const miniList = document.getElementById('miniList');
+const codex = document.getElementById('codex');
+const codexName = document.getElementById('codexName');
+const codexDesc = document.getElementById('codexDesc');
+const toast = document.getElementById('toast');
+const finish = document.getElementById('finish');
+const finishList = document.getElementById('finishList');
+const restartBtn = document.getElementById('restartBtn');
+
+const data = {
+  lanchao:{name:'蓝潮隐菌', type:'安静微光', desc:'只在雨声最轻的树根旁出现。伞面泛着蓝绿色潮光，不刺眼，像躲起来也会发亮的小小安全壳。', line:'它不太显眼……但你靠近的时候，会发现它一直在发光。'},
+  yuedi:{name:'月滴菌', type:'雨露安抚', desc:'伞盖像被月光泡软的水滴，边缘挂着透明雨珠。它常常长在水洼旁，像替森林保存一小片温柔。', line:'这个很轻，像雨停之前留下的一滴月亮。'},
+  huiwu:{name:'灰雾菌', type:'冷静观察', desc:'灰蓝色纹理像一圈圈记录线，周围有薄雾绕着它。它不说话，只慢慢记住雨落下的方向。', line:'它看起来很冷静。好像什么都看见了，但什么都不打扰。'},
+  meiguo:{name:'莓果糖菌', type:'童真好奇', desc:'草莓粉与奶白色交在一起，像雨林里偷偷长出来的糖果。靠近时会有暖暖的小光点。', line:'莓莓应该会很喜欢这个。它看起来像不能吃，但很想摸一下的糖果。'},
+  yehou:{name:'椰厚伞菌', type:'热带恢复', desc:'伞盖厚厚圆圆，带着椰壳一样的暖色纹理。即使在雨天，也像藏着一点没有熄灭的太阳。', line:'这个好像卡菈会捧起来笑。雨天也可以有一点暖色。'},
+  cisan:{name:'刺伞菌', type:'边界守护', desc:'浅紫色透明伞盖上有短短的刺状纹理，看起来警觉，但并不凶。它像是在提醒：温柔也可以有边界。', line:'不要怕它。它只是把边界长在外面了。'}
+};
+let found = [];
+
+// fireflies
+const fire = document.getElementById('fireflies');
+for(let i=0;i<28;i++){
+  const d=document.createElement('span');
+  d.className='firefly';
+  d.style.left = (8+Math.random()*84)+'%';
+  d.style.top = (20+Math.random()*68)+'%';
+  d.style.setProperty('--dx', (Math.random()*60-30)+'px');
+  d.style.setProperty('--dy', (Math.random()*42-21)+'px');
+  d.style.setProperty('--dur', (2.8+Math.random()*4.2)+'s');
+  d.style.animationDelay = (-Math.random()*5)+'s';
+  fire.appendChild(d);
+}
+
+// parallax
+let targetX=0,targetY=0,curX=0,curY=0;
+scene.addEventListener('mousemove', e=>{
+  const r=scene.getBoundingClientRect();
+  targetX=((e.clientX-r.left)/r.width-.5); targetY=((e.clientY-r.top)/r.height-.5);
+});
+scene.addEventListener('mouseleave', ()=>{targetX=0;targetY=0;});
+function animate(){
+  curX += (targetX-curX)*0.08; curY += (targetY-curY)*0.08;
+  scene.style.setProperty('--px-bg', `${curX*-14}px`); scene.style.setProperty('--py-bg', `${curY*-8}px`);
+  scene.style.setProperty('--px-fog', `${curX*18}px`); scene.style.setProperty('--py-fog', `${curY*12}px`);
+  scene.style.setProperty('--px-mist', `${curX*25}px`); scene.style.setProperty('--py-mist', `${curY*10}px`);
+  scene.style.setProperty('--px-front', `${curX*30}px`); scene.style.setProperty('--py-front', `${curY*12}px`);
+  scene.style.setProperty('--px-mush', `${curX*18}px`); scene.style.setProperty('--py-mush', `${curY*9}px`);
+  scene.style.setProperty('--px-rain', `${curX*8}px`); scene.style.setProperty('--py-rain', `${curY*4}px`);
+  requestAnimationFrame(animate);
+}
+animate();
+
+// audio: procedural ambience
+let audioCtx, master, noiseGain, rainGain, dripTimer;
+function makeNoise(seconds=2){
+  const buffer = audioCtx.createBuffer(1, audioCtx.sampleRate*seconds, audioCtx.sampleRate);
+  const data = buffer.getChannelData(0);
+  for(let i=0;i<data.length;i++) data[i]=Math.random()*2-1;
+  return buffer;
+}
+function startAudio(){
+  if(audioCtx) return;
+  audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+  master = audioCtx.createGain(); master.gain.value=.52; master.connect(audioCtx.destination);
+  // soft white/pink ambience
+  const n1 = audioCtx.createBufferSource(); n1.buffer=makeNoise(3); n1.loop=true;
+  const low=audioCtx.createBiquadFilter(); low.type='lowpass'; low.frequency.value=760;
+  noiseGain=audioCtx.createGain(); noiseGain.gain.value=.045;
+  n1.connect(low).connect(noiseGain).connect(master); n1.start();
+  // rain hiss layer
+  const n2 = audioCtx.createBufferSource(); n2.buffer=makeNoise(2); n2.loop=true;
+  const hp=audioCtx.createBiquadFilter(); hp.type='highpass'; hp.frequency.value=1800;
+  const lp=audioCtx.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=6500;
+  rainGain=audioCtx.createGain(); rainGain.gain.value=.055;
+  n2.connect(hp).connect(lp).connect(rainGain).connect(master); n2.start();
+  dripTimer=setInterval(()=>{ if(Math.random()<.72) drip(); }, 520);
+}
+function drip(){
+  if(!audioCtx) return;
+  const t=audioCtx.currentTime;
+  const osc=audioCtx.createOscillator(); osc.type='sine'; osc.frequency.setValueAtTime(740+Math.random()*900,t); osc.frequency.exponentialRampToValueAtTime(260+Math.random()*220,t+.11);
+  const g=audioCtx.createGain(); g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(.025+Math.random()*.018,t+.012); g.gain.exponentialRampToValueAtTime(.0001,t+.18);
+  const p=audioCtx.createStereoPanner(); p.pan.value=Math.random()*2-1;
+  osc.connect(g).connect(p).connect(master); osc.start(t); osc.stop(t+.2);
+}
+function pickupSound(){
+  if(!audioCtx) return;
+  const t=audioCtx.currentTime;
+  const osc=audioCtx.createOscillator(); osc.type='triangle'; osc.frequency.setValueAtTime(620,t); osc.frequency.exponentialRampToValueAtTime(1220,t+.08);
+  const g=audioCtx.createGain(); g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(.12,t+.014); g.gain.exponentialRampToValueAtTime(.0001,t+.32);
+  osc.connect(g).connect(master); osc.start(t); osc.stop(t+.34);
+  setTimeout(()=>basketSound(),120);
+}
+function basketSound(){
+  if(!audioCtx) return;
+  const t=audioCtx.currentTime;
+  [330,410].forEach((f,i)=>{const o=audioCtx.createOscillator();o.type='sine';o.frequency.value=f;const g=audioCtx.createGain();g.gain.setValueAtTime(.055,t+i*.035);g.gain.exponentialRampToValueAtTime(.0001,t+.22+i*.04);o.connect(g).connect(master);o.start(t+i*.035);o.stop(t+.25+i*.04);});
+}
+
+startBtn.addEventListener('click', ()=>{startAudio(); start.classList.add('hide');});
+function showToast(text){toast.textContent=text; toast.classList.add('show'); clearTimeout(showToast.t); showToast.t=setTimeout(()=>toast.classList.remove('show'),900);}
+function updateList(){
+  miniList.innerHTML='';
+  if(!found.length){miniList.innerHTML='<span class="pill">等待发现</span>'; return;}
+  found.forEach(id=>{const p=document.createElement('span'); p.className='pill'; p.textContent=data[id].name; miniList.appendChild(p);});
+}
+function collect(btn){
+  const id=btn.dataset.id; if(found.includes(id)) return;
+  const item=data[id]; found.push(id); btn.classList.add('collected'); pickupSound(); showToast(`采集成功 · ${item.name}`);
+  countEl.textContent=found.length; updateList();
+  codex.classList.add('show'); codexName.textContent=item.name; codexDesc.textContent=item.desc; codex.style.setProperty('--cardGlow', getComputedStyle(btn).getPropertyValue('--glow'));
+  line.textContent=item.line;
+  if(found.length===6){
+    setTimeout(()=>{
+      finishList.innerHTML=''; found.forEach(x=>{const p=document.createElement('span');p.className='pill';p.textContent=data[x].name;finishList.appendChild(p);});
+      finish.classList.add('show');
+    },900);
+  }
+}
+document.querySelectorAll('.mushroom').forEach(btn=>btn.addEventListener('click',()=>collect(btn)));
+restartBtn.addEventListener('click',()=>{
+  found=[]; countEl.textContent='0'; updateList(); finish.classList.remove('show'); codex.classList.remove('show'); codexName.textContent='等待发现'; codexDesc.textContent='点击画面里微微发光的菌子，图鉴会在这里展开。'; line.textContent='这里很安静。如果你不想说话，也没关系。我们可以只听雨，然后找一点发光的东西。'; document.querySelectorAll('.mushroom').forEach(b=>b.classList.remove('collected'));
+});
+</script>
+</body>
+</html>

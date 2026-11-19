@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>项目综述 · 浅岸星滩</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-touch-callout: none;
+            user-select: none;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: 'Nunito', 'Quicksand', 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+            overflow-x: hidden;
+            color: #2c4a3b;
+            position: relative;
+        }
+
+        .sky-sand {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: linear-gradient(165deg, #b3e0f5 0%, #d9f0fa 40%, #fef7e0 70%, #f5e6c4 100%);
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60%;
+            z-index: -1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .star {
+            position: absolute;
+            background-color: #fff9e0;
+            border-radius: 50%;
+            box-shadow: 0 0 4px 1px rgba(255,255,200,0.8);
+            opacity: 0;
+            animation: twinkle 3s infinite alternate;
+        }
+        @keyframes twinkle {
+            0% { opacity: 0; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1.2); }
+        }
+        .wave-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 150px;
+            z-index: 1;
+            pointer-events: none;
+            overflow: hidden;
+            filter: drop-shadow(0 -8px 18px rgba(66, 166, 208, .16));
+        }
+        .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 150px;
+            background-repeat: repeat-x;
+            background-size: 2400px 150px;
+            background-position-y: bottom;
+            mix-blend-mode: soft-light;
+            will-change: background-position;
+        }
+        .wave1 {
+            bottom: -8px;
+            opacity: .96;
+            background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%202400%20150%22%20preserveAspectRatio%3D%22none%22%3E%0A%3Cdefs%3E%0A%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%0A%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23f7fdff%22%20stop-opacity%3D%220.82%22/%3E%0A%3Cstop%20offset%3D%2255%25%22%20stop-color%3D%22%238fd8f2%22%20stop-opacity%3D%220.48%22/%3E%0A%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%232f9cc7%22%20stop-opacity%3D%220.10%22/%3E%0A%3C/linearGradient%3E%0A%3Cfilter%20id%3D%22softGlow%22%20x%3D%22-10%25%22%20y%3D%22-30%25%22%20width%3D%22120%25%22%20height%3D%22160%25%22%3E%0A%3CfeGaussianBlur%20stdDeviation%3D%222.2%22%20result%3D%22blur%22/%3E%0A%3CfeMerge%3E%3CfeMergeNode%20in%3D%22blur%22/%3E%3CfeMergeNode%20in%3D%22SourceGraphic%22/%3E%3C/feMerge%3E%0A%3C/filter%3E%0A%3C/defs%3E%0A%3Cpath%20fill%3D%22url%28%23g%29%22%20d%3D%22M0%2C64%20C150%2C18%20450%2C18%20600%2C64%20C750%2C110%201050%2C110%201200%2C64%20C1350%2C18%201650%2C18%201800%2C64%20C1950%2C110%202250%2C110%202400%2C64%20L2400%2C150%20L0%2C150%20Z%22/%3E%0A%3Cpath%20d%3D%22M0%2C64%20C150%2C18%20450%2C18%20600%2C64%20C750%2C110%201050%2C110%201200%2C64%20C1350%2C18%201650%2C18%201800%2C64%20C1950%2C110%202250%2C110%202400%2C64%22%20fill%3D%22none%22%20stroke%3D%22%23ffffff%22%20stroke-opacity%3D%220.88%22%20stroke-width%3D%228%22%20stroke-linecap%3D%22round%22%20filter%3D%22url%28%23softGlow%29%22/%3E%0A%3Cpath%20d%3D%22M0%2C64%20C150%2C18%20450%2C18%20600%2C64%20C750%2C110%201050%2C110%201200%2C64%20C1350%2C18%201650%2C18%201800%2C64%20C1950%2C110%202250%2C110%202400%2C64%22%20fill%3D%22none%22%20stroke%3D%22%23bcefff%22%20stroke-opacity%3D%220.45%22%20stroke-width%3D%224%22%20stroke-linecap%3D%22round%22/%3E%0A%3C/svg%3E");
+            animation: waveMove 22s linear infinite;
+        }
+        .wave2 {
+            bottom: -18px;
+            opacity: .82;
+            background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%202400%20150%22%20preserveAspectRatio%3D%22none%22%3E%0A%3Cdefs%3E%0A%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%0A%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23c9f1ff%22%20stop-opacity%3D%220.56%22/%3E%0A%3Cstop%20offset%3D%2255%25%22%20stop-color%3D%22%235fbde2%22%20stop-opacity%3D%220.30%22/%3E%0A%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23147ea8%22%20stop-opacity%3D%220.06%22/%3E%0A%3C/linearGradient%3E%0A%3Cfilter%20id%3D%22softGlow%22%20x%3D%22-10%25%22%20y%3D%22-30%25%22%20width%3D%22120%25%22%20height%3D%22160%25%22%3E%0A%3CfeGaussianBlur%20stdDeviation%3D%222.2%22%20result%3D%22blur%22/%3E%0A%3CfeMerge%3E%3CfeMergeNode%20in%3D%22blur%22/%3E%3CfeMergeNode%20in%3D%22SourceGraphic%22/%3E%3C/feMerge%3E%0A%3C/filter%3E%0A%3C/defs%3E%0A%3Cpath%20fill%3D%22url%28%23g%29%22%20d%3D%22M0%2C82%20C150%2C38%20450%2C38%20600%2C82%20C750%2C126%201050%2C126%201200%2C82%20C1350%2C38%201650%2C38%201800%2C82%20C1950%2C126%202250%2C126%202400%2C82%20L2400%2C150%20L0%2C150%20Z%22/%3E%0A%3Cpath%20d%3D%22M0%2C82%20C150%2C38%20450%2C38%20600%2C82%20C750%2C126%201050%2C126%201200%2C82%20C1350%2C38%201650%2C38%201800%2C82%20C1950%2C126%202250%2C126%202400%2C82%22%20fill%3D%22none%22%20stroke%3D%22%23f2fdff%22%20stroke-opacity%3D%220.42%22%20stroke-width%3D%225%22%20stroke-linecap%3D%22round%22%20filter%3D%22url%28%23softGlow%29%22/%3E%0A%3Cpath%20d%3D%22M0%2C82%20C150%2C38%20450%2C38%20600%2C82%20C750%2C126%201050%2C126%201200%2C82%20C1350%2C38%201650%2C38%201800%2C82%20C1950%2C126%202250%2C126%202400%2C82%22%20fill%3D%22none%22%20stroke%3D%22%238bdcf5%22%20stroke-opacity%3D%220.22%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22/%3E%0A%3C/svg%3E");
+            animation: waveMove 30s linear infinite reverse;
+        }
+        .wave3 {
+            bottom: -26px;
+            opacity: .72;
+            background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%202400%20150%22%20preserveAspectRatio%3D%22none%22%3E%0A%3Cdefs%3E%0A%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%0A%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%237fd2ee%22%20stop-opacity%3D%220.42%22/%3E%0A%3Cstop%20offset%3D%2255%25%22%20stop-color%3D%22%232f9bc9%22%20stop-opacity%3D%220.24%22/%3E%0A%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23075f86%22%20stop-opacity%3D%220.05%22/%3E%0A%3C/linearGradient%3E%0A%3Cfilter%20id%3D%22softGlow%22%20x%3D%22-10%25%22%20y%3D%22-30%25%22%20width%3D%22120%25%22%20height%3D%22160%25%22%3E%0A%3CfeGaussianBlur%20stdDeviation%3D%222.2%22%20result%3D%22blur%22/%3E%0A%3CfeMerge%3E%3CfeMergeNode%20in%3D%22blur%22/%3E%3CfeMergeNode%20in%3D%22SourceGraphic%22/%3E%3C/feMerge%3E%0A%3C/filter%3E%0A%3C/defs%3E%0A%3Cpath%20fill%3D%22url%28%23g%29%22%20d%3D%22M0%2C96%20C150%2C56%20450%2C56%20600%2C96%20C750%2C136%201050%2C136%201200%2C96%20C1350%2C56%201650%2C56%201800%2C96%20C1950%2C136%202250%2C136%202400%2C96%20L2400%2C150%20L0%2C150%20Z%22/%3E%0A%3Cpath%20d%3D%22M0%2C96%20C150%2C56%20450%2C56%20600%2C96%20C750%2C136%201050%2C136%201200%2C96%20C1350%2C56%201650%2C56%201800%2C96%20C1950%2C136%202250%2C136%202400%2C96%22%20fill%3D%22none%22%20stroke%3D%22%23e8fbff%22%20stroke-opacity%3D%220.26%22%20stroke-width%3D%224%22%20stroke-linecap%3D%22round%22%20filter%3D%22url%28%23softGlow%29%22/%3E%0A%3Cpath%20d%3D%22M0%2C96%20C150%2C56%20450%2C56%20600%2C96%20C750%2C136%201050%2C136%201200%2C96%20C1350%2C56%201650%2C56%201800%2C96%20C1950%2C136%202250%2C136%202400%2C96%22%20fill%3D%22none%22%20stroke%3D%22%236ed0ee%22%20stroke-opacity%3D%220.13%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22/%3E%0A%3C/svg%3E");
+            animation: waveMove 40s linear infinite;
+        }
+        @keyframes waveMove {
+            0% { background-position-x: 0; }
+            100% { background-position-x: 2400px; }
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 1.5rem 1.5rem 3rem;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            background: rgba(255, 248, 225, 0.55);
+            backdrop-filter: blur(8px);
+            border-radius: 60px;
+            padding: 0.5rem 2rem;
+            border: 1px solid rgba(255, 245, 200, 0.8);
+        }
+        .back-home {
+            text-decoration: none;
+            font-weight: 500;
+            color: #2a6b4a;
+            background: rgba(255, 250, 220, 0.7);
+            padding: 0.4rem 1.2rem;
+            border-radius: 40px;
+            transition: 0.2s;
+        }
+        .back-home:hover {
+            background: #fff1cc;
+            transform: translateY(-2px);
+        }
+        .title {
+            font-size: 1.6rem;
+            font-weight: 400;
+            color: #2b5a3b;
+        }
+
+        .author-info {
+            text-align: right;
+            font-size: 0.78rem;
+            line-height: 1.55;
+            color: #557565;
+        }
+
+        .author-info strong {
+            color: #2b5a3b;
+            font-weight: 600;
+        }
+
+        .author-info .contact {
+            opacity: 0.9;
+        }
+
+        @media (max-width: 700px) {
+            .author-info {
+                text-align: left;
+                width: 100%;
+            }
+        }
+
+        .review-card {
+            background: rgba(255, 250, 235, 0.5);
+            backdrop-filter: blur(12px);
+            border-radius: 48px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 245, 200, 0.8);
+            box-shadow: 0 20px 35px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+        }
+
+        .section {
+            margin-bottom: 2rem;
+        }
+        .section h2 {
+            font-size: 1.6rem;
+            margin-bottom: 1rem;
+            color: #3a6b4a;
+            border-left: 5px solid #9ac2c9;
+            padding-left: 1rem;
+        }
+        .section p {
+            line-height: 1.6;
+            margin-bottom: 0.8rem;
+            font-size: 1rem;
+        }
+        .highlight {
+            background: rgba(200, 220, 190, 0.3);
+            border-radius: 32px;
+            padding: 1.2rem;
+            margin: 1.5rem 0;
+            text-align: center;
+            font-weight: 500;
+        }
+        .badge-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin: 1rem 0;
+        }
+        .badge {
+            background: #e9e0c0;
+            border-radius: 40px;
+            padding: 0.3rem 1rem;
+            font-size: 0.85rem;
+            color: #4a6741;
+        }
+        footer {
+            text-align: center;
+            font-size: 0.7rem;
+            padding: 1rem;
+            color: #6e8f6a;
+        }
+
+        @media (max-width: 700px) {
+            .container { padding: 1rem; }
+            .review-card { padding: 1.2rem; }
+            .section h2 { font-size: 1.3rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="sky-sand"></div>
+<div class="stars" id="starsContainer"></div>
+<div class="wave-container" aria-hidden="true">
+    <div class="wave wave1"></div>
+    <div class="wave wave2"></div>
+    <div class="wave wave3"></div>
+</div>
+<audio id="homeWhiteNoise" preload="auto" loop>
+    <source src="audio/white-noise.mp3" type="audio/mpeg">
+</audio>
+
+<div class="container">
+    <div class="header">
+        <span class="title">📄 项目综述</span>
+        <div class="author-info">
+            <div><strong>白kar · Lumi kaka</strong>　李媛瑗</div>
+            <div class="contact">📞 15571701779　✉ 1660911249@qq.com</div>
+        </div>
+        <a href="zhuye.html" class="back-home">🌊 返回浅岸星滩</a>
+    </div>
+
+    <div class="review-card">
+        <div class="highlight">
+            ⭐ 本毕业设计所有内容（概念、角色、插画、文创、展板、网站代码、文案）均由本人独立完成。从0到1，全流程自主实现。
+        </div>
+
+        <div class="section">
+            <h2>一、成果体量</h2>
+            <div class="badge-list">
+                <span class="badge">6个拟人角色 + 6只Q版小宠</span>
+                <span class="badge">131张原创插画/设计图</span>
+                <span class="badge">毛绒卡套系列（刺绣+硅胶）</span>
+                <span class="badge">盲盒全套包装设计</span>
+                <span class="badge">多工艺徽章/吧唧/金属吧唧</span>
+                <span class="badge">6张21:9角色展板</span>
+                <span class="badge">场景插画/海报/方卡</span>
+                <span class="badge">LOGO实物（衣服/书包/帆布袋）</span>
+                <span class="badge">完整交互网站</span>
+            </div>
+            <p>文创品类具体包括：毛绒卡套、异形抱枕、亚克力挂件、彩窗立牌、金属/普通/镭射吧唧、开瓶器、盲盒（含包装结构）、邮票、扇子、木纹/亚克力杯垫、帆布包、双肩包、短袖、服饰标签、方卡、多比例插画海报、角色专属展板、综合文创展板、商业盲盒展板。全部由我个人设计完成。</p>
+        </div>
+
+        <div class="section">
+            <h2>二、设计逻辑</h2>
+            <p>项目从高敏感人格的真实体验出发，而不是从“做一个好看的IP”开始。</p>
+            <p><strong>角色与物种的绑定</strong><br>
+            查阅六种陆生寄居蟹的生物学资料，将每种寄居蟹的典型行为对应到角色性格：<br>
+            凹足寄居蟹（胆小、易应激）→ 阿隐（退缩防御）<br>
+            日本紫陆寄居蟹（温和、喜群居）→ 软软（温柔共情）<br>
+            灰白寄居蟹（警觉、行动沉稳）→ 阿默（冷静观察）<br>
+            草莓寄居蟹（颜色鲜艳但胆小）→ 莓莓（好奇但敏感）<br>
+            短腕寄居蟹（攻击性强、领地意识）→ 刺团（警觉防御）<br>
+            椰子蟹（成年后不再依赖螺壳）→ 卡菈（本真成长）</p>
+            <p><strong>叙事结构</strong><br>
+            弱化架空世界观，聚焦“母亲+五个女儿”的家庭关系。卡菈（椰子蟹）代表成长后的自己，五位女儿分别对应高敏感者不同侧面的情绪切片。角色之间的互动，是内心不同状态的对话与和解。</p>
+            <p><strong>产品策略</strong><br>
+            所有文创产品均按可量产逻辑设计（四色印刷、覆膜、插口式自锁盲盒结构、刺绣/硅胶复合工艺等）。品类覆盖高频日常使用（卡套、杯垫、扇子）与收藏向（徽章、盲盒、邮票），兼顾情绪陪伴与商业落地。</p>
+        </div>
+
+        <div class="section">
+            <h2>三、技术实现</h2>
+            <p><strong>视觉与绘画</strong><br>
+            手绘：Procreate + iPad（线稿、上色、草图）<br>
+            精修：Photoshop（统一风格、细节调整）<br>
+            AI辅助：Midjourney（配色方案、材质参考，仅用于前期探索，最终成稿全部手绘）</p>
+            <p><strong>网站开发</strong><br>
+            零代码基础起步，自学HTML5、CSS3、JavaScript。实现：响应式布局、动态粒子背景（Canvas）、灯箱放大、防盗功能（禁用右键/长按/Ctrl+S/PrintScreen）、角色独立页面跳转，全站风格统一。</p>
+            <p><strong>AI编程辅助</strong><br>
+            熟练使用ChatGPT、DeepSeek、Codex辅助调试代码、解释报错、生成重复性代码片段。利用AIGC工具提升开发效率，核心逻辑与交互设计由自己完成。</p>
+            <p><strong>综合AI技术使用</strong><br>
+            ChatGPT：用于创意梳理、文案润色、网页交互逻辑规划与代码问题排查；<br>
+            Codex：用于HTML/CSS/JavaScript代码生成、结构优化与Bug修复辅助；<br>
+            Suno AI Music：用于角色页面背景音乐、电子音效与治愈氛围纯音乐的生成探索；<br>
+            Holopix：用于静态视觉素材的动态化、立体感展示与数字化呈现探索，辅助增强官网展示的沉浸感。<br>
+            以上工具均作为效率提升与创作辅助，项目核心设定、视觉判断、最终成稿与落地整合仍由本人独立完成。</p>
+            <p><strong>声音与音乐设计</strong><br>
+            阿隐角色页面的背景音乐使用Suno AI Music进行纯音乐探索，风格定位为“治愈系电子氛围 + soft glitch + 代码音效 + 数字海洋”。通过柔和合成器、细碎电子故障音、键盘敲击、UI提示音、低频脉冲与水晶质感音色，强化阿隐“退缩、防御、躲入代码壳获得安全感”的角色气质，使音乐成为页面情绪叙事的一部分，而非单纯背景装饰。</p>
+            <p>
+            软软角色页面的背景音乐使用Suno AI Music进行治愈系纯音乐探索，整体以竖琴、笛子与手鼓等音色营造夜晚海边琴房的安静氛围。音乐设定呼应软软“温柔、共情、陪伴”的角色气质：她会在夜晚独自弹奏竖琴，姐妹们情绪低落时也会来到这里，听她唱歌与演奏，让音乐成为浅岸星滩中安抚情绪的柔软空间。</p>
+        </div>
+
+        <div class="section">
+            <h2>四、项目状态</h2>
+            <p>网站已部署，可在线访问，包含所有角色页面、画廊、留言板、海岸集市等。文创产品已完成全品类效果图及展板，部分已完成实物打样。</p>
+        </div>
+
+        <div class="section">
+            <h2>五、独立声明</h2>
+            <p>本项目的所有环节——概念构思、角色设计、插画绘制、产品方案、展板排版、网站代码、文案撰写——均由本人独立完成。无任何形式的代工或合创。</p>
+        </div>
+
+        <div class="highlight">
+            ✨ 所有工作均由本人独立完成，无团队、无外包。从灵感、手绘、产品设计、展板排版、网站编写到论文撰写，全程独立承包。
+        </div>
+    </div>
+    <footer>
+        🌊 潮汐之间 · 星辰为伴 🌊<br>
+        <span style="font-size:0.72rem;">Project by 白kar / Lumi kaka（李媛瑗） · 15571701779 · 1660911249@qq.com</span>
+    </footer>
+</div>
+
+<script>
+    function generateStars() {
+        const starsContainer = document.getElementById('starsContainer');
+        if (!starsContainer) return;
+        const starCount = 100;
+        for (let i = 0; i < starCount; i++) {
+            const star = document.createElement('div');
+            star.classList.add('star');
+            const size = Math.random() * 3 + 1;
+            star.style.width = size + 'px';
+            star.style.height = size + 'px';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 60 + '%';
+            star.style.animationDuration = (Math.random() * 3 + 1.5) + 's';
+            star.style.animationDelay = (Math.random() * 5) + 's';
+            starsContainer.appendChild(star);
+        }
+    }
+    generateStars();
+</script>
+
+<script>
+    // 首页白噪音：自动尝试播放；若浏览器拦截，会在第一次点击/滚动/按键时启动
+    (function initHomeWhiteNoise() {
+        const whiteNoise = document.getElementById('homeWhiteNoise');
+        if (!whiteNoise) return;
+
+        whiteNoise.volume = 0.24;
+        whiteNoise.loop = true;
+
+        function playWhiteNoise() {
+            if (!whiteNoise || !whiteNoise.paused) return;
+            whiteNoise.play().catch(() => {
+                // 浏览器可能拦截自动播放，等待用户第一次交互后再启动
+            });
+        }
+
+        window.addEventListener('load', playWhiteNoise);
+        ['pointerdown', 'click', 'wheel', 'keydown', 'touchstart'].forEach(eventName => {
+            document.addEventListener(eventName, playWhiteNoise, { once: true, passive: true });
+        });
+    })();
+</script>
+</body>
+</html>

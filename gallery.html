@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>星辰画廊 · 浅岸星滩</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-touch-callout: none;
+            user-select: none;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: 'Nunito', 'Quicksand', 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+            overflow-x: hidden;
+            color: #2c4a3b;
+            position: relative;
+        }
+
+        /* 背景与海浪 */
+        .sky-sand {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: linear-gradient(165deg, #b3e0f5 0%, #d9f0fa 40%, #fef7e0 70%, #f5e6c4 100%);
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60%;
+            z-index: -1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .star {
+            position: absolute;
+            background-color: #fff9e0;
+            border-radius: 50%;
+            box-shadow: 0 0 4px 1px rgba(255,255,200,0.8);
+            opacity: 0;
+            animation: twinkle 3s infinite alternate;
+        }
+        @keyframes twinkle {
+            0% { opacity: 0; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1.2); }
+        }
+        .wave-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 150px;
+            z-index: 1;
+            pointer-events: none;
+            overflow: hidden;
+            filter: drop-shadow(0 -8px 18px rgba(66, 166, 208, .16));
+        }
+        .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 150px;
+            background-repeat: repeat-x;
+            background-size: 2400px 150px;
+            background-position-y: bottom;
+            mix-blend-mode: soft-light;
+            will-change: background-position;
+        }
+        .wave1 {
+            bottom: -8px;
+            opacity: .96;
+            background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%202400%20150%22%20preserveAspectRatio%3D%22none%22%3E%0A%3Cdefs%3E%0A%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%0A%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23f7fdff%22%20stop-opacity%3D%220.82%22/%3E%0A%3Cstop%20offset%3D%2255%25%22%20stop-color%3D%22%238fd8f2%22%20stop-opacity%3D%220.48%22/%3E%0A%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%232f9cc7%22%20stop-opacity%3D%220.10%22/%3E%0A%3C/linearGradient%3E%0A%3Cfilter%20id%3D%22softGlow%22%20x%3D%22-10%25%22%20y%3D%22-30%25%22%20width%3D%22120%25%22%20height%3D%22160%25%22%3E%0A%3CfeGaussianBlur%20stdDeviation%3D%222.2%22%20result%3D%22blur%22/%3E%0A%3CfeMerge%3E%3CfeMergeNode%20in%3D%22blur%22/%3E%3CfeMergeNode%20in%3D%22SourceGraphic%22/%3E%3C/feMerge%3E%0A%3C/filter%3E%0A%3C/defs%3E%0A%3Cpath%20fill%3D%22url%28%23g%29%22%20d%3D%22M0%2C64%20C150%2C18%20450%2C18%20600%2C64%20C750%2C110%201050%2C110%201200%2C64%20C1350%2C18%201650%2C18%201800%2C64%20C1950%2C110%202250%2C110%202400%2C64%20L2400%2C150%20L0%2C150%20Z%22/%3E%0A%3Cpath%20d%3D%22M0%2C64%20C150%2C18%20450%2C18%20600%2C64%20C750%2C110%201050%2C110%201200%2C64%20C1350%2C18%201650%2C18%201800%2C64%20C1950%2C110%202250%2C110%202400%2C64%22%20fill%3D%22none%22%20stroke%3D%22%23ffffff%22%20stroke-opacity%3D%220.88%22%20stroke-width%3D%228%22%20stroke-linecap%3D%22round%22%20filter%3D%22url%28%23softGlow%29%22/%3E%0A%3Cpath%20d%3D%22M0%2C64%20C150%2C18%20450%2C18%20600%2C64%20C750%2C110%201050%2C110%201200%2C64%20C1350%2C18%201650%2C18%201800%2C64%20C1950%2C110%202250%2C110%202400%2C64%22%20fill%3D%22none%22%20stroke%3D%22%23bcefff%22%20stroke-opacity%3D%220.45%22%20stroke-width%3D%224%22%20stroke-linecap%3D%22round%22/%3E%0A%3C/svg%3E");
+            animation: waveMove 22s linear infinite;
+        }
+        .wave2 {
+            bottom: -18px;
+            opacity: .82;
+            background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%202400%20150%22%20preserveAspectRatio%3D%22none%22%3E%0A%3Cdefs%3E%0A%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%0A%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23c9f1ff%22%20stop-opacity%3D%220.56%22/%3E%0A%3Cstop%20offset%3D%2255%25%22%20stop-color%3D%22%235fbde2%22%20stop-opacity%3D%220.30%22/%3E%0A%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23147ea8%22%20stop-opacity%3D%220.06%22/%3E%0A%3C/linearGradient%3E%0A%3Cfilter%20id%3D%22softGlow%22%20x%3D%22-10%25%22%20y%3D%22-30%25%22%20width%3D%22120%25%22%20height%3D%22160%25%22%3E%0A%3CfeGaussianBlur%20stdDeviation%3D%222.2%22%20result%3D%22blur%22/%3E%0A%3CfeMerge%3E%3CfeMergeNode%20in%3D%22blur%22/%3E%3CfeMergeNode%20in%3D%22SourceGraphic%22/%3E%3C/feMerge%3E%0A%3C/filter%3E%0A%3C/defs%3E%0A%3Cpath%20fill%3D%22url%28%23g%29%22%20d%3D%22M0%2C82%20C150%2C38%20450%2C38%20600%2C82%20C750%2C126%201050%2C126%201200%2C82%20C1350%2C38%201650%2C38%201800%2C82%20C1950%2C126%202250%2C126%202400%2C82%20L2400%2C150%20L0%2C150%20Z%22/%3E%0A%3Cpath%20d%3D%22M0%2C82%20C150%2C38%20450%2C38%20600%2C82%20C750%2C126%201050%2C126%201200%2C82%20C1350%2C38%201650%2C38%201800%2C82%20C1950%2C126%202250%2C126%202400%2C82%22%20fill%3D%22none%22%20stroke%3D%22%23f2fdff%22%20stroke-opacity%3D%220.42%22%20stroke-width%3D%225%22%20stroke-linecap%3D%22round%22%20filter%3D%22url%28%23softGlow%29%22/%3E%0A%3Cpath%20d%3D%22M0%2C82%20C150%2C38%20450%2C38%20600%2C82%20C750%2C126%201050%2C126%201200%2C82%20C1350%2C38%201650%2C38%201800%2C82%20C1950%2C126%202250%2C126%202400%2C82%22%20fill%3D%22none%22%20stroke%3D%22%238bdcf5%22%20stroke-opacity%3D%220.22%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22/%3E%0A%3C/svg%3E");
+            animation: waveMove 30s linear infinite reverse;
+        }
+        .wave3 {
+            bottom: -26px;
+            opacity: .72;
+            background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%202400%20150%22%20preserveAspectRatio%3D%22none%22%3E%0A%3Cdefs%3E%0A%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%0A%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%237fd2ee%22%20stop-opacity%3D%220.42%22/%3E%0A%3Cstop%20offset%3D%2255%25%22%20stop-color%3D%22%232f9bc9%22%20stop-opacity%3D%220.24%22/%3E%0A%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23075f86%22%20stop-opacity%3D%220.05%22/%3E%0A%3C/linearGradient%3E%0A%3Cfilter%20id%3D%22softGlow%22%20x%3D%22-10%25%22%20y%3D%22-30%25%22%20width%3D%22120%25%22%20height%3D%22160%25%22%3E%0A%3CfeGaussianBlur%20stdDeviation%3D%222.2%22%20result%3D%22blur%22/%3E%0A%3CfeMerge%3E%3CfeMergeNode%20in%3D%22blur%22/%3E%3CfeMergeNode%20in%3D%22SourceGraphic%22/%3E%3C/feMerge%3E%0A%3C/filter%3E%0A%3C/defs%3E%0A%3Cpath%20fill%3D%22url%28%23g%29%22%20d%3D%22M0%2C96%20C150%2C56%20450%2C56%20600%2C96%20C750%2C136%201050%2C136%201200%2C96%20C1350%2C56%201650%2C56%201800%2C96%20C1950%2C136%202250%2C136%202400%2C96%20L2400%2C150%20L0%2C150%20Z%22/%3E%0A%3Cpath%20d%3D%22M0%2C96%20C150%2C56%20450%2C56%20600%2C96%20C750%2C136%201050%2C136%201200%2C96%20C1350%2C56%201650%2C56%201800%2C96%20C1950%2C136%202250%2C136%202400%2C96%22%20fill%3D%22none%22%20stroke%3D%22%23e8fbff%22%20stroke-opacity%3D%220.26%22%20stroke-width%3D%224%22%20stroke-linecap%3D%22round%22%20filter%3D%22url%28%23softGlow%29%22/%3E%0A%3Cpath%20d%3D%22M0%2C96%20C150%2C56%20450%2C56%20600%2C96%20C750%2C136%201050%2C136%201200%2C96%20C1350%2C56%201650%2C56%201800%2C96%20C1950%2C136%202250%2C136%202400%2C96%22%20fill%3D%22none%22%20stroke%3D%22%236ed0ee%22%20stroke-opacity%3D%220.13%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22/%3E%0A%3C/svg%3E");
+            animation: waveMove 40s linear infinite;
+        }
+        @keyframes waveMove {
+            0% { background-position-x: 0; }
+            100% { background-position-x: 2400px; }
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.5rem 1.5rem 3rem;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            background: rgba(255, 248, 225, 0.55);
+            backdrop-filter: blur(8px);
+            border-radius: 60px;
+            padding: 0.5rem 2rem;
+            border: 1px solid rgba(255, 245, 200, 0.8);
+        }
+        .back-home {
+            text-decoration: none;
+            font-weight: 500;
+            color: #2a6b4a;
+            background: rgba(255, 250, 220, 0.7);
+            padding: 0.4rem 1.2rem;
+            border-radius: 40px;
+            transition: 0.2s;
+        }
+        .back-home:hover {
+            background: #fff1cc;
+            transform: translateY(-2px);
+        }
+        .title {
+            font-size: 1.6rem;
+            font-weight: 400;
+            color: #2b5a3b;
+        }
+
+        .gallery-card {
+            background: rgba(255, 250, 235, 0.5);
+            backdrop-filter: blur(12px);
+            border-radius: 48px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 245, 200, 0.8);
+            box-shadow: 0 20px 35px rgba(0,0,0,0.05);
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 400;
+            margin: 1.5rem 0 1rem 0;
+            color: #3a6b4a;
+            border-left: 5px solid #9ac2c9;
+            padding-left: 1rem;
+        }
+        .section-sub {
+            font-size: 0.9rem;
+            color: #6e8f6a;
+            margin-bottom: 1.5rem;
+            padding-left: 1rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 1.8rem;
+            margin-bottom: 2rem;
+        }
+        .grid-item {
+            background: rgba(245, 235, 200, 0.4);
+            border-radius: 28px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        .grid-item:hover {
+            transform: scale(1.02);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+        }
+        .grid-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+            aspect-ratio: auto;
+        }
+        .grid-caption {
+            padding: 0.8rem 1rem 1rem;
+            text-align: center;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #4a6741;
+            border-top: 1px solid rgba(255,245,200,0.8);
+        }
+        .grid-caption small {
+            display: block;
+            font-size: 0.7rem;
+            color: #6e8f6a;
+            font-weight: normal;
+            margin-top: 0.2rem;
+        }
+
+        /* 横向滚动区域（用于21:9展板） */
+        .scroll-horizontal {
+            overflow-x: auto;
+            display: flex;
+            gap: 1.5rem;
+            padding: 0.5rem 0.2rem 1rem;
+            scroll-snap-type: x mandatory;
+            margin-bottom: 2rem;
+        }
+        .scroll-item {
+            flex: 0 0 auto;
+            width: 90%;
+            max-width: 800px;
+            scroll-snap-align: start;
+            background: rgba(245, 235, 200, 0.4);
+            border-radius: 28px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .scroll-item:hover {
+            transform: scale(1.01);
+        }
+        .scroll-item img {
+            width: 100%;
+            display: block;
+        }
+        .scroll-caption {
+            padding: 0.8rem 1rem;
+            text-align: center;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #4a6741;
+            border-top: 1px solid rgba(255,245,200,0.8);
+        }
+        .scroll-caption small {
+            display: block;
+            font-size: 0.7rem;
+            color: #6e8f6a;
+        }
+
+        .full-row {
+            margin: 1rem 0 2rem;
+        }
+        .full-row .grid-item {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 0.7rem;
+            padding: 2rem 0 1rem;
+            color: #6e8f6a;
+        }
+
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+        .lightbox-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+        }
+        .lightbox-content img {
+            width: 100%;
+            height: auto;
+            max-height: 90vh;
+            border-radius: 20px;
+            display: block;
+        }
+        .lightbox .close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 2rem;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 1002;
+        }
+
+        @media (max-width: 700px) {
+            .container { padding: 1rem; }
+            .gallery-card { padding: 1rem; }
+            .grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; }
+            .scroll-item { width: 95%; }
+        }
+    </style>
+</head>
+<body>
+<div class="sky-sand"></div>
+<div class="stars" id="starsContainer"></div>
+<div class="wave-container" aria-hidden="true">
+    <div class="wave wave1"></div>
+    <div class="wave wave2"></div>
+    <div class="wave wave3"></div>
+</div>
+<audio id="homeWhiteNoise" preload="auto" loop>
+    <source src="audio/white-noise.mp3" type="audio/mpeg">
+</audio>
+
+
+<div class="container">
+    <div class="header">
+        <span class="title">✨ 星辰画廊</span>
+        <a href="zhuye.html" class="back-home">🌊 返回浅岸星滩</a>
+    </div>
+
+    <div class="gallery-card">
+        <!-- 角色拾光 -->
+        <div class="section-title">星辰画廊 · 角色拾光</div>
+        <div class="section-sub">六种情绪 · 六种姿态</div>
+        <div class="grid" id="roleGrid"></div>
+
+        <!-- 21:9 概念展板（每个角色一张，横向滚动） -->
+        <div class="section-title">21:9 · 概念展板</div>
+        <div class="section-sub">潮汐长卷 · 星滩叙事</div>
+        <div class="scroll-horizontal" id="bannerScroll"></div>
+
+        <!-- 潮汐风景 -->
+        <div class="section-title">潮汐风景 · 浅岸一隅</div>
+        <div class="section-sub">场景 × 插画 × 方卡设计</div>
+        <div class="grid" id="sceneGrid"></div>
+
+        <!-- 横版海报单独展示 -->
+        <div class="section-title">夏日出游 · 软软 & 莓莓</div>
+        <div class="full-row" id="posterRow"></div>
+    </div>
+    <footer>🌊 潮汐之间 · 星辰为伴 🌊</footer>
+</div>
+<div id="lightbox" class="lightbox">
+    <span class="close">&times;</span>
+    <div class="lightbox-content">
+        <img id="lightboxImg" src="">
+    </div>
+</div>
+
+<script>
+    // 星星
+    function generateStars() {
+        const starsContainer = document.getElementById('starsContainer');
+        if (!starsContainer) return;
+        const starCount = 100;
+        for (let i = 0; i < starCount; i++) {
+            const star = document.createElement('div');
+            star.classList.add('star');
+            const size = Math.random() * 3 + 1;
+            star.style.width = size + 'px';
+            star.style.height = size + 'px';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 60 + '%';
+            star.style.animationDuration = (Math.random() * 3 + 1.5) + 's';
+            star.style.animationDelay = (Math.random() * 5) + 's';
+            starsContainer.appendChild(star);
+        }
+    }
+    generateStars();
+
+    // 角色立绘
+    const roleImages = [
+        { src: "images/gallery/1_kala_watermarked.jpg", caption: "卡菈 · 椰子蟹", desc: "本真 · 成长" },
+        { src: "images/gallery/2_cituan_watermarked.jpg", caption: "刺团 · 短腕寄居蟹", desc: "警觉 · 防御" },
+        { src: "images/gallery/3_ruanruan_watermarked.jpg", caption: "软软 · 日本紫陆寄居蟹", desc: "温柔 · 共情" },
+        { src: "images/gallery/4_amo_watermarked.jpg", caption: "阿默 · 灰白寄居蟹", desc: "冷静 · 观察" },
+        { src: "images/gallery/5_meimei_watermarked.jpg", caption: "莓莓 · 草莓寄居蟹", desc: "好奇 · 童真" },
+        { src: "images/gallery/6_ayin_watermarked.jpg", caption: "阿隐 · 凹足寄居蟹", desc: "退缩 · 防御" }
+    ];
+
+    // 潮汐风景
+    const sceneImages = [
+        { src: "images/gallery/8_amo_display_watermarked.jpg", caption: "阿默 · 深海展板", desc: "比9:16稍短 · 竖屏展板" },
+        { src: "images/gallery/9_cp_cituan_ruanruan_watermarked.jpg", caption: "心事浅滩 · 刺团 & 软软", desc: "相互依偎 · 透露心事" },
+        { src: "images/gallery/10_shore_scene_watermarked.jpg", caption: "浅岸星滩 · 潮汐之境", desc: "1:1 岸边场景" },
+        { src: "images/gallery/11_pattern_card_watermarked.jpg", caption: "星滩底纹 · 方卡设计", desc: "1:1 底纹方卡" }
+    ];
+
+    const posterImage = { src: "images/gallery/7_summer_ruanruan_meimei_watermarked.jpg", caption: "夏日出游 · 软软 & 莓莓", desc: "横版海报 · 童年回忆" };
+
+    // 6个角色的21:9展板（按年龄顺序）
+    const bannerImages = [
+        { src: "images/gallery/banner_kala_watermarked.jpg", caption: "卡菈 · 21:9 概念展板", desc: "椰子蟹 · 本真成长" },
+        { src: "images/gallery/banner_cituan_watermarked.jpg", caption: "刺团 · 21:9 概念展板", desc: "短腕寄居蟹 · 警觉防御" },
+        { src: "images/gallery/banner_ruanruan_watermarked.jpg", caption: "软软 · 21:9 概念展板", desc: "日本紫陆寄居蟹 · 温柔共情" },
+        { src: "images/gallery/banner_amo_watermarked.jpg", caption: "阿默 · 21:9 概念展板", desc: "灰白寄居蟹 · 冷静观察" },
+        { src: "images/gallery/banner_meimei_watermarked.jpg", caption: "莓莓 · 21:9 概念展板", desc: "草莓寄居蟹 · 好奇童真" },
+        { src: "images/gallery/banner_ayin_watermarked.jpg", caption: "阿隐 · 21:9 概念展板", desc: "凹足寄居蟹 · 退缩防御" }
+    ];
+
+    function renderGrid(containerId, imagesArray) {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+        let html = '';
+        imagesArray.forEach(img => {
+            html += `
+                <div class="grid-item" onclick="openLightbox('${img.src}')">
+                    <img src="${img.src}" alt="${img.caption}" draggable="false" oncontextmenu="return false" ondragstart="return false">
+                    <div class="grid-caption">
+                        ${img.caption}<br><small>${img.desc}</small>
+                    </div>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+    }
+
+    function renderBannerScroll() {
+        const container = document.getElementById('bannerScroll');
+        if (!container) return;
+        let html = '';
+        bannerImages.forEach(img => {
+            html += `
+                <div class="scroll-item" onclick="openLightbox('${img.src}')">
+                    <img src="${img.src}" alt="${img.caption}" draggable="false" oncontextmenu="return false" ondragstart="return false">
+                    <div class="scroll-caption">
+                        ${img.caption}<br><small>${img.desc}</small>
+                    </div>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+    }
+
+    function renderPoster() {
+        const container = document.getElementById('posterRow');
+        if (!container) return;
+        container.innerHTML = `
+            <div class="grid-item" style="max-width:800px; margin:0 auto;" onclick="openLightbox('${posterImage.src}')">
+                <img src="${posterImage.src}" alt="${posterImage.caption}" draggable="false" oncontextmenu="return false" ondragstart="return false">
+                <div class="grid-caption">
+                    ${posterImage.caption}<br><small>${posterImage.desc}</small>
+                </div>
+            </div>
+        `;
+    }
+
+    renderGrid('roleGrid', roleImages);
+    renderGrid('sceneGrid', sceneImages);
+    renderBannerScroll();
+    renderPoster();
+
+    // 灯箱（纯净展示，纯净放大展示）
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightboxImg');
+    window.openLightbox = (src) => {
+        lightboxImg.src = src;
+        lightbox.style.display = 'flex';
+    };
+    document.querySelector('.lightbox .close').addEventListener('click', () => {
+        lightbox.style.display = 'none';
+    });
+    lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) lightbox.style.display = 'none';
+    });
+
+    // 防盗：禁用右键及部分快捷键（保留原保护意图，但图片版权信息由图片本身提供）
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+        return false;
+    });
+    document.addEventListener('keydown', function(e) {
+        if (e.ctrlKey && (e.key === 's' || e.key === 'S')) {
+            e.preventDefault();
+            return false;
+        }
+        if (e.key === 'PrintScreen') {
+            e.preventDefault();
+            alert('截图功能已被禁用，请尊重创作者版权。');
+            return false;
+        }
+    });
+</script>
+
+<script>
+    // 首页白噪音：自动尝试播放；若浏览器拦截，会在第一次点击/滚动/按键时启动
+    (function initHomeWhiteNoise() {
+        const whiteNoise = document.getElementById('homeWhiteNoise');
+        if (!whiteNoise) return;
+
+        whiteNoise.volume = 0.24;
+        whiteNoise.loop = true;
+
+        function playWhiteNoise() {
+            if (!whiteNoise || !whiteNoise.paused) return;
+            whiteNoise.play().catch(() => {
+                // 浏览器可能拦截自动播放，等待用户第一次交互后再启动
+            });
+        }
+
+        window.addEventListener('load', playWhiteNoise);
+        ['pointerdown', 'click', 'wheel', 'keydown', 'touchstart'].forEach(eventName => {
+            document.addEventListener(eventName, playWhiteNoise, { once: true, passive: true });
+        });
+    })();
+</script>
+</body>
+</html>

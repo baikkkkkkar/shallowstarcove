@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>第一夜，风听见了海｜软软 × 白昼先生</title>
+<style>
+:root{
+  --ink:#213844;--text:#506962;--muted:#6b7f77;--glass:rgba(255,255,248,.74);
+  --white:rgba(255,255,255,.62);--gold:#d7bd70;--blue:#bfe9f2;--grass:#b8cf94;
+  --shadow:0 30px 90px rgba(76,105,96,.24);--soft:0 18px 50px rgba(83,112,103,.17);
+  --r-xl:34px;--r-lg:26px;--r-md:18px;
+}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{
+  margin:0;min-height:100vh;overflow-x:hidden;color:var(--ink);
+  font-family:"Noto Serif SC","Source Han Serif SC","Microsoft YaHei","PingFang SC",system-ui,sans-serif;
+  background:
+    linear-gradient(180deg,rgba(17,28,62,.28) 0%,rgba(74,67,121,.16) 32%,rgba(255,246,220,.14) 58%,rgba(79,112,88,.18) 100%),
+    url("assets/story-ruanruan-wynn/background/moon-sea-pasture-bg_watermarked.png") center top / cover fixed no-repeat;
+}
+body:before{
+  content:"";position:fixed;inset:0;z-index:-4;pointer-events:none;opacity:.86;
+  background:
+    radial-gradient(circle at 50% 12%,rgba(255,255,255,.20),transparent 28%),
+    linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,248,.22) 48%,rgba(255,255,255,.18));
+}
+body:after{
+  content:"";position:fixed;inset:0;z-index:-3;pointer-events:none;
+  background:
+    linear-gradient(90deg,rgba(33,56,68,.16),transparent 18%,transparent 82%,rgba(33,56,68,.12)),
+    linear-gradient(180deg,transparent 0%,rgba(255,255,255,.10) 42%,rgba(255,255,255,.18) 100%);
+}
+a{text-decoration:none;color:inherit}.progress{position:fixed;z-index:80;left:0;top:0;height:4px;width:0;background:linear-gradient(90deg,#d8bf73,#a7dff2,#fff4bc);box-shadow:0 0 18px rgba(255,244,180,.8)}
+.noise{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.16;background-image:radial-gradient(circle at 2px 2px,rgba(255,255,255,.9) 1px,transparent 1.6px);background-size:42px 42px;mask-image:linear-gradient(180deg,transparent,#000 14%,#000 86%,transparent)}
+.nav{
+  position:fixed;z-index:70;top:22px;left:50%;transform:translateX(-50%);
+  width:min(1120px,calc(100% - 42px));display:flex;align-items:center;justify-content:space-between;
+  padding:12px 16px 12px 20px;border-radius:999px;border:1px solid rgba(255,255,255,.66);
+  background:rgba(255,255,250,.52);backdrop-filter:blur(22px);box-shadow:0 14px 40px rgba(88,117,109,.13)
+}
+.brand{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:900;letter-spacing:.13em;color:#60746b}
+.brand-mark{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#fff8d8,#c6edf6);border:1px solid rgba(255,255,255,.82)}
+.nav-links{display:flex;gap:8px;font-size:13px;font-weight:800;color:#587068}.nav-links a{padding:9px 14px;border-radius:999px;transition:.25s}.nav-links a:hover{background:rgba(255,255,255,.72);transform:translateY(-1px)}
+.hero{position:relative;z-index:4;width:min(1180px,calc(100% - 48px));min-height:100vh;margin:auto;padding:118px 0 70px;display:grid;place-items:center}
+.hero-card{
+  width:100%;min-height:640px;position:relative;overflow:hidden;border-radius:var(--r-xl);border:1px solid rgba(255,255,255,.68);
+  background:
+    linear-gradient(135deg,rgba(255,255,250,.87),rgba(255,255,255,.54)),
+    radial-gradient(circle at 16% 28%,rgba(195,235,245,.56),transparent 30%),
+    radial-gradient(circle at 84% 20%,rgba(255,241,176,.60),transparent 26%),
+    radial-gradient(circle at 72% 85%,rgba(177,206,142,.45),transparent 34%);
+  box-shadow:var(--shadow);backdrop-filter:blur(28px)
+}
+.hero-card:before{content:"";position:absolute;inset:18px;border-radius:calc(var(--r-xl) - 14px);border:1px solid rgba(255,255,255,.54);pointer-events:none}
+.sun{position:absolute;right:90px;top:74px;width:126px;height:126px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,250,.98) 0 25%,rgba(255,235,151,.62) 26% 50%,rgba(255,235,151,.06) 52% 70%,transparent 72%);box-shadow:0 0 72px rgba(255,235,156,.62);animation:breathe 5.6s ease-in-out infinite}
+.sun:before,.sun:after{content:"";position:absolute;inset:-18px;border:1px solid rgba(218,190,108,.32);border-radius:50%}.sun:after{inset:-36px;opacity:.48}@keyframes breathe{50%{transform:scale(1.045);opacity:1}}
+.hero-inner{position:relative;z-index:3;min-height:640px;padding:74px 70px 64px;display:grid;grid-template-columns:1.03fr .97fr;gap:30px;align-items:center}
+.eyebrow{display:inline-flex;gap:9px;align-items:center;margin-bottom:18px;padding:9px 14px;border-radius:999px;border:1px solid rgba(216,191,115,.42);background:rgba(255,250,223,.54);color:#75836d;font-size:12px;font-weight:950;letter-spacing:.18em;text-transform:uppercase}
+h1{margin:0;font-size:clamp(48px,7vw,92px);line-height:1.02;letter-spacing:-.07em;font-weight:950}h1 span{display:block;background:linear-gradient(90deg,#263944,#668a91 48%,#b9a35f 84%);-webkit-background-clip:text;color:transparent}
+.subtitle{margin:24px 0 0;max-width:570px;color:#5c716b;font-size:18px;line-height:2;font-weight:650}
+.actions{display:flex;flex-wrap:wrap;gap:14px;margin-top:34px}.btn{border:0;cursor:pointer;border-radius:999px;padding:15px 24px;font-size:15px;font-weight:900;letter-spacing:.03em;transition:.25s;box-shadow:0 12px 32px rgba(106,138,130,.15)}
+.btn:hover{transform:translateY(-3px);box-shadow:0 18px 44px rgba(96,129,122,.22)}.primary{color:#32464d;background:linear-gradient(135deg,#fff7cf,#d6eef4);border:1px solid rgba(255,255,255,.88)}.ghost{color:#536c65;background:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.72)}
+.stage{position:relative;min-height:440px;border-radius:30px;border:1px solid rgba(255,255,255,.58);background:linear-gradient(120deg,rgba(196,232,241,.34),rgba(255,255,255,.45),rgba(255,239,178,.34));overflow:hidden;box-shadow:inset 0 0 30px rgba(255,255,255,.42),var(--soft)}
+.stage:before{content:"";position:absolute;left:-10%;right:-10%;bottom:-4%;height:38%;background:linear-gradient(180deg,rgba(255,255,255,0),rgba(146,183,121,.42));clip-path:polygon(0 32%,13% 20%,27% 31%,41% 16%,57% 30%,72% 18%,86% 32%,100% 22%,100% 100%,0 100%)}
+.room{position:absolute;z-index:2;top:80px;width:46%;min-height:230px;border-radius:26px;padding:24px;border:1px solid rgba(255,255,255,.65);background:rgba(255,255,255,.43);backdrop-filter:blur(12px)}.room.left{left:24px}.room.right{right:24px}.label{display:flex;justify-content:space-between;margin-bottom:18px;color:#6a7d75;font-size:12px;font-weight:950;letter-spacing:.16em}.instrument{font-size:72px;line-height:1;filter:drop-shadow(0 10px 18px rgba(92,128,123,.18));opacity:.92}.room p{margin:16px 0 0;color:#61766f;font-size:14px;line-height:1.9;font-weight:650}
+.sound{position:absolute;z-index:4;left:14%;right:14%;top:50%;height:74px;transform:translateY(-50%);pointer-events:none}.sound svg{width:100%;height:100%;overflow:visible}.path-gold{stroke:rgba(213,184,94,.88)}.path-blue{stroke:rgba(116,195,217,.82)}.path-gold,.path-blue{stroke-width:3;fill:none;stroke-linecap:round;stroke-dasharray:12 13;filter:drop-shadow(0 0 10px rgba(255,230,150,.72));animation:dash 4.8s linear infinite}.path-blue{stroke-dasharray:9 14;animation:dash 5.8s linear infinite reverse;filter:drop-shadow(0 0 10px rgba(159,225,240,.72))}@keyframes dash{to{stroke-dashoffset:-200}}
+.scroll{position:absolute;left:50%;bottom:26px;transform:translateX(-50%);display:grid;place-items:center;gap:8px;color:rgba(82,105,100,.65);font-size:12px;font-weight:900;letter-spacing:.14em}.mouse{width:24px;height:38px;border:2px solid rgba(93,115,110,.34);border-radius:999px;position:relative}.mouse:before{content:"";position:absolute;top:8px;left:50%;width:4px;height:8px;border-radius:999px;background:rgba(93,115,110,.36);transform:translateX(-50%);animation:wheel 1.5s infinite}@keyframes wheel{to{transform:translate(-50%,9px);opacity:0}}
+.main{position:relative;z-index:5;width:min(1180px,calc(100% - 48px));margin:auto;padding:0 0 120px}.section{margin:34px 0;border-radius:var(--r-xl);border:1px solid rgba(255,255,255,.62);background:linear-gradient(135deg,rgba(255,255,250,.74),rgba(255,255,255,.50));box-shadow:var(--soft);backdrop-filter:blur(24px);overflow:hidden}.inner{padding:clamp(30px,5vw,58px);display:grid;grid-template-columns:260px 1fr;gap:38px;align-items:start}.mark{position:sticky;top:110px}.num{display:inline-flex;padding:9px 13px;border-radius:999px;background:rgba(255,249,222,.68);border:1px solid rgba(218,190,108,.34);color:#748273;font-size:12px;font-weight:950;letter-spacing:.16em;text-transform:uppercase}.chapter-title{margin:20px 0 14px;font-size:clamp(30px,4vw,48px);line-height:1.08;letter-spacing:-.06em;color:#263b45;font-weight:950}.chapter-sub{color:#6b7c76;line-height:1.8;font-weight:650}.card{position:relative;padding:30px;border-radius:28px;border:1px solid rgba(255,255,255,.66);background:rgba(255,255,255,.46);box-shadow:inset 0 0 24px rgba(255,255,255,.34);overflow:hidden}.card:before{content:"";position:absolute;right:22px;top:18px;width:76px;height:76px;border-radius:50%;background:radial-gradient(circle,rgba(255,242,180,.54),transparent 68%)}.card p{position:relative;margin:0 0 18px;color:#4f6660;font-size:17px;line-height:2.15;font-weight:650}.quote{margin:26px 0;padding:26px 28px;border-radius:24px;border:1px solid rgba(218,190,108,.34);background:linear-gradient(135deg,rgba(255,251,231,.78),rgba(226,245,250,.45));color:#324b55;font-size:clamp(22px,3vw,36px);line-height:1.5;letter-spacing:-.04em;font-weight:950}.duet{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:22px}.mini{min-height:170px;padding:22px;border-radius:24px;border:1px solid rgba(255,255,255,.64);background:rgba(255,255,255,.42)}.mini h3{margin:0 0 12px;color:#334a53;font-size:18px}.mini p{margin:0;font-size:15px;line-height:1.9;color:#637a73}.visual{position:relative;height:320px;margin-top:22px;border-radius:28px;overflow:hidden;border:1px solid rgba(255,255,255,.66);background:linear-gradient(120deg,rgba(201,234,242,.46),rgba(255,255,255,.44),rgba(255,239,181,.44))}.visual svg{position:absolute;left:50%;top:50%;width:88%;height:120px;transform:translate(-50%,-50%)}.dot{position:absolute;width:13px;height:13px;border-radius:50%;background:#fff7c9;box-shadow:0 0 22px rgba(255,235,148,.85);animation:travel 5.5s ease-in-out infinite}.dot.blue{background:#d5f4fb;box-shadow:0 0 22px rgba(144,218,238,.85);animation-direction:reverse;animation-duration:6.2s}@keyframes travel{0%{left:8%;top:58%;opacity:0}16%{opacity:1}50%{left:50%;top:42%}84%{opacity:1}100%{left:90%;top:56%;opacity:0}}
+.ending{text-align:center;padding:clamp(42px,7vw,82px);border-radius:var(--r-xl);border:1px solid rgba(255,255,255,.64);background:linear-gradient(135deg,rgba(255,255,248,.84),rgba(255,255,255,.54)),radial-gradient(circle at 50% 12%,rgba(255,239,170,.45),transparent 26%),radial-gradient(circle at 42% 82%,rgba(171,225,239,.42),transparent 30%);box-shadow:var(--shadow);backdrop-filter:blur(24px)}.ending .small{color:#718078;font-size:12px;font-weight:950;letter-spacing:.2em;text-transform:uppercase}.ending h2{margin:20px 0 22px;color:#263b45;font-size:clamp(40px,6vw,78px);line-height:1.08;letter-spacing:-.07em}.ending p{width:min(760px,100%);margin:0 auto;color:#60746e;font-size:18px;line-height:2;font-weight:650}.ending-actions{display:flex;justify-content:center;flex-wrap:wrap;gap:14px;margin-top:34px}
+.fixed{position:fixed;right:24px;bottom:24px;z-index:75;display:grid;gap:10px}.float{width:46px;height:46px;border-radius:999px;border:1px solid rgba(255,255,255,.68);background:rgba(255,255,250,.58);backdrop-filter:blur(18px);color:#5c746c;font-weight:950;cursor:pointer;box-shadow:0 12px 32px rgba(82,110,103,.16);transition:.25s}.float:hover{transform:translateY(-3px);background:rgba(255,255,255,.8)}
+.note,.shell{position:fixed;z-index:1;pointer-events:none}.note{opacity:.36;color:rgba(255,255,255,.94);text-shadow:0 0 16px rgba(153,205,216,.5);animation:noteFloat linear infinite;font-family:Georgia,serif}.shell{width:6px;height:6px;border-radius:50%;background:rgba(255,248,210,.62);box-shadow:0 0 14px rgba(255,244,184,.82);animation:shellFloat linear infinite}@keyframes noteFloat{0%{transform:translate3d(0,110vh,0) rotate(-8deg);opacity:0}10%{opacity:.32}100%{transform:translate3d(var(--drift),-18vh,0) rotate(12deg);opacity:0}}@keyframes shellFloat{from{transform:translateY(105vh) translateX(0) scale(.6);opacity:0}12%{opacity:.65}to{transform:translateY(-20vh) translateX(var(--x)) scale(1.1);opacity:0}}
+.reveal{opacity:0;transform:translateY(24px);transition:.8s ease}.reveal.show{opacity:1;transform:translateY(0)}
+
+/* ===== Story illustration system ===== */
+.story-illustration{
+  position:relative;
+  margin:0 0 28px;
+  border-radius:30px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.68);
+  box-shadow:0 24px 70px rgba(50,72,86,.22);
+  background:rgba(255,255,255,.42);
+}
+.story-illustration img{
+  display:block;
+  width:100%;
+  height:auto;
+  object-fit:cover;
+}
+.story-illustration.hero-ill{
+  margin:-4px 0 34px;
+}
+.story-illustration.hero-ill img{
+  max-height:620px;
+}
+.story-illustration.wide img{
+  aspect-ratio:16/9;
+}
+.story-illustration::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.04),rgba(24,39,54,.18)),
+    radial-gradient(circle at 18% 12%,rgba(255,255,255,.28),transparent 28%);
+  mix-blend-mode:screen;
+  opacity:.66;
+}
+.ill-caption{
+  position:absolute;
+  left:20px;
+  bottom:18px;
+  z-index:2;
+  padding:10px 15px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.58);
+  background:rgba(255,255,250,.42);
+  backdrop-filter:blur(16px);
+  color:rgba(255,255,255,.92);
+  text-shadow:0 2px 10px rgba(20,35,48,.45);
+  font-size:13px;
+  font-weight:900;
+  letter-spacing:.08em;
+}
+.story-gallery{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:18px;
+  margin:0 0 28px;
+}
+.story-gallery .story-illustration{
+  margin:0;
+}
+.story-gallery .story-illustration img{
+  height:100%;
+  aspect-ratio:4/3;
+}
+.cover-visual{
+  position:relative;
+  margin:0 0 36px;
+  border-radius:34px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.68);
+  box-shadow:var(--shadow);
+}
+.cover-visual img{
+  display:block;
+  width:100%;
+  height:auto;
+  object-fit:cover;
+}
+.cover-visual::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:
+    linear-gradient(90deg,rgba(24,39,54,.08),transparent 28%,rgba(255,245,198,.10) 52%,transparent 72%,rgba(24,39,54,.14)),
+    linear-gradient(180deg,transparent 62%,rgba(14,30,45,.24));
+}
+
+
+.duet-bg-ribbon{
+  position:fixed;
+  inset:0;
+  z-index:-2;
+  pointer-events:none;
+  opacity:.58;
+  background:
+    radial-gradient(ellipse at 40% 48%,rgba(186,238,255,.25),transparent 28%),
+    linear-gradient(105deg,transparent 0 34%,rgba(179,236,255,.18) 38%,rgba(255,237,166,.20) 43%,transparent 52% 100%);
+  mask-image:linear-gradient(180deg,transparent 0%,#000 18%,#000 86%,transparent 100%);
+}
+.duet-bg-ribbon:before,
+.duet-bg-ribbon:after{
+  content:"♪  ♫   ✦    𝄞    ♩   ♪";
+  position:absolute;
+  left:-8%;
+  right:-8%;
+  top:42%;
+  color:rgba(255,255,255,.34);
+  font-family:Georgia,serif;
+  font-size:36px;
+  letter-spacing:34px;
+  white-space:nowrap;
+  transform:rotate(-9deg);
+  text-shadow:0 0 18px rgba(184,236,255,.62);
+}
+.duet-bg-ribbon:after{
+  top:51%;
+  color:rgba(255,230,160,.30);
+  transform:rotate(7deg);
+}
+.duet-kicker{
+  display:inline-flex;
+  align-items:center;
+  gap:9px;
+  margin-top:18px;
+  padding:10px 15px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.52);
+  background:rgba(255,255,250,.36);
+  backdrop-filter:blur(14px);
+  color:#5f746e;
+  font-size:13px;
+  font-weight:950;
+  letter-spacing:.12em;
+}
+.single-response-ill{
+  margin:0 0 28px;
+}
+.single-response-ill img{
+  width:100%;
+  max-height:500px;
+  aspect-ratio:16/7.6;
+  object-fit:cover;
+  object-position:center;
+}
+
+@media(max-width:920px){.nav{top:14px;width:calc(100% - 24px)}.nav-links{display:none}.hero{width:min(100% - 24px,1180px);padding-top:88px}.hero-card{min-height:auto}.hero-inner{grid-template-columns:1fr;min-height:auto;padding:46px 26px 70px}.stage{min-height:520px}.room{width:calc(100% - 48px);min-height:auto}.room.left{top:28px}.room.right{top:270px}.sound{top:50%;left:8%;right:8%;transform:rotate(90deg)}.main{width:min(100% - 24px,1180px)}.inner{grid-template-columns:1fr}.mark{position:relative;top:auto}.duet{grid-template-columns:1fr}.story-gallery{grid-template-columns:1fr}.story-illustration.wide img{aspect-ratio:auto}.single-response-ill img{aspect-ratio:auto;max-height:none}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;scroll-behavior:auto!important}.reveal{opacity:1;transform:none}}
+.theme-captions{margin-top:22px;padding:18px 16px;border:1px solid rgba(173,196,211,.38);border-radius:18px;background:linear-gradient(145deg,rgba(12,24,42,.88),rgba(33,52,72,.78));color:#f4f1e9;overflow:hidden}.theme-captions .caption-label{font-size:11px;letter-spacing:.16em;color:#b9d2de;text-transform:uppercase;margin-bottom:12px}.caption-window{height:252px;overflow:hidden;mask-image:linear-gradient(transparent,#000 18%,#000 82%,transparent);-webkit-mask-image:linear-gradient(transparent,#000 18%,#000 82%,transparent)}.caption-list{display:flex;flex-direction:column;gap:10px;transition:transform .7s ease}.caption-line{min-height:62px;padding:8px 10px;border-left:2px solid transparent;opacity:.38;transform:scale(.98);transition:.45s}.caption-line.active{opacity:1;transform:scale(1);border-color:#d8c69c;background:rgba(255,255,255,.06);border-radius:0 10px 10px 0}.caption-line .zh{font-size:16px;line-height:1.6}.caption-line .ja{margin-top:3px;font-size:14px;line-height:1.5;color:#bfd0d5;letter-spacing:.04em}.caption-note{font-size:11px;color:#b2c0c6;margin-top:10px}@media(prefers-reduced-motion:reduce){.caption-list,.caption-line{transition:none}}
+.caption-transport{display:grid;grid-template-columns:42px minmax(0,1fr) 42px;align-items:center;gap:10px;margin:8px 0 14px;color:#d6e1e3;font-variant-numeric:tabular-nums;font-size:11px}.caption-transport input{width:100%;height:24px;margin:0;accent-color:#d8c69c;cursor:pointer;touch-action:none}.caption-transport input:disabled{cursor:wait;opacity:.45}.caption-window{position:relative}.caption-line{height:72px;min-height:72px;box-sizing:border-box}
+/* Moonlit glass theme-song player */
+.theme-captions{position:relative;padding:22px 22px 18px;border:1px solid rgba(255,255,255,.82);border-radius:26px;background:linear-gradient(135deg,rgba(255,255,250,.84),rgba(220,241,247,.72) 58%,rgba(255,244,205,.68));box-shadow:0 20px 52px rgba(63,91,105,.16),inset 0 1px 0 rgba(255,255,255,.84);backdrop-filter:blur(22px);color:#334b55}
+.theme-captions:before{content:"";position:absolute;inset:7px;border:1px solid rgba(255,255,255,.46);border-radius:20px;pointer-events:none}
+.theme-captions .caption-label{position:relative;color:#73877e;letter-spacing:.18em;font-weight:900}
+.caption-window{height:252px;padding:8px 10px;border:1px solid rgba(255,255,255,.78);border-radius:19px;background:linear-gradient(180deg,rgba(246,252,252,.62),rgba(255,255,255,.34));box-shadow:inset 0 2px 12px rgba(90,130,144,.07);mask-image:linear-gradient(transparent,#000 12%,#000 88%,transparent);-webkit-mask-image:linear-gradient(transparent,#000 12%,#000 88%,transparent)}
+.caption-list{gap:10px;transition:transform .72s cubic-bezier(.22,.75,.25,1)}
+.caption-line{height:72px;min-height:72px;padding:8px 14px;border-left:2px solid rgba(123,170,181,.18);border-radius:0 14px 14px 0;opacity:.52;transform:scale(.985);transition:opacity .35s,transform .35s,background .35s,border-color .35s}
+.caption-line.active{opacity:1;transform:scale(1);border-color:#cfb66f;background:linear-gradient(100deg,rgba(255,248,218,.78),rgba(222,243,247,.54));box-shadow:0 8px 22px rgba(92,125,135,.10)}
+.caption-line .zh{color:#354d56;font-size:17px;line-height:1.5;font-weight:750}
+.caption-line .ja{color:#6e8585;font-size:14px;line-height:1.45;letter-spacing:.04em}
+.caption-transport{position:relative;grid-template-columns:46px minmax(0,1fr) 46px;margin:12px 0 10px;color:#6c8078;font-size:12px;font-weight:800}
+.caption-transport input{accent-color:#b69d59}
+.caption-transport input::-webkit-slider-runnable-track{height:5px;border-radius:99px;background:linear-gradient(90deg,#f3c9df 0%,#d9c9f2 52%,#bfe2f3 100%)}
+.caption-transport input::-webkit-slider-thumb{margin-top:-5px;width:15px;height:15px;border:2px solid rgba(255,255,255,.95);border-radius:50%;background:#b69d59;box-shadow:0 2px 8px rgba(72,101,108,.25);-webkit-appearance:none}
+.caption-transport input::-moz-range-track{height:5px;border-radius:99px;background:linear-gradient(90deg,#f3c9df 0%,#d9c9f2 52%,#bfe2f3 100%)}
+.caption-transport input::-moz-range-thumb{width:12px;height:12px;border:2px solid white;border-radius:50%;background:#b69d59;box-shadow:0 2px 8px rgba(72,101,108,.25)}
+.caption-note{position:relative;color:#74877e;font-size:12px;line-height:1.6}
+@media(max-width:600px){.theme-captions{padding:18px 14px 14px;border-radius:22px}.caption-window{height:252px}.caption-line .zh{font-size:15px}.caption-line .ja{font-size:12px}}
+.caption-transport input{height:48px;overflow:visible}
+.caption-transport input::-webkit-slider-thumb{appearance:none;-webkit-appearance:none;width:48px;height:48px;margin-top:-21px;border:0;border-radius:0;background:transparent url("assets/story-ruanruan-wynn/q版软软ui-thumb.png") center/contain no-repeat;box-shadow:none;cursor:grab}
+.caption-transport input:active::-webkit-slider-thumb{cursor:grabbing;transform:scale(1.08)}
+.caption-transport input::-moz-range-thumb{width:48px;height:48px;border:0;border-radius:0;background:transparent url("assets/story-ruanruan-wynn/q版软软ui-thumb.png") center/contain no-repeat;box-shadow:none;cursor:grab}
+.caption-transport input:active::-moz-range-thumb{transform:scale(1.08)}
+.caption-transport input::-moz-range-track{height:5px;border-radius:99px;background:linear-gradient(90deg,#f3c9df 0%,#d9c9f2 52%,#bfe2f3 100%)}
+/* Use the supplied character art as a compact, real DOM slider handle. */
+.caption-transport{grid-template-columns:46px minmax(0,1fr) 46px}
+.seek-wrap{position:relative;height:34px;display:flex;align-items:center;min-width:0}
+.seek-wrap input{position:relative;z-index:1;width:100%;height:34px!important;margin:0;padding:0;background:transparent;appearance:none;-webkit-appearance:none;outline:none}
+.seek-wrap input::-webkit-slider-runnable-track{height:5px;border-radius:99px;background:linear-gradient(90deg,#f3c9df 0%,#d9c9f2 52%,#bfe2f3 100%)}
+.seek-wrap input::-moz-range-track{height:5px;border-radius:99px;background:linear-gradient(90deg,#f3c9df 0%,#d9c9f2 52%,#bfe2f3 100%)}
+.seek-wrap input::-webkit-slider-thumb{width:50px;height:50px;margin-top:-22px;border:0;border-radius:0;background:transparent;box-shadow:none;appearance:none;-webkit-appearance:none;cursor:grab}
+.seek-wrap input::-moz-range-thumb{width:50px;height:50px;border:0;border-radius:0;background:transparent;box-shadow:none;cursor:grab}
+.seek-ruanruan{position:absolute;z-index:2;top:50%;left:0;width:50px;height:38px;object-fit:contain;transform:translate(-50%,-50%);pointer-events:none;filter:drop-shadow(0 2px 2px rgba(72,101,108,.16))}
+@media(max-width:600px){.seek-ruanruan{width:42px;height:32px}.seek-wrap input::-webkit-slider-thumb{width:42px;height:42px;margin-top:-18px}.seek-wrap input::-moz-range-thumb{width:42px;height:42px}}
+/* Fixed-size character handle: playback moves it, never scales it. */
+.seek-ruanruan{width:60px!important;height:45px!important;min-width:60px;max-width:60px;min-height:45px;max-height:45px;flex:none;transform:translate(-50%,-50%) scale(1)!important;transition:none!important;animation:none!important;object-fit:contain}
+.seek-wrap input:active::-webkit-slider-thumb,.seek-wrap input:active::-moz-range-thumb{transform:none!important}
+@media(max-width:600px){.seek-ruanruan{width:52px!important;height:39px!important;min-width:52px;max-width:52px;min-height:39px;max-height:39px}}
+/* Unified lavender and sky-blue interface palette */
+:root{--ink:#34445b;--text:#53677a;--muted:#74859c;--glass:rgba(248,249,255,.78);--white:rgba(255,255,255,.72);--gold:#c5b8ed;--blue:#bfe6f5;--grass:#cbd5f3;--shadow:0 30px 90px rgba(82,105,151,.20);--soft:0 18px 50px rgba(104,130,174,.15)}
+.progress{background:linear-gradient(90deg,#e4cffa,#cbbff1,#b9e4f4);box-shadow:0 0 18px rgba(202,200,248,.72)}
+.nav{border-color:rgba(255,255,255,.82);background:rgba(244,248,255,.68);box-shadow:0 14px 40px rgba(102,126,167,.16)}
+.brand,.nav-links{color:#687b9d}.brand-mark{background:linear-gradient(135deg,#eee3ff,#c9edfa);border-color:rgba(255,255,255,.9)}
+.nav-links a:hover{background:rgba(221,235,255,.8)}
+.hero-card{background:linear-gradient(135deg,rgba(249,247,255,.88),rgba(236,248,255,.66)),radial-gradient(circle at 16% 28%,rgba(198,218,255,.5),transparent 30%),radial-gradient(circle at 84% 20%,rgba(222,207,249,.52),transparent 26%),radial-gradient(circle at 72% 85%,rgba(184,224,244,.42),transparent 34%)}
+.eyebrow{border-color:rgba(175,167,226,.5);background:rgba(238,235,255,.64);color:#737da0}
+h1 span{background:linear-gradient(90deg,#384b69,#809bca 48%,#a594d3 84%);-webkit-background-clip:text;color:transparent}
+.primary{color:#405573;background:linear-gradient(135deg,#eee5ff,#d2effa);border-color:rgba(255,255,255,.95)}.ghost{color:#647797;background:rgba(246,249,255,.72);border-color:rgba(255,255,255,.88)}
+.btn{box-shadow:0 12px 32px rgba(104,126,172,.15)}.btn:hover{box-shadow:0 18px 44px rgba(104,126,172,.22)}
+.stage{border-color:rgba(255,255,255,.8);background:linear-gradient(120deg,rgba(197,224,248,.48),rgba(249,249,255,.68),rgba(224,214,248,.44));box-shadow:inset 0 0 30px rgba(255,255,255,.58),var(--soft)}
+.stage:before{background:linear-gradient(180deg,rgba(255,255,255,0),rgba(179,198,234,.48))}
+.room{border-color:rgba(255,255,255,.82);background:rgba(245,249,255,.62)}.label,.room p{color:#72839b}.instrument{filter:drop-shadow(0 10px 18px rgba(108,132,176,.22))}
+.section{border-color:rgba(255,255,255,.82);background:linear-gradient(135deg,rgba(249,249,255,.84),rgba(232,246,253,.72));box-shadow:var(--soft)}
+.num{background:rgba(232,230,252,.78);border-color:rgba(181,176,226,.5);color:#7883a0}.chapter-title{color:#384c67}.chapter-sub{color:#72839b}
+.card{border-color:rgba(255,255,255,.84);background:rgba(247,250,255,.68);box-shadow:inset 0 0 24px rgba(255,255,255,.48)}.card:before{background:radial-gradient(circle,rgba(208,202,248,.46),transparent 68%)}.card p{color:#596d82}
+.quote{border-color:rgba(174,178,228,.52);background:linear-gradient(135deg,rgba(239,232,255,.8),rgba(219,241,250,.7));color:#455975}
+.mini{border-color:rgba(255,255,255,.82);background:rgba(242,248,255,.68)}.mini h3{color:#455975}.mini p{color:#687d95}
+.visual{border-color:rgba(255,255,255,.84);background:linear-gradient(120deg,rgba(201,224,250,.58),rgba(248,250,255,.66),rgba(224,214,248,.58))}.dot{background:#e9ddff;box-shadow:0 0 22px rgba(199,185,244,.84)}.dot.blue{background:#d2f0fa;box-shadow:0 0 22px rgba(157,216,241,.85)}
+.ending{border-color:rgba(255,255,255,.84);background:linear-gradient(135deg,rgba(249,249,255,.9),rgba(232,246,253,.72)),radial-gradient(circle at 50% 12%,rgba(219,209,250,.5),transparent 26%),radial-gradient(circle at 42% 82%,rgba(177,222,245,.45),transparent 30%)}.ending .small,.ending p{color:#6d8198}.ending h2{color:#3b4d69}
+.float{border-color:rgba(255,255,255,.82);background:rgba(244,248,255,.75);color:#687da0;box-shadow:0 12px 32px rgba(95,123,169,.18)}.float:hover{background:rgba(255,255,255,.9)}
+.duet-bg-ribbon:before{color:rgba(214,221,255,.42);text-shadow:0 0 18px rgba(184,216,255,.72)}.duet-bg-ribbon:after{color:rgba(202,187,244,.38)}
+.caption-transport input::-webkit-slider-runnable-track,.seek-wrap input::-webkit-slider-runnable-track,.caption-transport input::-moz-range-track,.seek-wrap input::-moz-range-track{background:linear-gradient(90deg,#e5d5fb 0%,#d2c9f4 52%,#c2e8f5 100%)}
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div><div class="noise"></div><div class="duet-bg-ribbon"></div>
+<audio id="pageBgm" loop preload="auto"><source src="assets/story-ruanruan-wynn/bgm/Moonlit Sea Glass.mp3" type="audio/mpeg"></audio>
+<audio id="themeSong" preload="auto"><source src="assets/story-ruanruan-wynn/theme/月海の約束.mp3" type="audio/mpeg"></audio>
+<nav class="nav">
+  <a class="brand" href="#top"><span class="brand-mark">✦</span><span>SHALLOWSTAR COVE · BOND STORY</span></a>
+  <div class="nav-links"><a href="#chapter-1">夜晚竖琴</a><a href="#chapter-2">远方小提琴</a><a href="#chapter-3">回应旋律</a><a href="#chapter-4">未见合奏</a><a href="#theme-song">主题曲</a><a href="../zhuye.html">返回主页</a></div>
+</nav>
+<header class="hero" id="top">
+  <section class="hero-card reveal"><div class="sun"></div>
+    <div class="hero-inner">
+      <div>
+        <div class="eyebrow">Ruanruan × Wynn · 第一章</div>
+        <h1><span>第一夜，</span><span>风听见了海</span></h1>
+        <p class="subtitle">他们第一次认识，并不是因为见面，而是因为听见。夜晚的竖琴停在海风里，远方的小提琴把白昼尽头的孤单送到了窗前——于是，月海与潮风完成了第一场未曾谋面的双重奏。</p>
+        <div class="duet-kicker">DUET OF WIND & SEA · 风与海的双重奏</div><div class="actions"><a class="btn primary" href="#chapter-1">开始阅读 ✦</a><button class="btn ghost" id="toggleTheme" type="button">播放主题曲《月海の約束》</button><button class="btn ghost" id="toggleNotes" type="button">开启旋律漂浮 ♪</button></div>
+      </div>
+      <div class="stage">
+        <div class="room left"><div class="label"><span>MOON SEA ROOM</span><span>软软</span></div><div class="instrument">𓆩♬𓆪</div><p>月光琴房里，竖琴声原本只是为了安抚姐妹们入睡。</p></div>
+        <div class="room right"><div class="label"><span>DAYLIGHT PASTURE</span><span>白昼先生</span></div><div class="instrument">𝄞</div><p>潮风牧场边界，明亮的小提琴声把白昼的余温送进夜里。</p></div>
+        <div class="sound"><svg viewBox="0 0 780 120" preserveAspectRatio="none"><path class="path-gold" d="M10 66 C120 12 190 112 306 62 S524 22 770 58"/><path class="path-blue" d="M10 50 C140 102 220 8 360 55 S560 100 770 38"/></svg></div>
+      </div>
+    </div>
+    <div class="scroll"><div class="mouse"></div><span>SCROLL</span></div>
+  </section>
+</header>
+<main class="main">
+
+  <section class="cover-visual reveal" aria-label="未曾谋面的合奏主视觉">
+    <img src="assets/story-ruanruan-wynn/chapter-04-unseen-duet_watermarked.png" alt="软软与白昼先生未曾谋面的合奏主视觉，月海琴房与潮风牧场被发光旋律连接">
+  </section>
+
+  <section class="section reveal" id="chapter-1"><div class="inner">
+    <aside class="mark"><div class="num">Chapter 01</div><h2 class="chapter-title">夜晚的竖琴</h2><p class="chapter-sub">软软不是在表演，她是在照顾大家的情绪。</p></aside>
+    <article class="card">
+      <figure class="story-illustration hero-ill wide">
+        <img src="assets/story-ruanruan-wynn/chapter-01-ruanruan-harp_watermarked.png" alt="软软在月光海边琴房中坐在竖琴旁，听见远方传来的小提琴声">
+        <figcaption class="ill-caption">Chapter 01 · 夜晚的竖琴</figcaption>
+      </figure>
+      <p>那天夜里，浅岸星滩安静得像一枚被海水洗亮的贝壳。</p><p>软软坐在月光琴房里，像往常一样，把指尖轻轻放上竖琴。姐妹们已经累了一天，她便把旋律放得很慢、很轻，像月光一层一层落在海面上。</p><p>每一个音符都在说：没关系，今天已经过去了。</p><div class="quote">她的温柔不是热闹的拥抱，<br>而是一盏不会催你醒来的夜灯。</div><p>于是，房间里只剩下竖琴声、潮声，还有渐渐安稳下来的呼吸。</p></article>
+  </div></section>
+  <section class="section reveal" id="chapter-2"><div class="inner">
+    <aside class="mark"><div class="num">Chapter 02</div><h2 class="chapter-title">海风带来的小提琴</h2><p class="chapter-sub">她忽然停下，因为海风里传来了一段陌生又熟悉的旋律。</p></aside>
+    <article class="card">
+      <figure class="story-illustration hero-ill wide">
+        <img src="assets/story-ruanruan-wynn/chapter-02-ruanruan-listening_watermarked.png" alt="软软在月光琴房里停下竖琴，侧耳听见海风中远方的小提琴旋律">
+        <figcaption class="ill-caption">Chapter 02 · 海风带来的小提琴</figcaption>
+      </figure>
+      <p>弹着弹着，软软的指尖忽然停在了琴弦上。</p><p>不是因为琴声断了，也不是因为夜色变冷了。她只是听见，海风里传来一段很远、很细的小提琴声。</p><p>那声音不像来自浅岸星滩。它像是从更远的草地、更亮的白昼尽头吹过来。旋律明明很清澈，很明亮，可尾音却轻轻落下去，像没有人接住的光。</p><div class="quote">明亮的旋律里，<br>藏着一点很安静的孤单。</div><p>软软没有继续弹。她只是静静听着，听那段小提琴被夜风送到窗前。</p>
+      <figure class="story-illustration wide" style="margin-top:28px;">
+        <img src="assets/story-ruanruan-wynn/chapter-wynn-pasture-violin_watermarked.png" alt="白昼先生站在潮风牧场高坡上拉小提琴，远处海岸与暮光相接">
+        <figcaption class="ill-caption">Wynn Side · 白昼尽头的高坡</figcaption>
+      </figure>
+    </article>
+  </div></section>
+  <section class="section reveal" id="chapter-3"><div class="inner">
+    <aside class="mark"><div class="num">Chapter 03</div><h2 class="chapter-title">软软的回应</h2><p class="chapter-sub">她没有寻找对方是谁，只是用竖琴接住了那个尾音。</p></aside>
+    <article class="card">
+      <figure class="story-illustration single-response-ill">
+        <img src="assets/story-ruanruan-wynn/chapter-03-ruanruan-response-closeup_watermarked.png" alt="软软靠近竖琴，指尖轻触琴弦回应远方旋律的特写">
+        <figcaption class="ill-caption">Response · 指尖回应</figcaption>
+      </figure>
+      <p>听了一会儿，软软忽然明白了。</p><p>那不是一段随便飘来的旋律。它像是在说话。它没有求救，也没有哭，可她就是听懂了里面那一点点孤单。</p><p>于是，她重新把手放回竖琴上。</p><p>她没有打断那段小提琴，而是顺着它的尾音，轻轻接上了一段竖琴。</p><div class="duet"><div class="mini"><h3>白昼先生的旋律</h3><p>像从潮风牧场吹来的风，明亮、干净，却在结尾处慢慢放低。</p></div><div class="mini"><h3>软软的回应</h3><p>像月海里浮起的珍珠光，不靠近、不追问，只是温柔地接住。</p></div></div><div class="visual"><span class="dot"></span><span class="dot blue"></span><svg viewBox="0 0 760 160" preserveAspectRatio="none"><path class="path-gold" d="M20 82 C120 24 196 134 306 78 S494 28 740 74"/><path class="path-blue" d="M20 70 C128 126 226 26 358 82 S548 126 740 56"/></svg></div></article>
+  </div></section>
+  <section class="section reveal" id="chapter-4"><div class="inner">
+    <aside class="mark"><div class="num">Chapter 04</div><h2 class="chapter-title">未曾谋面的合奏</h2><p class="chapter-sub">他们谁也不知道对方是谁，却在第一夜完成了相识。</p></aside>
+    <article class="card">
+      <figure class="story-illustration hero-ill wide">
+        <img src="assets/story-ruanruan-wynn/chapter-04-unseen-duet_watermarked.png" alt="软软在月海琴房弹竖琴，白昼先生在潮风牧场拉小提琴，两人的旋律在中间交汇">
+        <figcaption class="ill-caption">Chapter 04 · 未曾谋面的合奏</figcaption>
+      </figure>
+      <p>那一晚，浅岸星滩没有人知道，潮风牧场也没有人知道。</p><p>有一段来自白昼尽头的小提琴，和一段来自月海琴房的竖琴，在夜风里相遇了。</p><p>他们没有见面。没有名字。没有约定。</p><p>只是一个人拉出孤独，另一个人听懂了它。</p><div class="quote">他们不是相遇。<br>他们是风与海的双重奏。</div><p>从那以后，每当夜晚的海风经过琴房，软软都会下意识停一下，听远方有没有那段明亮而孤单的小提琴。</p></article>
+  </div></section>
+
+  <section class="section reveal" id="theme-song">
+    <div class="inner">
+      <aside class="mark">
+        <div class="num">Theme Song</div>
+        <h2 class="chapter-title">月海の約束</h2>
+        <p class="chapter-sub">软软与白昼先生故事线主题曲 · 纯女生独唱。</p>
+      </aside>
+      <article class="card">
+        <p>这首歌作为《第一夜，风听见了海》的主题曲，不和背景音乐同时抢戏。点击播放主题曲时，页面会自动暂停环境 BGM；暂停主题曲后，背景 BGM 会继续回到故事里。</p>
+        <div class="quote">月海与潮风之间，<br>藏着一场未曾谋面的双重奏。</div>
+        <button class="btn primary" id="themeCardBtn" type="button">播放 / 暂停《月海の約束》 ✦</button>
+<div class="theme-captions" id="themeCaptions"><div class="caption-label">MOON SEA · LYRICS / 月海の約束 · 中日字幕</div><div class="caption-window" id="captionWindow"><div class="caption-list" id="captionList"></div></div><div class="caption-transport"><span id="themeCurrentTime">00:00</span><div class="seek-wrap"><input id="themeSeek" type="range" min="0" max="0" step="0.1" value="0" aria-label="拖动跳转主题曲进度" disabled><img id="seekRuanruan" class="seek-ruanruan" src="assets/story-ruanruan-wynn/q版软软ui-thumb.png" alt="" aria-hidden="true"></div><span id="themeDuration">--:--</span></div><div class="caption-note">拖动时间轴可跳转歌曲，歌词会同步滚动。</div></div>
+</div>
+      </article>
+    </div>
+  </section>
+
+  <section class="ending reveal"><div class="small">To Be Continued</div><h2>风第一次听见海，<br>海第一次接住光。</h2><p>这是软软与白昼先生的第一夜。不是告白，不是偶遇，也不是谁拯救了谁。只是两个太会照顾别人的灵魂，终于在一段双重奏里，被对方轻轻听见。</p><div class="ending-actions"><a class="btn primary" href="#top">回到故事开头 ✦</a><a class="btn ghost" href="../ruanruan.html">返回软软页面</a><a class="btn ghost" href="../tidewind_pasture_wynn_site_v38/index.html">返回白昼先生页面</a></div></section>
+</main>
+<div class="fixed"><button class="float" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button><button class="float" onclick="window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'})">↓</button></div>
+<script>
+const progress=document.getElementById("progress"),reveals=document.querySelectorAll(".reveal"),btn=document.getElementById("toggleNotes");let notesOn=false;
+function updateProgress(){const top=document.documentElement.scrollTop||document.body.scrollTop,h=document.documentElement.scrollHeight-document.documentElement.clientHeight;progress.style.width=(h>0?top/h*100:0)+"%"}window.addEventListener("scroll",updateProgress,{passive:true});updateProgress();
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add("show")}),{threshold:.13});reveals.forEach(e=>io.observe(e));
+function addAmbience(cls,count){const sy=["♪","♫","♩","✦","°","𝄞"];for(let i=0;i<count;i++){const el=document.createElement("span");el.className=cls+(cls==="note"?" generated":"");el.textContent=cls==="note"?sy[Math.floor(Math.random()*sy.length)]:"";el.style.left=Math.random()*100+"vw";if(cls==="note"){el.style.fontSize=12+Math.random()*24+"px";el.style.setProperty("--drift",(Math.random()*180-90)+"px");el.style.animationDuration=10+Math.random()*14+"s";el.style.animationDelay=-Math.random()*18+"s"}else{el.style.setProperty("--x",(Math.random()*150-75)+"px");el.style.animationDuration=12+Math.random()*18+"s";el.style.animationDelay=-Math.random()*16+"s"}document.body.appendChild(el)}}
+addAmbience("shell",8);
+btn.addEventListener("click",()=>{notesOn=!notesOn;if(notesOn){addAmbience("note",26);btn.textContent="关闭旋律漂浮 ♪"}else{document.querySelectorAll(".generated").forEach(e=>e.remove());btn.textContent="开启旋律漂浮 ♪"}});
+</script>
+
+<script>
+(function(){
+  const bgm = document.getElementById("pageBgm");
+  if(!bgm) return;
+  bgm.volume = 0.55;
+  const playBgm = () => {
+    bgm.play().catch(() => {});
+  };
+  playBgm();
+  const resume = () => {
+    playBgm();
+    window.removeEventListener("pointerdown", resume);
+    window.removeEventListener("keydown", resume);
+    window.removeEventListener("touchstart", resume);
+  };
+  window.addEventListener("pointerdown", resume, {once:true});
+  window.addEventListener("keydown", resume, {once:true});
+  window.addEventListener("touchstart", resume, {once:true});
+})();
+</script>
+
+<script>
+(function(){
+  const bgm = document.getElementById("pageBgm");
+  const theme = document.getElementById("themeSong");
+  const toggleTheme = document.getElementById("toggleTheme");
+  const themeCardBtn = document.getElementById("themeCardBtn");
+
+  if(!theme) return;
+  theme.volume = 0.85;
+  const lyricCues = [{"time":25.69,"ja":"潮の匂いが 髪を解く","zh":"潮水的气息解开了发丝"},{"time":38.4,"ja":"夜 白い草原","zh":"夜里，白色的草原"},{"time":43.76,"ja":"を 月が撫でてる","zh":"月亮轻抚着它"},{"time":50.38,"ja":"あなたの指先","zh":"你的指尖"},{"time":56.52,"ja":"波より静かで","zh":"比波浪还要静谧"},{"time":63.04,"ja":"初めて会えたのに 懐か","zh":"明明初次相逢，却觉得怀"},{"time":74.91,"ja":"しいの 遠い星の下","zh":"念，是在遥远星辰之下"},{"time":79.95,"ja":"名前を失くして","zh":"遗失了名字"},{"time":86.45,"ja":"それでも胸は","zh":"即便如此，心中"},{"time":90.91,"ja":"覚えていた","zh":"依然记得"},{"time":99.5,"ja":"そっと 重なる","zh":"悄然交叠的"},{"time":104.54,"ja":"まなざしの","zh":"目光之"},{"time":109.18,"ja":"糸 ほどけないまま","zh":"线，始终没有解开"},{"time":114.57,"ja":"結ばれてく","zh":"就这样系在一起"},{"time":124.11,"ja":"月海の約束","zh":"月海之约"},{"time":130.32,"ja":"あなたとわたし","zh":"你与我"},{"time":137.66,"ja":"優しくほどけて","zh":"温柔地解开"},{"time":143.01,"ja":"また結ばれる","zh":"又再度相系"},{"time":149.13,"ja":"月海の約束 この手","zh":"月海之约，这双手"},{"time":158.42,"ja":"のぬくもり","zh":"的温度"},{"time":162.57,"ja":"たどりついた 一つの","zh":"终于抵达，唯一的"},{"time":176.37,"ja":"絆 旗をとも願う","zh":"羁绊，祈愿明日并肩"},{"time":183.85,"ja":"手に触れるたび","zh":"每当触碰你的手"},{"time":188.77,"ja":"あなたのヴァイオリ","zh":"你的小提"},{"time":194.52,"ja":"ン 空を染める","zh":"琴便染遍天空"},{"time":201.04,"ja":"言葉より深く","zh":"比言语更深"},{"time":204.32,"ja":"伝わるものは","zh":"能够传达的"},{"time":215.03,"ja":"続いた夢を 包む灯","zh":"是包裹着延续之梦的灯"},{"time":220.73,"ja":"（あか）り","zh":"光"},{"time":225.64,"ja":"風が連れてきた","zh":"风带来的"},{"time":231.02,"ja":"小さな軌跡","zh":"小小轨迹"},{"time":237.19,"ja":"二人の間に 咲く雫 耳","zh":"绽放在两人之间的水滴，耳"},{"time":251.14,"ja":"を澄ませば 同じ声","zh":"若侧耳倾听，便是同一个声音"},{"time":259,"ja":"衝動で知らない明日も","zh":"即使明天因冲动而变得陌生"},{"time":265.24,"ja":"怖気ないの","zh":"我也不会害怕"},{"time":275.27,"ja":"月海の約束","zh":"月海之约"},{"time":281.09,"ja":"あなたとわたし","zh":"你与我"},{"time":288.44,"ja":"優しくほどけて","zh":"温柔地解开"},{"time":293.78,"ja":"また結ばれる","zh":"又再度相系"},{"time":299.51,"ja":"月海の約束","zh":"月海之约"},{"time":303.03,"ja":"この手のとも","zh":"这双手的灯"},{"time":310.51,"ja":"り 離れないで","zh":"光，别离开我"},{"time":313.33,"ja":"たどり着いた 一つの","zh":"终于抵达，唯一的"},{"time":321.02,"ja":"絆","zh":"絆"},{"time":327.23,"ja":"もしも夜が","zh":"即使夜晚"},{"time":332.63,"ja":"深く迷っても","zh":"深沉得令人迷失"},{"time":333.49,"ja":"あなたの音が道になる","zh":"你的声音也会成为道路"},{"time":351.54,"ja":"わたしは歌う 淡","zh":"我歌唱，朝着淡"},{"time":358.53,"ja":"い光へ","zh":"淡的光芒"},{"time":363.43,"ja":"あなたは響く海の彼方","zh":"你回响在海的彼方"},{"time":376.43,"ja":"へ 月海の約束","zh":"之中，月海之约"},{"time":382.78,"ja":"あなたとわたし 優しく ほ","zh":"你与我，温柔地解"},{"time":392.63,"ja":"どけて また結ばれる","zh":"开，又再度相系"},{"time":401.09,"ja":"月海の約束","zh":"月海之约"},{"time":412.6,"ja":"ずっとここで辿り着いた 一つの絆","zh":"永远在这里，终于抵达的唯一羁绊"}];
+  const captionList = document.getElementById("captionList");
+  captionList.innerHTML = lyricCues.map(() => '<div class="caption-line"><div class="ja"></div><div class="zh"></div></div>').join("");
+  const captionLines = Array.from(captionList.querySelectorAll(".caption-line"));
+  captionLines.forEach((line,i)=>{line.querySelector(".ja").textContent=lyricCues[i].ja;line.querySelector(".zh").textContent=lyricCues[i].zh;});
+  const seek=document.getElementById("themeSeek");
+  const currentLabel=document.getElementById("themeCurrentTime");
+  const durationLabel=document.getElementById("themeDuration");
+  const seekRuanruan=document.getElementById("seekRuanruan");
+  function clockLabel(value){if(!Number.isFinite(value)||value<0)return "00:00";const n=Math.floor(value);return String(Math.floor(n/60)).padStart(2,"0")+":"+String(n%60).padStart(2,"0");}
+  function syncCaptions(){
+    if(!captionLines.length) return;
+    const now=theme.currentTime;
+    let idx=-1;
+    for(let i=0;i<lyricCues.length;i++){if(lyricCues[i].time<=now) idx=i; else break;}
+    captionLines.forEach((line,i)=>line.classList.toggle("active",i===idx));
+    if(idx>=0){captionList.style.transform=`translate3d(0,-${Math.max(0,idx*82-90)}px,0)`;}
+    else {captionList.style.transform="translate3d(0,0,0)";}
+    if(seek){seek.disabled=!Number.isFinite(theme.duration)||theme.duration<=0;if(!seek.matches(":active")){seek.max=String(Number.isFinite(theme.duration)?theme.duration:0);seek.value=String(now);}currentLabel.textContent=clockLabel(now);durationLabel.textContent=clockLabel(theme.duration);if(seekRuanruan){const ratio=Number.isFinite(theme.duration)&&theme.duration>0?Math.max(0,Math.min(1,now/theme.duration)):0;seekRuanruan.style.left=`${ratio*100}%`;}}
+  }
+  seek?.addEventListener("input",()=>{if(Number.isFinite(theme.duration)&&theme.duration>0){theme.currentTime=Number(seek.value);syncCaptions();}});
+  theme.addEventListener("timeupdate",syncCaptions);
+  theme.addEventListener("loadedmetadata",syncCaptions);
+  theme.addEventListener("seeked",syncCaptions);
+  syncCaptions();
+
+  function setThemeButtonText(isPlaying){
+    const text = isPlaying ? "暂停主题曲《月海の約束》" : "播放主题曲《月海の約束》";
+    if(toggleTheme) toggleTheme.textContent = text;
+    if(themeCardBtn) themeCardBtn.textContent = isPlaying ? "暂停《月海の約束》 ✦" : "播放 / 暂停《月海の約束》 ✦";
+  }
+
+  function toggleThemeSong(){
+    if(theme.paused){
+      if(bgm) bgm.pause();
+      theme.play().then(() => setThemeButtonText(true)).catch(() => {});
+    }else{
+      theme.pause();
+      setThemeButtonText(false);
+      if(bgm) bgm.play().catch(() => {});
+    }
+  }
+
+  if(toggleTheme) toggleTheme.addEventListener("click", toggleThemeSong);
+  if(themeCardBtn) themeCardBtn.addEventListener("click", toggleThemeSong);
+
+  theme.addEventListener("ended", () => {
+    setThemeButtonText(false);
+    if(bgm) bgm.play().catch(() => {});
+  });
+})();
+</script>
+
+</body>
+</html>

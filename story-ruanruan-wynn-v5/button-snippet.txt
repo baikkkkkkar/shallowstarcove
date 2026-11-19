@@ -1,0 +1,27 @@
+<!-- 把这个按钮放进软软 / 白昼先生角色页的“相处方式”卡片里 -->
+<a href="story-ruanruan-wynn.html" class="story-btn">
+  打开软软 × 白昼先生故事线 ✦
+</a>
+
+<!-- 若原页面没有 story-btn 样式，可以加这一段 -->
+<style>
+.story-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  margin-top:20px;
+  padding:14px 24px;
+  border-radius:999px;
+  border:1px solid rgba(216,191,115,.42);
+  background:linear-gradient(135deg,rgba(255,248,213,.9),rgba(216,238,244,.72));
+  color:#32464d;
+  font-weight:900;
+  text-decoration:none;
+  box-shadow:0 12px 32px rgba(106,138,130,.15);
+  transition:.25s ease;
+}
+.story-btn:hover{
+  transform:translateY(-3px);
+  box-shadow:0 18px 44px rgba(96,129,122,.22);
+}
+</style>

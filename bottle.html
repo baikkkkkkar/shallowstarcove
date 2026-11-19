@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>漂流瓶 · 浅岸星滩的回响</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-touch-callout: none;
+            user-select: none;
+        }
+        body {
+            min-height: 100vh;
+            font-family: 'Segoe UI', 'Roboto', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            overflow-x: hidden;
+            color: #2c4a3b;
+            position: relative;
+        }
+        .sky-sand {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: linear-gradient(165deg, #b3e0f5 0%, #d9f0fa 40%, #fef7e0 70%, #f5e6c4 100%);
+        }
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60%;
+            z-index: -1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .star {
+            position: absolute;
+            background-color: #fff9e0;
+            border-radius: 50%;
+            box-shadow: 0 0 4px 1px rgba(255,255,200,0.8);
+            opacity: 0;
+            animation: twinkle 3s infinite alternate;
+        }
+        @keyframes twinkle {
+            0% { opacity: 0; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1.2); }
+        }
+        .wave-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 150px;
+            z-index: 1;
+            pointer-events: none;
+            overflow: hidden;
+            filter: drop-shadow(0 -8px 18px rgba(66, 166, 208, .16));
+        }
+        .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 150px;
+            background-repeat: repeat-x;
+            background-size: 2400px 150px;
+            background-position-y: bottom;
+            mix-blend-mode: soft-light;
+            will-change: background-position;
+        }
+        .wave1 {
+            bottom: -8px;
+            opacity: .96;
+            background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%202400%20150%22%20preserveAspectRatio%3D%22none%22%3E%0A%3Cdefs%3E%0A%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%0A%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23f7fdff%22%20stop-opacity%3D%220.82%22/%3E%0A%3Cstop%20offset%3D%2255%25%22%20stop-color%3D%22%238fd8f2%22%20stop-opacity%3D%220.48%22/%3E%0A%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%232f9cc7%22%20stop-opacity%3D%220.10%22/%3E%0A%3C/linearGradient%3E%0A%3Cfilter%20id%3D%22softGlow%22%20x%3D%22-10%25%22%20y%3D%22-30%25%22%20width%3D%22120%25%22%20height%3D%22160%25%22%3E%0A%3CfeGaussianBlur%20stdDeviation%3D%222.2%22%20result%3D%22blur%22/%3E%0A%3CfeMerge%3E%3CfeMergeNode%20in%3D%22blur%22/%3E%3CfeMergeNode%20in%3D%22SourceGraphic%22/%3E%3C/feMerge%3E%0A%3C/filter%3E%0A%3C/defs%3E%0A%3Cpath%20fill%3D%22url%28%23g%29%22%20d%3D%22M0%2C64%20C150%2C18%20450%2C18%20600%2C64%20C750%2C110%201050%2C110%201200%2C64%20C1350%2C18%201650%2C18%201800%2C64%20C1950%2C110%202250%2C110%202400%2C64%20L2400%2C150%20L0%2C150%20Z%22/%3E%0A%3Cpath%20d%3D%22M0%2C64%20C150%2C18%20450%2C18%20600%2C64%20C750%2C110%201050%2C110%201200%2C64%20C1350%2C18%201650%2C18%201800%2C64%20C1950%2C110%202250%2C110%202400%2C64%22%20fill%3D%22none%22%20stroke%3D%22%23ffffff%22%20stroke-opacity%3D%220.88%22%20stroke-width%3D%228%22%20stroke-linecap%3D%22round%22%20filter%3D%22url%28%23softGlow%29%22/%3E%0A%3Cpath%20d%3D%22M0%2C64%20C150%2C18%20450%2C18%20600%2C64%20C750%2C110%201050%2C110%201200%2C64%20C1350%2C18%201650%2C18%201800%2C64%20C1950%2C110%202250%2C110%202400%2C64%22%20fill%3D%22none%22%20stroke%3D%22%23bcefff%22%20stroke-opacity%3D%220.45%22%20stroke-width%3D%224%22%20stroke-linecap%3D%22round%22/%3E%0A%3C/svg%3E");
+            animation: waveMove 22s linear infinite;
+        }
+        .wave2 {
+            bottom: -18px;
+            opacity: .82;
+            background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%202400%20150%22%20preserveAspectRatio%3D%22none%22%3E%0A%3Cdefs%3E%0A%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%0A%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23c9f1ff%22%20stop-opacity%3D%220.56%22/%3E%0A%3Cstop%20offset%3D%2255%25%22%20stop-color%3D%22%235fbde2%22%20stop-opacity%3D%220.30%22/%3E%0A%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23147ea8%22%20stop-opacity%3D%220.06%22/%3E%0A%3C/linearGradient%3E%0A%3Cfilter%20id%3D%22softGlow%22%20x%3D%22-10%25%22%20y%3D%22-30%25%22%20width%3D%22120%25%22%20height%3D%22160%25%22%3E%0A%3CfeGaussianBlur%20stdDeviation%3D%222.2%22%20result%3D%22blur%22/%3E%0A%3CfeMerge%3E%3CfeMergeNode%20in%3D%22blur%22/%3E%3CfeMergeNode%20in%3D%22SourceGraphic%22/%3E%3C/feMerge%3E%0A%3C/filter%3E%0A%3C/defs%3E%0A%3Cpath%20fill%3D%22url%28%23g%29%22%20d%3D%22M0%2C82%20C150%2C38%20450%2C38%20600%2C82%20C750%2C126%201050%2C126%201200%2C82%20C1350%2C38%201650%2C38%201800%2C82%20C1950%2C126%202250%2C126%202400%2C82%20L2400%2C150%20L0%2C150%20Z%22/%3E%0A%3Cpath%20d%3D%22M0%2C82%20C150%2C38%20450%2C38%20600%2C82%20C750%2C126%201050%2C126%201200%2C82%20C1350%2C38%201650%2C38%201800%2C82%20C1950%2C126%202250%2C126%202400%2C82%22%20fill%3D%22none%22%20stroke%3D%22%23f2fdff%22%20stroke-opacity%3D%220.42%22%20stroke-width%3D%225%22%20stroke-linecap%3D%22round%22%20filter%3D%22url%28%23softGlow%29%22/%3E%0A%3Cpath%20d%3D%22M0%2C82%20C150%2C38%20450%2C38%20600%2C82%20C750%2C126%201050%2C126%201200%2C82%20C1350%2C38%201650%2C38%201800%2C82%20C1950%2C126%202250%2C126%202400%2C82%22%20fill%3D%22none%22%20stroke%3D%22%238bdcf5%22%20stroke-opacity%3D%220.22%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22/%3E%0A%3C/svg%3E");
+            animation: waveMove 30s linear infinite reverse;
+        }
+        .wave3 {
+            bottom: -26px;
+            opacity: .72;
+            background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%202400%20150%22%20preserveAspectRatio%3D%22none%22%3E%0A%3Cdefs%3E%0A%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%0A%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%237fd2ee%22%20stop-opacity%3D%220.42%22/%3E%0A%3Cstop%20offset%3D%2255%25%22%20stop-color%3D%22%232f9bc9%22%20stop-opacity%3D%220.24%22/%3E%0A%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23075f86%22%20stop-opacity%3D%220.05%22/%3E%0A%3C/linearGradient%3E%0A%3Cfilter%20id%3D%22softGlow%22%20x%3D%22-10%25%22%20y%3D%22-30%25%22%20width%3D%22120%25%22%20height%3D%22160%25%22%3E%0A%3CfeGaussianBlur%20stdDeviation%3D%222.2%22%20result%3D%22blur%22/%3E%0A%3CfeMerge%3E%3CfeMergeNode%20in%3D%22blur%22/%3E%3CfeMergeNode%20in%3D%22SourceGraphic%22/%3E%3C/feMerge%3E%0A%3C/filter%3E%0A%3C/defs%3E%0A%3Cpath%20fill%3D%22url%28%23g%29%22%20d%3D%22M0%2C96%20C150%2C56%20450%2C56%20600%2C96%20C750%2C136%201050%2C136%201200%2C96%20C1350%2C56%201650%2C56%201800%2C96%20C1950%2C136%202250%2C136%202400%2C96%20L2400%2C150%20L0%2C150%20Z%22/%3E%0A%3Cpath%20d%3D%22M0%2C96%20C150%2C56%20450%2C56%20600%2C96%20C750%2C136%201050%2C136%201200%2C96%20C1350%2C56%201650%2C56%201800%2C96%20C1950%2C136%202250%2C136%202400%2C96%22%20fill%3D%22none%22%20stroke%3D%22%23e8fbff%22%20stroke-opacity%3D%220.26%22%20stroke-width%3D%224%22%20stroke-linecap%3D%22round%22%20filter%3D%22url%28%23softGlow%29%22/%3E%0A%3Cpath%20d%3D%22M0%2C96%20C150%2C56%20450%2C56%20600%2C96%20C750%2C136%201050%2C136%201200%2C96%20C1350%2C56%201650%2C56%201800%2C96%20C1950%2C136%202250%2C136%202400%2C96%22%20fill%3D%22none%22%20stroke%3D%22%236ed0ee%22%20stroke-opacity%3D%220.13%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22/%3E%0A%3C/svg%3E");
+            animation: waveMove 40s linear infinite;
+        }
+        @keyframes waveMove {
+            0% { background-position-x: 0; }
+            100% { background-position-x: 2400px; }
+        }
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 1.5rem 1.5rem 3rem;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            background: rgba(255, 248, 225, 0.55);
+            backdrop-filter: blur(8px);
+            border-radius: 60px;
+            padding: 0.5rem 2rem;
+            border: 1px solid rgba(255, 245, 200, 0.8);
+        }
+        .back-home {
+            text-decoration: none;
+            font-weight: 500;
+            color: #2a6b4a;
+            background: rgba(255, 250, 220, 0.7);
+            padding: 0.4rem 1.2rem;
+            border-radius: 40px;
+            transition: 0.2s;
+        }
+        .back-home:hover {
+            background: #fff1cc;
+            transform: translateY(-2px);
+        }
+        .title {
+            font-size: 1.6rem;
+            font-weight: 400;
+            color: #2b5a3b;
+        }
+        .bottle-card {
+            background: rgba(255, 250, 235, 0.5);
+            backdrop-filter: blur(12px);
+            border-radius: 48px;
+            padding: 1.8rem;
+            border: 1px solid rgba(255, 245, 200, 0.8);
+            box-shadow: 0 20px 35px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+        }
+        .subtitle {
+            font-size: 1.2rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: #3a6b4a;
+        }
+        .messages {
+            max-height: 400px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-right: 0.5rem;
+        }
+        .message-item {
+            background: rgba(255, 255, 245, 0.7);
+            border-radius: 24px;
+            padding: 0.8rem 1.2rem;
+            border-left: 6px solid #9ac2c9;
+        }
+        .message-header {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 0.4rem;
+        }
+        .avatar {
+            width: 32px;
+            height: 32px;
+            background: #cfead5;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+        .time {
+            font-size: 0.7rem;
+            color: #6c8e74;
+        }
+        .message-content {
+            font-size: 0.95rem;
+            line-height: 1.4;
+            word-break: break-word;
+            padding-left: 2.8rem;
+            color: #2c4a3b;
+        }
+        /* 卡片样式：建议联系与QQ社群 */
+        .info-card {
+            background: rgba(200, 220, 190, 0.3);
+            border-radius: 28px;
+            padding: 1rem 1.2rem;
+            margin: 1rem 0 1.2rem;
+            text-align: center;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 245, 200, 0.6);
+        }
+        .info-card p {
+            margin: 0.3rem 0;
+            font-size: 0.9rem;
+        }
+        .info-card a {
+            color: #3a6b4a;
+            text-decoration: none;
+            font-weight: 500;
+            border-bottom: 1px dashed #7faa88;
+        }
+        .info-card a:hover {
+            color: #2c5a2e;
+            border-bottom: 1px solid #2c5a2e;
+        }
+        /* 二维码尺寸：手机竖屏比例，可保存 */
+        .qr-img {
+            width: 80%;
+            max-width: 280px;
+            height: auto;
+            margin: 0.5rem auto;
+            display: block;
+            border-radius: 20px;
+            background: white;
+            padding: 0.4rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .input-area {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            background: rgba(245, 240, 220, 0.6);
+            border-radius: 32px;
+            padding: 1.2rem;
+        }
+        textarea {
+            background: rgba(255, 255, 250, 0.9);
+            border: 1px solid #cce2cf;
+            border-radius: 28px;
+            padding: 0.8rem 1.2rem;
+            font-family: inherit;
+            font-size: 0.95rem;
+            resize: vertical;
+            outline: none;
+        }
+        textarea:focus {
+            border-color: #8fb996;
+            box-shadow: 0 0 0 2px rgba(143,185,150,0.2);
+        }
+        .send-btn {
+            background: #7faa88;
+            border: none;
+            padding: 0.7rem;
+            border-radius: 60px;
+            font-size: 1rem;
+            font-weight: 500;
+            color: #fffae6;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .send-btn:hover {
+            background: #6f976f;
+            transform: translateY(-2px);
+        }
+        footer {
+            text-align: center;
+            font-size: 0.7rem;
+            padding: 1rem;
+            color: #6e8f6a;
+        }
+        @media (max-width: 640px) {
+            .container { padding: 1rem; }
+            .bottle-card { padding: 1.2rem; }
+            .message-content { padding-left: 0; margin-top: 0.3rem; }
+            .qr-img { width: 70%; max-width: 240px; }
+        }
+    </style>
+</head>
+<body>
+<div class="sky-sand"></div>
+<div class="stars" id="starsContainer"></div>
+<div class="wave-container" aria-hidden="true">
+    <div class="wave wave1"></div>
+    <div class="wave wave2"></div>
+    <div class="wave wave3"></div>
+</div>
+<audio id="homeWhiteNoise" preload="auto" loop>
+    <source src="audio/white-noise.mp3" type="audio/mpeg">
+</audio>
+
+<div class="container">
+    <div class="header">
+        <span class="title">💌 漂流瓶 · 潮汐回响</span>
+        <a href="zhuye.html" class="back-home">🌊 返回浅岸星滩</a>
+    </div>
+    <div class="bottle-card">
+        <div class="subtitle">✨ 把你想说的话，装进瓶子，漂向大海 ✨</div>
+        <div class="messages" id="messagesList">
+            <div style="text-align:center; padding:2rem;">加载留言中...</div>
+        </div>
+
+        <!-- 建议与联系 -->
+        <div class="info-card">
+            <p>💌 如果你对这个IP有任何建议或想法，我们将会十分感谢！</p>
+            <p>📧 请联系我：<a href="mailto:1660911249@qq.com">1660911249@qq.com</a></p>
+        </div>
+
+        <!-- QQ社群二维码（可长按保存） -->
+        <div class="info-card">
+            <p>🐧 欢迎加入「浅岸星滩」QQ社群</p>
+            <p>一起分享高敏感日常、角色同人、文创福利～</p>
+            <!-- 移除 draggable / oncontextmenu 等禁止保存的属性，允许用户长按保存 -->
+            <img src="images/qq_group_qr_watermarked.png" alt="QQ群二维码" class="qr-img">
+            <p>长按识别二维码 | 群号：2161025447</p>
+        </div>
+
+        <div class="input-area">
+            <textarea id="messageInput" rows="2" placeholder="匿名留言… 可以是你对作品的感受、一句鼓励、或者随便想说的话 (最多200字)" maxlength="200"></textarea>
+            <button class="send-btn" id="sendBtn">🌊 投入漂流瓶 🌊</button>
+        </div>
+    </div>
+    <footer>🌸 每一次留言都是一次潮汐相遇，所有敏感都值得被听见</footer>
+</div>
+
+<script>
+    // 生成星星
+    function generateStars() {
+        const starsContainer = document.getElementById('starsContainer');
+        if (!starsContainer) return;
+        const starCount = 100;
+        for (let i = 0; i < starCount; i++) {
+            const star = document.createElement('div');
+            star.classList.add('star');
+            const size = Math.random() * 3 + 1;
+            star.style.width = size + 'px';
+            star.style.height = size + 'px';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 60 + '%';
+            star.style.animationDuration = (Math.random() * 3 + 1.5) + 's';
+            star.style.animationDelay = (Math.random() * 5) + 's';
+            starsContainer.appendChild(star);
+        }
+    }
+    generateStars();
+
+    // ==================== 本地存储留言板（演示版，仅对自己可见）====================
+    let messages = [];
+
+    function loadLocalMessages() {
+        const stored = localStorage.getItem('driftMessages');
+        if (stored) {
+            messages = JSON.parse(stored);
+        } else {
+            messages = [
+                { content: '🌊 第一个漂流瓶！希望浅岸星滩越来越美～', time: new Date(Date.now() - 86400000).toISOString(), avatar: '🐚' },
+                { content: '敏感不是缺点，是温柔的天赋✨', time: new Date(Date.now() - 3600000).toISOString(), avatar: '⭐' }
+            ];
+            saveLocalMessages();
+        }
+        renderMessages();
+    }
+
+    function saveLocalMessages() {
+        localStorage.setItem('driftMessages', JSON.stringify(messages));
+    }
+
+    function addLocalMessage(content) {
+        const newMsg = {
+            content: content,
+            time: new Date().toISOString(),
+            avatar: ['🐚', '🐟', '🌊', '⭐', '🌸', '🪸', '🐙', '🦀', '🐢', '🍃'][Math.floor(Math.random() * 10)]
+        };
+        messages.unshift(newMsg);
+        if (messages.length > 100) messages.pop();
+        saveLocalMessages();
+        renderMessages();
+    }
+
+    function timeAgo(date) {
+        const seconds = Math.floor((new Date() - new Date(date)) / 1000);
+        let interval = Math.floor(seconds / 31536000);
+        if (interval > 1) return interval + '年前';
+        interval = Math.floor(seconds / 2592000);
+        if (interval > 1) return interval + '个月前';
+        interval = Math.floor(seconds / 86400);
+        if (interval > 1) return interval + '天前';
+        interval = Math.floor(seconds / 3600);
+        if (interval > 1) return interval + '小时前';
+        interval = Math.floor(seconds / 60);
+        if (interval > 1) return interval + '分钟前';
+        return '刚刚';
+    }
+
+    function escapeHtml(str) {
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+
+    function renderMessages() {
+        const container = document.getElementById('messagesList');
+        if (!messages.length) {
+            container.innerHTML = '<div style="text-align:center; padding:2rem;">💧 还没有漂流瓶，来投下第一封信吧～</div>';
+            return;
+        }
+        let html = '';
+        messages.forEach(msg => {
+            html += `
+                <div class="message-item">
+                    <div class="message-header">
+                        <span class="avatar">${msg.avatar}</span>
+                        <span class="time">${timeAgo(msg.time)}</span>
+                    </div>
+                    <div class="message-content">${escapeHtml(msg.content)}</div>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+    }
+
+    document.getElementById('sendBtn').addEventListener('click', () => {
+        const input = document.getElementById('messageInput');
+        const content = input.value.trim();
+        if (!content) {
+            alert('写点什么再投入大海吧～');
+            return;
+        }
+        addLocalMessage(content);
+        input.value = '';
+        document.querySelector('.messages').scrollTop = 0;
+    });
+
+    loadLocalMessages();
+</script>
+
+<script>
+    // 首页白噪音：自动尝试播放；若浏览器拦截，会在第一次点击/滚动/按键时启动
+    (function initHomeWhiteNoise() {
+        const whiteNoise = document.getElementById('homeWhiteNoise');
+        if (!whiteNoise) return;
+
+        whiteNoise.volume = 0.24;
+        whiteNoise.loop = true;
+
+        function playWhiteNoise() {
+            if (!whiteNoise || !whiteNoise.paused) return;
+            whiteNoise.play().catch(() => {
+                // 浏览器可能拦截自动播放，等待用户第一次交互后再启动
+            });
+        }
+
+        window.addEventListener('load', playWhiteNoise);
+        ['pointerdown', 'click', 'wheel', 'keydown', 'touchstart'].forEach(eventName => {
+            document.addEventListener(eventName, playWhiteNoise, { once: true, passive: true });
+        });
+    })();
+</script>
+</body>
+</html>

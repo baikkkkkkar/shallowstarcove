@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>雾灯塔｜阿默的观星台</title>
+<style>
+  :root{
+    --ink:#3f5068;
+    --muted:#6d7e94;
+    --glass:rgba(255,255,255,.62);
+    --glass-2:rgba(255,255,255,.38);
+    --line:rgba(255,255,255,.68);
+    --blue:#a9d4ee;
+    --silver:#dfe8f1;
+    --night:#142544;
+    --moon:#f7f2e7;
+    --accent:#cfd8e5;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{width:100%;min-height:100%;font-family:"Microsoft YaHei","PingFang SC",system-ui,-apple-system,sans-serif;color:var(--ink);background:#0f1d34;}
+  body{overflow-x:hidden;}
+  a{text-decoration:none;color:inherit}button{font:inherit;border:0;cursor:pointer;background:none;color:inherit}
+  .page{position:relative;min-height:100vh;overflow:hidden;isolation:isolate;background:linear-gradient(180deg,#193456 0%,#1e3d68 45%,#172843 100%);}
+  .hero-bg{position:fixed;inset:0;z-index:-8;background:url("amo_lighthouse_scene_watermarked.png") center/cover no-repeat;filter:saturate(1.04) brightness(1.04);transform:scale(1.02);}
+  .hero-bg::after{content:"";position:absolute;inset:0;background:
+    radial-gradient(circle at 73% 20%,rgba(255,244,216,.18),transparent 22%),
+    linear-gradient(90deg,rgba(11,24,43,.24),rgba(255,255,255,.02) 42%,rgba(11,24,43,.18)),
+    linear-gradient(180deg,rgba(11,24,43,.12),rgba(11,24,43,.34) 75%,rgba(11,24,43,.58));}
+  .star-dust{position:fixed;inset:0;z-index:-6;opacity:.45;pointer-events:none;background-image:
+    radial-gradient(circle,rgba(255,255,255,.9) 0 1px,transparent 1.5px),
+    radial-gradient(circle,rgba(182,219,255,.7) 0 1px,transparent 1.6px),
+    radial-gradient(circle,rgba(255,229,240,.55) 0 1px,transparent 1.5px);
+    background-size:130px 130px,210px 210px,320px 320px;background-position:10px 30px,90px 10px,160px 60px;animation:starMove 36s linear infinite;}
+  @keyframes starMove{to{background-position:140px 60px,10px 140px,300px 20px}}
+  .topbar{position:fixed;left:4.8vw;right:4.8vw;top:4.2vh;z-index:30;display:flex;justify-content:space-between;align-items:center;gap:16px;pointer-events:none;}
+  .brand,.navs a,.navs button{pointer-events:auto;border-radius:999px;background:linear-gradient(180deg,var(--glass),var(--glass-2));border:1px solid var(--line);backdrop-filter:blur(14px);box-shadow:0 12px 34px rgba(8,20,42,.18);}
+  .brand{display:flex;align-items:center;gap:12px;padding:12px 18px;color:#f7fbff;text-shadow:0 2px 14px rgba(31,51,82,.35);}
+  .brand-mark{width:34px;height:34px;border-radius:50%;background:radial-gradient(circle at 38% 34%,#fff 0 23%,#d9e6f2 24% 54%,#708cab 55% 100%);box-shadow:0 0 24px rgba(235,244,255,.8),inset 0 0 0 1px rgba(255,255,255,.86);position:relative;}
+  .brand-mark::after{content:"";position:absolute;inset:8px;border-radius:50%;border:1px dashed rgba(70,90,122,.55);}
+  .brand small{display:block;font-size:11px;letter-spacing:.24em;text-transform:uppercase;opacity:.82}.brand b{display:block;font-weight:600;letter-spacing:.08em;margin-top:2px;}
+  .navs{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}.navs a,.navs button{padding:11px 16px;color:#f7fbff;font-size:13px;letter-spacing:.08em;transition:transform .25s ease,background .25s ease}.navs a:hover,.navs button:hover{transform:translateY(-2px);background:rgba(255,255,255,.68)}
+  .intro{position:relative;min-height:100vh;display:flex;align-items:flex-end;padding:22vh 5vw 7vh;}
+  .intro-card{width:min(600px,92vw);padding:34px 38px;border-radius:34px;background:linear-gradient(180deg,rgba(255,255,255,.82),rgba(245,249,255,.58));border:1px solid rgba(255,255,255,.78);backdrop-filter:blur(18px);box-shadow:0 28px 90px rgba(8,20,42,.24);}
+  .eyebrow{font-size:13px;letter-spacing:.3em;text-transform:uppercase;color:#71839a;margin-bottom:13px;}
+  h1{font-size:clamp(44px,6vw,74px);font-weight:520;letter-spacing:.12em;color:#405776;line-height:1.1;text-shadow:0 5px 18px rgba(255,255,255,.55);}
+  .subtitle{margin-top:12px;font-size:19px;letter-spacing:.08em;color:#607993;}
+  .intro-card p{margin-top:18px;line-height:1.95;font-size:14.5px;color:#657a94;letter-spacing:.035em;}
+  .intro-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px;}.soft-btn{display:inline-flex;align-items:center;justify-content:center;padding:11px 17px;border-radius:999px;border:1px solid rgba(255,255,255,.76);background:linear-gradient(180deg,rgba(255,255,255,.78),rgba(255,255,255,.48));box-shadow:0 9px 22px rgba(48,68,101,.13);font-size:13px;letter-spacing:.08em;color:#506783;transition:transform .25s ease,box-shadow .25s ease,background .25s ease}.soft-btn:hover{transform:translateY(-2px);box-shadow:0 14px 28px rgba(48,68,101,.2);background:rgba(255,255,255,.78)}.soft-btn.primary{background:linear-gradient(135deg,#fff,#e8eef6 52%,#cfe1f2);color:#425b78;}
+  .content{position:relative;padding:0 5vw 8vh;display:grid;grid-template-columns:minmax(360px,1fr) minmax(360px,1.05fr);gap:24px;align-items:start;}
+  .panel{border-radius:34px;background:linear-gradient(180deg,rgba(255,255,255,.78),rgba(247,250,255,.52));border:1px solid rgba(255,255,255,.74);backdrop-filter:blur(18px);box-shadow:0 24px 70px rgba(8,20,42,.22);overflow:hidden;}
+  .story-panel{padding:28px 30px}.story-panel h2,.sky-panel h2{font-size:27px;font-weight:600;letter-spacing:.1em;color:#405776;margin-bottom:12px;}.story-panel p{font-size:14px;line-height:1.95;color:#647991;letter-spacing:.035em;margin-top:12px;}.quote{margin-top:18px;padding:18px 20px;border-radius:22px;background:rgba(255,255,255,.42);border:1px solid rgba(255,255,255,.68);color:#526983;line-height:1.85;font-size:14px;}
+  .route{display:grid;gap:10px;margin-top:20px}.route-item{display:grid;grid-template-columns:42px 1fr;gap:12px;align-items:start;padding:13px 14px;border-radius:20px;background:rgba(255,255,255,.38);border:1px solid rgba(255,255,255,.58)}.route-item b{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#fff,#dfe8f1);color:#5d718a;font-size:13px}.route-item span{font-size:13.5px;line-height:1.7;color:#647991;}.route-item strong{display:block;color:#48637f;letter-spacing:.06em;margin-bottom:2px;}
+  .sky-panel{padding:26px 28px}.sky-sub{font-size:13.5px;line-height:1.8;color:#687d94;letter-spacing:.035em;margin-bottom:18px;}.sky-map{position:relative;height:460px;border-radius:30px;overflow:hidden;background:
+    radial-gradient(circle at 50% 48%,rgba(119,154,195,.36),transparent 36%),
+    radial-gradient(circle at 18% 20%,rgba(255,255,255,.24),transparent 10%),
+    linear-gradient(180deg,#0d1f3d,#132d54 55%,#10213c);border:1px solid rgba(255,255,255,.44);box-shadow:inset 0 0 80px rgba(255,255,255,.06);}
+  .sky-map::before{content:"";position:absolute;inset:0;opacity:.75;background-image:
+    radial-gradient(circle,rgba(255,255,255,.94) 0 1px,transparent 1.5px),
+    radial-gradient(circle,rgba(167,211,255,.75) 0 1px,transparent 1.6px),
+    radial-gradient(circle,rgba(255,231,212,.65) 0 1px,transparent 1.8px);
+    background-size:68px 68px,112px 112px,160px 160px;background-position:8px 11px,42px 20px,90px 40px;}
+  .milky{position:absolute;left:45%;top:-20%;width:22%;height:140%;background:linear-gradient(180deg,transparent,rgba(215,235,255,.12),rgba(255,255,255,.25),rgba(185,218,255,.11),transparent);filter:blur(8px);transform:rotate(22deg);border-radius:50%;}
+  .constellation{position:absolute;z-index:4;padding:8px 11px;border-radius:999px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.28);color:#f4fbff;letter-spacing:.07em;font-size:12px;backdrop-filter:blur(6px);transition:transform .25s ease,background .25s ease,box-shadow .25s ease}.constellation:hover,.constellation.active{transform:translateY(-2px) scale(1.04);background:rgba(255,255,255,.28);box-shadow:0 0 24px rgba(204,229,255,.32)}
+  .constellation::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:#fff;margin-right:7px;box-shadow:12px -6px 0 rgba(255,255,255,.7),24px 2px 0 rgba(185,220,255,.8);}
+  .cancer{left:14%;top:30%}.orion{left:42%;top:54%}.lyra{right:17%;top:24%}.cygnus{right:28%;top:40%}.aquila{left:56%;top:36%}.scorpius{left:20%;bottom:20%}.ursa{left:15%;top:11%}.cassiopeia{right:13%;top:11%}
+  .info-card{margin-top:16px;border-radius:26px;background:rgba(255,255,255,.48);border:1px solid rgba(255,255,255,.64);padding:20px 22px;min-height:214px;}.info-card .tag{display:inline-block;margin-bottom:9px;padding:6px 10px;border-radius:999px;background:rgba(206,218,232,.34);font-size:12px;letter-spacing:.12em;color:#6b7c91}.info-card h3{font-size:23px;letter-spacing:.08em;color:#425b78;margin-bottom:10px}.info-card p{font-size:13.5px;line-height:1.85;color:#61778f;letter-spacing:.035em}.facts{display:grid;gap:7px;margin-top:12px}.facts span{padding:8px 10px;border-radius:14px;background:rgba(255,255,255,.35);font-size:13px;color:#5f748d;line-height:1.6}.amo-line{margin-top:13px;padding:12px 14px;border-left:3px solid rgba(106,130,158,.45);border-radius:14px;background:rgba(255,255,255,.38);font-size:13.5px;color:#516a84;line-height:1.7;}
+  .footer{padding:0 5vw 5vh;color:rgba(255,255,255,.72);font-size:12px;letter-spacing:.08em;text-align:center;text-shadow:0 2px 10px rgba(0,0,0,.25)}
+  .entrance{position:fixed;inset:0;z-index:80;display:grid;place-items:center;background:linear-gradient(180deg,rgba(20,38,68,.28),rgba(20,38,68,.44));backdrop-filter:blur(4px);transition:opacity .6s ease,visibility .6s ease}.entrance.hidden{opacity:0;visibility:hidden;pointer-events:none}.entrance-card{width:min(620px,86vw);text-align:center;border-radius:36px;padding:42px 44px;background:linear-gradient(180deg,rgba(255,255,255,.82),rgba(247,250,255,.62));border:1px solid rgba(255,255,255,.82);box-shadow:0 30px 90px rgba(8,20,42,.28)}.entrance-card h2{font-size:42px;letter-spacing:.16em;color:#405776;margin-bottom:15px}.entrance-card p{font-size:14.5px;line-height:1.9;color:#657991;margin-bottom:25px}
+  @media(max-width:980px){.content{grid-template-columns:1fr}.intro{align-items:center;padding-top:16vh}.topbar{position:absolute}.navs{max-width:55vw}.sky-map{height:410px}}
+  @media(max-width:640px){.topbar{left:4vw;right:4vw;top:3vh;align-items:flex-start}.brand{padding:10px 13px}.navs{max-width:none;gap:7px}.navs a,.navs button{font-size:12px;padding:9px 11px}.intro{padding:20vh 4vw 6vh}.intro-card,.story-panel,.sky-panel{padding:24px 22px;border-radius:28px}.content{padding:0 4vw 7vh}.sky-map{height:360px}.constellation{font-size:11px;padding:7px 9px}}
+</style>
+</head>
+<body>
+<main class="page" id="page">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="star-dust" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <div class="brand"><span class="brand-mark"></span><span><small>Amo Mist Lighthouse</small><b>雾灯塔｜阿默的观星台</b></span></div>
+    <nav class="navs">
+      <a href="xingtan_manbu.html">返回星滩漫步</a>
+      <a href="guanhai.html">回到观海</a>
+      <a href="../zhuye.html">返回主页</a>
+      <button id="soundBtn" type="button">海浪声</button>
+    </nav>
+  </header>
+
+  <section class="intro" aria-label="章节封面">
+    <div class="intro-card">
+      <div class="eyebrow">HIDDEN CHAPTER · AMO</div>
+      <h1>雾灯塔</h1>
+      <div class="subtitle">阿默的观星台 · Amo Mist Lighthouse Observatory</div>
+      <p>从观海处望过去，左侧海岸的灯塔会在傍晚先亮起来。沿着石阶登上顶层，海浪声变低，星光变清楚。阿默在这里记录真实的星空，也记录潮汐抵达岸边的时间。</p>
+      <div class="intro-actions">
+        <a class="soft-btn primary" href="#stargazing">和阿默一起观星</a>
+        <a class="soft-btn" href="guanhai.html">回到那片海</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="content" id="stargazing">
+    <article class="panel story-panel">
+      <h2>章节结构</h2>
+      <p>这个页面作为《星滩漫步》的隐藏章节入口使用：主界面仍然是白天海岸；靠近左侧灯塔时过渡到傍晚；进入灯塔顶部后，才正式进入夜晚观星互动。</p>
+      <div class="route">
+        <div class="route-item"><b>01</b><span><strong>观海发现</strong>背景左侧灯塔亮起，提示“雾灯塔 · 阿默”。</span></div>
+        <div class="route-item"><b>02</b><span><strong>进入灯塔</strong>圆形玻璃窗、灯塔机械、望远镜、星图桌，全部保持真实灯塔内部结构。</span></div>
+        <div class="route-item"><b>03</b><span><strong>真实观星</strong>星座内容按照现代天文学科普，不使用虚构星星。</span></div>
+      </div>
+      <div class="quote">阿默：“这里不是观光点。……不过今晚雾很淡，可以看一会儿。”</div>
+    </article>
+
+    <article class="panel sky-panel" aria-label="真实星座互动">
+      <h2>一起观察真实星空</h2>
+      <p class="sky-sub">点击星空中的星座名，查看真实天文学信息。这里保留浅岸星滩的氛围，但星座和代表天体都使用现实世界内容。</p>
+      <div class="sky-map" id="skyMap">
+        <span class="milky" aria-hidden="true"></span>
+        <button class="constellation cancer active" data-id="cancer">巨蟹座 Cancer</button>
+        <button class="constellation orion" data-id="orion">猎户座 Orion</button>
+        <button class="constellation lyra" data-id="lyra">天琴座 Lyra</button>
+        <button class="constellation cygnus" data-id="cygnus">天鹅座 Cygnus</button>
+        <button class="constellation aquila" data-id="aquila">天鹰座 Aquila</button>
+        <button class="constellation scorpius" data-id="scorpius">天蝎座 Scorpius</button>
+        <button class="constellation ursa" data-id="ursa">大熊座 Ursa Major</button>
+        <button class="constellation cassiopeia" data-id="cassiopeia">仙后座 Cassiopeia</button>
+      </div>
+      <div class="info-card" id="infoCard">
+        <span class="tag">REAL CONSTELLATION</span>
+        <h3 id="infoTitle">巨蟹座 Cancer</h3>
+        <p id="infoDesc">黄道十二星座之一，整体并不明亮，更适合在较暗的夜空中寻找。</p>
+        <div class="facts" id="facts"></div>
+        <div class="amo-line" id="amoLine">阿默：“巨蟹座不亮。它像是故意把自己藏浅了一点。”</div>
+      </div>
+    </article>
+  </section>
+
+  <div class="footer">© 浅岸星滩・Shallowstar Cove｜创作者：白kar｜雾灯塔章节：阿默 Amo</div>
+
+  <section class="entrance" id="entrance">
+    <div class="entrance-card">
+      <div class="eyebrow">LIGHTHOUSE OBSERVATORY</div>
+      <h2>雾灯塔</h2>
+      <p>推开顶层的门之前，先把海浪声打开。今晚不用赶路，只需要抬头看一会儿星星。</p>
+      <button class="soft-btn primary" id="enterBtn" type="button">进入观星台</button>
+    </div>
+  </section>
+
+  <audio id="oceanAudio" loop preload="auto" hidden>
+    <source src="sea-waves.mp3" type="audio/mpeg">
+  </audio>
+  <audio id="clickAudio" preload="auto" hidden>
+    <source src="ui-click.wav" type="audio/wav">
+  </audio>
+</main>
+<script>
+  const entrance = document.getElementById('entrance');
+  const enterBtn = document.getElementById('enterBtn');
+  const soundBtn = document.getElementById('soundBtn');
+  const oceanAudio = document.getElementById('oceanAudio');
+  const clickAudio = document.getElementById('clickAudio');
+  const buttons = Array.from(document.querySelectorAll('.constellation'));
+  const infoTitle = document.getElementById('infoTitle');
+  const infoDesc = document.getElementById('infoDesc');
+  const facts = document.getElementById('facts');
+  const amoLine = document.getElementById('amoLine');
+  let audioOn = false;
+
+  const data = {
+    cancer:{title:'巨蟹座 Cancer',desc:'黄道十二星座之一，整体不算明亮，适合在远离城市光害、天空较暗的时候寻找。',facts:['代表天体：蜂巢星团 M44，是著名疏散星团。','北半球较适合观测季节：冬末到春季夜晚。','观测提示：可先找到双子座和狮子座，再在两者之间寻找巨蟹座。'],line:'阿默：“巨蟹座不亮。它像是故意把自己藏浅了一点。”'},
+    orion:{title:'猎户座 Orion',desc:'冬季夜空中最容易辨认的星座之一，腰带三星非常醒目。',facts:['主要亮星：参宿四 Betelgeuse、参宿七 Rigel。','代表天体：猎户座大星云 M42。','观测提示：腰带三星几乎排成一条直线，是很好的定位入口。'],line:'阿默：“猎户座很好找。越明显的星，也越适合给迷路的人当坐标。”'},
+    lyra:{title:'天琴座 Lyra',desc:'北半球夏季夜空常见星座，拥有明亮的织女星 Vega。',facts:['主要亮星：织女星 Vega。','织女星是夏季大三角的一角。','代表天体：环状星云 M57。'],line:'阿默：“织女星很亮。不是因为热闹，只是它刚好站在容易被看见的位置。”'},
+    cygnus:{title:'天鹅座 Cygnus',desc:'常被称为“北十字”，位于银河较浓密的区域，夏秋季很适合观察。',facts:['主要亮星：天津四 Deneb。','天津四也是夏季大三角的一角。','观测提示：深色天空下，天鹅座附近常能看到明显银河。'],line:'阿默：“天鹅座横在银河里。像一条安静地穿过夜空的航线。”'},
+    aquila:{title:'天鹰座 Aquila',desc:'夏季夜空的重要星座之一，拥有牛郎星 Altair。',facts:['主要亮星：牛郎星 Altair。','牛郎星、织女星、天津四共同组成夏季大三角。','观测提示：在夏季夜晚向东南到南方天空寻找。'],line:'阿默：“牛郎星和织女星隔着银河。现实里的距离，比故事更远。”'},
+    scorpius:{title:'天蝎座 Scorpius',desc:'夏季南方天空的醒目星座，形状弯曲，接近蝎子的轮廓。',facts:['主要亮星：心宿二 Antares，是著名红色超巨星。','北半球中纬度地区观测时通常位置偏低。','观测提示：夏季夜晚南方天空，寻找偏红的心宿二。'],line:'阿默：“心宿二是红的。它不像警告，更像一颗很远的余烬。”'},
+    ursa:{title:'大熊座 Ursa Major',desc:'北半球著名星座，北斗七星是大熊座中最容易辨认的星群。',facts:['北斗七星是星群，不是单独一个完整星座。','可用北斗七星斗口两颗指极星寻找北极星。','观测提示：北半球多数地区全年都较容易找到。'],line:'阿默：“北斗不是答案，但它会告诉你方向。”'},
+    cassiopeia:{title:'仙后座 Cassiopeia',desc:'北天星座，常呈明显 W 形或 M 形，也常用来辅助寻找北极星。',facts:['形状特征：W 形或 M 形。','与北斗七星大致位于北极星两侧。','观测提示：秋季夜晚较高，但北半球许多地区全年可见。'],line:'阿默：“仙后座像一行没写完的字。你看久了，会觉得它在等下一笔。”'}
+  };
+
+  function playClick(){
+    try{ clickAudio.currentTime = 0; clickAudio.volume = .68; clickAudio.play().catch(()=>{}); }catch(e){}
+  }
+  function toggleOcean(force){
+    audioOn = typeof force === 'boolean' ? force : !audioOn;
+    try{
+      oceanAudio.volume = .42;
+      if(audioOn){ oceanAudio.play().catch(()=>{}); soundBtn.textContent = '关闭海浪'; }
+      else{ oceanAudio.pause(); soundBtn.textContent = '海浪声'; }
+    }catch(e){}
+  }
+  function showInfo(id){
+    const item = data[id];
+    if(!item) return;
+    buttons.forEach(btn=>btn.classList.toggle('active', btn.dataset.id === id));
+    infoTitle.textContent = item.title;
+    infoDesc.textContent = item.desc;
+    facts.innerHTML = item.facts.map(text=>`<span>${text}</span>`).join('');
+    amoLine.textContent = item.line;
+    playClick();
+  }
+
+  buttons.forEach(btn=>btn.addEventListener('click',()=>showInfo(btn.dataset.id)));
+  enterBtn.addEventListener('click',()=>{ entrance.classList.add('hidden'); toggleOcean(true); playClick(); });
+  soundBtn.addEventListener('click',()=>{ toggleOcean(); playClick(); });
+  showInfo('cancer');
+</script>
+</body>
+</html>
